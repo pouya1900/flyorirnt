@@ -1,0 +1,210 @@
+.content-wrapper, .content-bg {
+    background-color: #ecf0f5;
+}
+
+.login-bg {
+    background-image: url(../img/login-bg.jpg);
+    background-size: cover;
+}
+
+.box-bg {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.box-body {
+    padding: 10px 20px;
+}
+
+.login-box, .register-box {
+    margin-top: 10%
+}
+
+div.dt-buttons {
+    position: relative;
+    float: right;
+    clear: both;
+    margin-bottom: 10px;
+}
+
+.btn-style {
+    width: 102px !important;
+    margin-bottom: 3px !important;
+    font-weight: 900;
+}
+
+.checkbox label, .radio label {
+    margin-right: 10px;
+}
+
+.select2-container {
+    width: 100% !important
+}
+
+.bootstrap-tagsinput {
+    width: 100% !important;
+    padding: 5px 0px;
+    border-radius: 0;
+}
+
+.bootstrap-tagsinput .tag {
+    font-size: 14px;
+    margin-left: 5px;
+    margin-right: -2px;
+}
+
+.borderRight {
+    border-right: 2px solid #ccc
+}
+
+@media screen and (max-width: 800px) {
+    .borderRight {
+        border-right: 0px solid #ccc
+    }
+}
+
+
+/*my code in admin panel*/
+
+.search_container {
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.search_container label {
+}
+
+.search_container input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 2px;
+    border: 1px solid #7a7a7a;
+}
+
+.search_container button {
+    padding: 10px 30px;
+    background: #00c0ef;
+    border-radius: 4px;
+    border: none;
+    margin-top: 15px;
+    color: #ffffff;
+    font-size: 15px;
+}
+
+.user_info_item {
+    margin-top: 10px;
+}
+
+.booking_detail {
+    padding: 5px;
+    margin: 20px 0 40px;
+    font-size: 14px;
+}
+
+.tickets_table {
+    width: 100% !important;
+}
+
+.content-header {
+    margin-bottom: 40px !important;
+}
+
+.navbar {
+    display: block !important;
+}
+
+
+.page_text_container {
+    margin-bottom: 20px;
+}
+
+.submit_page {
+    padding: 4px 20px;
+    margin-top: 10px;
+    margin-bottom: 20px
+}
+
+
+table.table-bordered.dataTable th, table.table-bordered.dataTable td {
+
+    text-align: center;
+}
+
+#result_modal {
+    opacity: 1 !important;
+}
+
+.result_modal_container {
+    margin-top: 14%;
+}
+
+.main-sidebar {
+    overflow-y: scroll;
+    max-height: 100%;
+}
+
+/*end my code in admin panel*/
+
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 22px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
