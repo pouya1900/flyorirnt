@@ -352,6 +352,17 @@
                                     </label>
                                 </div>
 
+                                <div>
+                                    <label for="offline_ticket">online payment disable for parto
+                                        : </label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="offline_ticket"
+                                               name="offline_ticket" {{$setting->offline_ticket ? "checked" : ""}}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+
+
                             </div>
 
                         </div>
@@ -426,77 +437,6 @@
 
             </div>
 
-            <div class="col-md-6">
-                <!-- general form elements -->
-                <div class="box box-primary box-bg with-border">
-                    <!-- /.box-header -->
-                    <!-- form start -->
-                    <form action="{{route('admin.update_setting6')}}" method="post">
-                        {{csrf_field()}}
-                        <div class="box-body">
-
-                            <div class="form-group">
-                                <div>
-                                    <p>
-                                        Ads flight setting
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <label for="origin">Origin : </label>
-                                    <input type="text" id="origin" class="airport_search airport_search1"
-                                           name="origin" data-sec="1" autocomplete="off">
-                                </div>
-                                <div class="search_result1 search_result"></div>
-
-                                <div>
-                                    <label for="destination">Destination : </label>
-                                    <input type="text" id="destination" class="airport_search airport_search2"
-                                           name="destination" data-sec="2" autocomplete="off">
-                                </div>
-                                <div class="search_result2 search_result"></div>
-
-
-                                <div>
-                                    <label for="daterange1">Depart : </label>
-                                    <input type="text" id="daterange1"
-                                           name="depart" autocomplete="off">
-                                </div>
-                                <div>
-                                    <label for="daterange2">Return : </label>
-                                    <input type="text" id="daterange2"
-                                           name="return" autocomplete="off">
-                                </div>
-
-                                <div>
-                                    <div id="add_route" class="btn">Add route</div>
-                                </div>
-
-                            </div>
-
-                            <div class="form-group" id="route_container">
-                                @foreach($ads_searches as $row)
-                                    <div><input type='text' readonly name='origin_code[]'
-                                                value='{{$row->origin}}'><input type='text' readonly
-                                                                                name='destination_code[]'
-                                                                                value='{{$row->destination}}'><input
-                                                type='text' readonly name='depart[]' value='{{$row->depart}}'><input
-                                                type='text' readonly name='return[]' value='{{$row->return}}'><span
-                                                class='btn delete_route'>remove</span></div>
-                                @endforeach
-                            </div>
-
-                        </div>
-                        <!-- /.box-body -->
-
-                        <div class="box-footer text-center">
-                            <button type="submit" name="submit" id="submit" class="btn btn-primary">Update</button>
-                        </div>
-                    </form>
-                </div>
-                <!-- /.box -->
-
-            </div>
 
 
         </div>

@@ -58,6 +58,8 @@ class TicketController extends Controller
     {
         $lang = App::getLocale();
 
+        $setting = Setting::find(1);
+
         $flight = Flight::with([
             'legs.airports1',
             'legs.airports2',
@@ -106,6 +108,10 @@ class TicketController extends Controller
         $instance_render = $this->set_render($render_number);
 //		choose render
 
+        if ($setting->offline_ticket && $render_number == Setting::parto) {
+            return view('front.errors.offline_ticketing', compact('lang'));
+        }
+
         $validate = $instance_render->revalidate($flight);
         //$validate = 1;
 
@@ -117,6 +123,7 @@ class TicketController extends Controller
         if ($flight["airports1"]["country"] == "IR" && $flight["airports2"]["country"] == "IR") {
             $domestic = 1;
         }
+
 
         return view('front.passenger.passenger', compact('flight', 'lang', 'country', 'validate', 'research_data', 'domestic'));
 

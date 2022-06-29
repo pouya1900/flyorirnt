@@ -41,8 +41,8 @@
 
 {{--    @else--}}
         <link rel="stylesheet" href="css/bootstrapa.css">
-        <link rel="stylesheet" href="css/style.css?ver=30">
-        <link rel="stylesheet" href="css/test_style.css?ver=2">
+        <link rel="stylesheet" href="css/style.css?ver=31">
+        <link rel="stylesheet" href="css/test_style.css?ver=3">
 
 {{--    @endif    --}}
 

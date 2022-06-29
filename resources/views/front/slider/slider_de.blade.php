@@ -27,7 +27,7 @@
                      data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
                      data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
                      style="z-index: 7; white-space: nowrap; font-size: 30px; line-height: 52px; font-weight: 600; color: #ffffff;font-family:Raleway;text-transform_:uppercase;">
-                    Entdecken Sie Orient<br>mit Iran
+                    
                 </div>
 
                 <!-- LAYER NR. 2 -->
@@ -60,7 +60,7 @@
                 data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7=""
                 data-param8="" data-param9="" data-param10="" data-description="">
                 <!-- MAIN IMAGE -->
-                <img src="assets/1600x555_2.jpg" alt="" data-bgposition="center center" data-bgfit="cover"
+                <img src="assets/1600x555_2_ist.jpg" alt="" data-bgposition="center center" data-bgfit="cover"
                      data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
                 <!-- LAYERS -->
 
@@ -73,7 +73,7 @@
                      data-textAlign="['inherit','inherit','center','center']" data-paddingtop="[0,0,0,0]"
                      data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
                      style="z-index: 5; min-width: 227px; max-width: 227px; white-space: nowrap; font-size: 32px; line-height: 45px; font-weight: 600; color: rgb(240, 211, 85);font-family:Raleway;text-transform_:uppercase;">
-                    Ihr Direkter Flug nach Teheran<br>mit Iran Air
+                    
                 </div>
                 <!-- LAYER NR. 2 -->
                 <div class="tp-caption   tp-resizeme" id="slide-10-layer-2" data-x="['left','left','center','center']"
@@ -85,7 +85,7 @@
                      data-paddingright="[10,10,10,10]" data-paddingbottom="[10,10,10,10]"
                      data-paddingleft="[10,10,10,10]"
                      style="z-index: 6; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 600; color: #555555;font-family:Raleway;background-color:rgba(255, 255, 255, 0.5);">
-                    Schnell und Bequem mit direktem Flug<br>Buchen und Zahlen ganz einfach online<br>
+                    
                 </div>
             </li>
             <!-- SLIDE  3 -->
@@ -109,7 +109,7 @@
                      data-textAlign="['inherit','inherit','center','center']" data-paddingtop="[0,0,0,0]"
                      data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
                      style="z-index: 5; white-space: nowrap; font-size: 33px; line-height: 43px; font-weight: 400; color: #0071a5;font-family:Raleway;text-transform_:uppercase;">
-                    Persischer Golf<br> Ein besonderes Erlebnis!
+                    
                 </div>
 
                 <!-- LAYER NR. 2 -->

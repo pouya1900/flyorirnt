@@ -30039,3 +30039,37 @@ rounded .country .capital {
 #slide_filter2 .noUi-handle:before, #slide_filter2 .noUi-handle:after, #slide_filter1 .noUi-handle:before, #slide_filter1 .noUi-handle:after {
     display: none;
 }
+
+.iframe_flight_details {
+    display: none;
+    position: relative;
+    bottom: 20px;
+    border: 1px solid #ccc;
+    background: rgba(250, 250, 250, 0.7);
+}
+
+.iframe_flight a {
+    color: #000;
+    font-size: 15px;
+}
+
+.ads_flight_title {
+    font-size: 18px;
+    text-align: center;
+    padding: 10px;
+}
+
+.iframe_flight:hover > .iframe_flight_details {
+    display: block;
+}
+
+.ads_search_table {
+    table-layout: fixed;
+}
+
+.deal_section_baggage_alert {
+    margin-top: 10px;
+    padding: 2px;
+    background: #f7f7f7;
+    font-size: 10px;
+}

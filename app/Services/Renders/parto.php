@@ -253,7 +253,6 @@ class parto implements render_interface
         //$this->diff_time = Carbon::now()->diffInSeconds( $test_time1 );
 //		test for timing
 
-
         $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
 
         if (!$search_id) {
@@ -480,7 +479,7 @@ class parto implements render_interface
                 $cost_insert[$i]["TotalTax"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["TotalTax"];
                 $cost_insert[$i]["ServiceTax"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["ServiceTax"];
                 $cost_insert[$i]["Currency"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["Currency"];
-                $cost_insert[$i]["FarePerAdult"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][0]["PassengerFare"]["TotalFare"], 0); //total fare per adult
+                $cost_insert[$i]["FarePerAdult"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][0]["PassengerFare"]["TotalFare"], 0, $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"], 'parto'); //total fare per adult
                 $cost_insert[$i]["serviceAdult"] = $cost_insert[$i]["FarePerAdult"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][0]["PassengerFare"]["TotalFare"]; //service fee per adult
                 $cost_insert[$i]["adult"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][0]["PassengerTypeQuantity"]["Quantity"]; //number of adult
                 $calc_price->setCount($cost_insert[$i]["adult"], 0);
@@ -495,7 +494,7 @@ class parto implements render_interface
 
                 if (isset($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1])) {
                     if ($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerTypeQuantity"]["PassengerType"] == 2) {
-                        $cost_insert[$i]["FarePerChild"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["TotalFare"], 1); //per child
+                        $cost_insert[$i]["FarePerChild"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["TotalFare"], 1,$item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"],'parto'); //per child
                         $cost_insert[$i]["serviceChild"] = $cost_insert[$i]["FarePerChild"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["TotalFare"]; //service fee per child
                         $cost_insert[$i]["child"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerTypeQuantity"]["Quantity"]; //number of child
                         $calc_price->setCount($cost_insert[$i]["child"], 1);
@@ -509,7 +508,7 @@ class parto implements render_interface
                         ];
 
                     } else {
-                        $cost_insert[$i]["FarePerInf"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["TotalFare"], 2); //per inf
+                        $cost_insert[$i]["FarePerInf"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["TotalFare"], 2,$item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"],'parto'); //per inf
                         $cost_insert[$i]["serviceInfant"] = $cost_insert[$i]["FarePerInf"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["TotalFare"]; //service fee per inf
                         $cost_insert[$i]["infant"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerTypeQuantity"]["Quantity"]; //number of inf
                         $calc_price->setCount($cost_insert[$i]["infant"], 2);
@@ -524,7 +523,7 @@ class parto implements render_interface
 
                     if (isset($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2])) {
                         if ($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerTypeQuantity"]["PassengerType"] == 2) {
-                            $cost_insert[$i]["FarePerChild"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["TotalFare"], 1); //per child
+                            $cost_insert[$i]["FarePerChild"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["TotalFare"], 1,$item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"],'parto'); //per child
                             $cost_insert[$i]["serviceChild"] = $cost_insert[$i]["FarePerChild"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["TotalFare"]; //service fee per child
                             $cost_insert[$i]["child"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerTypeQuantity"]["Quantity"]; //number of child
                             $calc_price->setCount($cost_insert[$i]["child"], 1);
@@ -536,7 +535,7 @@ class parto implements render_interface
                                 "price" => $cost_insert[$i]["taxChild"],
                             ];
                         } else {
-                            $cost_insert[$i]["FarePerInf"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["TotalFare"], 2); //per inf
+                            $cost_insert[$i]["FarePerInf"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["TotalFare"], 2,$item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"],'parto'); //per inf
                             $cost_insert[$i]["serviceInfant"] = $cost_insert[$i]["FarePerInf"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["TotalFare"]; //service fee per inf
                             $cost_insert[$i]["infant"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerTypeQuantity"]["Quantity"]; //number of inf
                             $calc_price->setCount($cost_insert[$i]["infant"], 2);

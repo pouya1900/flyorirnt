@@ -19,6 +19,8 @@ class SetPriceFunction
 
 //	type 0 for adult 1 for child 2 for inf
 
+//vendor parto and iran_air
+
     public function index($price, $type, $airline = "", $vendor = "")
     {
 
@@ -47,7 +49,11 @@ class SetPriceFunction
             $margin = $min_margin;
         }
         //SRA: Fix margin: ----------------------
-		$margin = ($type == 0)? 15:8;
+		if ($airline == "IR") {
+		    $margin = ($type == 0)? 15:8;
+		} else {
+		    $margin = ($type == 0)? 22:13;
+        }	
 		//---------------------------------------
         $EndPrice = ($vendorPrice + $payPal_fix + 1.19 * $margin) / (1 - $payPal_rate);
 

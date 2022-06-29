@@ -818,12 +818,8 @@ jQuery(document).ready(function ($) {
 
         if (rangeSlider1) {
             noUiSlider.create(rangeSlider1, {
-                start: [0, parseInt($("input[name='max_waiting']").val())],
-                connect: true,
-                step: 30,
-                range: {
-                    'min': 0,
-                    'max': parseInt($("input[name='max_waiting']").val())
+                start: [0, parseInt($("input[name='max_waiting']").val())], connect: true, step: 30, range: {
+                    'min': 0, 'max': parseInt($("input[name='max_waiting']").val())
                 }
             });
             rangeSlider1.noUiSlider.on('update', function (values, handle) {
@@ -856,12 +852,8 @@ jQuery(document).ready(function ($) {
         }
         if (rangeSlider2) {
             noUiSlider.create(rangeSlider2, {
-                start: [0, parseInt($("input[name='max_waiting']").val())],
-                connect: true,
-                step: 30,
-                range: {
-                    'min': 0,
-                    'max': parseInt($("input[name='max_waiting']").val())
+                start: [0, parseInt($("input[name='max_waiting']").val())], connect: true, step: 30, range: {
+                    'min': 0, 'max': parseInt($("input[name='max_waiting']").val())
                 }
             });
             rangeSlider2.noUiSlider.on('update', function (values, handle) {
@@ -931,10 +923,17 @@ jQuery(document).ready(function ($) {
 
             var name = this.name;
             var value = $(this).val();
+            var return_val = $(this).attr('data-return');
 
             filter_array[i] = [name, "!=", value];
 
             i++;
+            if (return_val) {
+                name = "return_" + name;
+                filter_array[i] = [name, "!=", value];
+
+                i++;
+            }
         });
 
 
@@ -944,12 +943,20 @@ jQuery(document).ready(function ($) {
             var target = $(this).attr('data-target');
             var start_min = $(this).attr('data-start');
             var end_min = $(this).attr('data-end');
+            var return_val = $(this).attr('data-return');
 
             filter_array[i] = [target, ">=", start_min];
             i++;
             filter_array[i] = [target, "<=", end_min];
-
             i++;
+
+            if (return_val) {
+                target = "return_" + target;
+                filter_array[i] = [target, ">=", start_min];
+                i++;
+                filter_array[i] = [target, "<=", end_min];
+                i++;
+            }
         });
 
 

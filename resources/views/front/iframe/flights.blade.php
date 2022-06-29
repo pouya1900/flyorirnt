@@ -21,11 +21,19 @@
         @foreach($data as $key=>$value)
             <tr>
 
+                @php($m=$first_month)
 
                 <th scope="row">Ab {{$key}}</th>
                 @foreach($value as $row2)
-                    <td class="text-center iframe_flight"><a
-                                href={{$row2->search_link}}>{{$row2->price}} €</a>
+
+                    @while($row2->month != $m++)
+                        <td class="text-center iframe_flight">
+                            -
+                        </td>
+                    @endwhile
+                    <td class="text-center iframe_flight">
+                        <a target="_blank"
+                           href={{$row2->search_link}}>{{$row2->price}} €</a>
                         {{--                        <div class="iframe_flight_details"><p>{{$row2->depart}}</p>--}}
                         {{--                            <p>{{$row2->return}}</p></div>--}}
                     </td>

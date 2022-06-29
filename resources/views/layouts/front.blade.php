@@ -55,14 +55,14 @@
 
     @if ($lang=='fa')
         <link rel="stylesheet" href="css/bootstrap-rtl.min.css">
-        <link rel="stylesheet" href="css/rtl_style.min.css?ver=1">
+        <link rel="stylesheet" href="css/rtl_style.min.css?ver=3">
 
     @else
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/style.min.css?ver=1">
+        <link rel="stylesheet" href="css/style.min.css?ver=3">
 
     @endif
-{{--    <link rel="stylesheet" href="css/test_style.css?ver=2">--}}
+{{--    <link rel="stylesheet" href="css/test_style.css?ver=3">--}}
 
     <link rel="stylesheet" href="css/swiper.min.css">
     <link rel="stylesheet" href="css/media_style.min.css?ver=1">
@@ -151,7 +151,7 @@
 
 
 <script type="text/javascript" src="js/sticky-sidebar.min.js"></script>
-<script type="text/javascript" src="js/custom.min.js"></script>
+<script type="text/javascript" src="js/custom.min.js?ver=2"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/popper.min.js"></script>

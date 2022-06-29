@@ -1,0 +1,3 @@
+URL (Service End Point) --> https://api.homares.ir/wsbe/rest
+Agent ID --> DUS09419
+Authorization (Base64 Encoded) --> 9n+kuALgMrhewMQXQtLVevx6vpsSJgMEuiIR/RH1lR22r9X6ahSb0g==

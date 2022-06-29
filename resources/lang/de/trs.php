@@ -288,7 +288,7 @@ return [
     "ir_phone"                                      => "Telefonnummer in Iran",
     "our_services"                                  => "Weitere Informationen",
     "read_more"                                     => "Mehr lesen",
-    "per_person"                                    => "per person",
+    "per_person"                                    => "per Person",
     "for_each_ordered_car"                          => "Für jedes Taxi",
     "for_each_service"                              => "Für jede Dienstleistung",
     "cip_book_history"                              => "CIP Buchungsverlauf",
@@ -389,5 +389,27 @@ return [
     "filter"                           => "Filters anwenden",
     "show_filter_result"               => "Zurück zu den Ergebnissen",
 
+    "ads_flight_iframe_header" => "
+	<a href='https://flyorient.de/' target='_blank'>
+	<img src='images/settings/logo.png' width=180px>
+	<span style='color:blue;font-size:20px;'>
+		 : پرواز مستقیم به تهران با ایران ایر . قیمت ها برای هر نفر ، از 
+</span><br>
+<span style='color:black;font-size:16px;'>
+	Direktflüge nach Teheran mit Iran Air, Preise pro Person ab:
+</span>	
+</a>",
+	
+    "ads_flight_iframe_header__" => "Direktflüge nach Teheran mit Iran Air, Preise pro Person ab:
+	<span style='color:blue;font-size:22px;'><br>
+		 : پرواز مستقیم به تهران با ایران ایر . قیمت ها برای هر نفر ، از 
+</span>",
+    "online_ticket_not_active" => "<span style=\"font-size:18px; color:#008888\">Leider ist zur Zeit Online Buchen nicht möglich. Bitte Kontaktieren Sie Support:<br>
+email: <b>info@flyorient.de</b><br>
+WhatsApp: <b>+49-176-618 75 479</b></span>",
+    "support"                  => "Support",
 
+    "no_baggage_depart" => "Kein Freigepäck beim Hinflug!",
+    "no_baggage_return" => "Kein Freigepäck beim Rückflug!",
+    "no_baggage" => "Kein Freigepäck!",
 ];

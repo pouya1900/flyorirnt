@@ -674,12 +674,21 @@ if (!isset($start)) $start=0;
                                             <div>
 
                                     <span class="all_details_link" id="baggage_rules" data-token="{{$item["token"]}}">
-                                        @if (!$item["bar_exist"] && !$item["return_bar_exist"] )
+                                       @if (!$item["bar_exist"])
                                             <i> <img src="images/icon/suitcase-solid.png"></i>
+                                            @if ($item["return_bar_exist"] && $item["DirectionInd"]==2)
+                                                / <i class="fas fa-suitcase "></i>
+                                                <span class="d-none d-md-inline">{{$item["return_bar"]}}</span>
+                                            @endif
                                         @else
                                             <i class="fas fa-suitcase "></i>
-                                            <span class="">{{$item["bar"]}}{{$item["bar"]!=$item["return_bar"] && $item["return_bar"]!="" ? "/".$item["return_bar"] : ""}}
-                                        </span>
+                                            <span class="d-none d-md-inline">{{$item["bar"]}}
+                                                @if(!$item["return_bar_exist"] && $item["DirectionInd"]==2)
+                                                    / <i> <img src="images/icon/suitcase-solid.png"></i>
+                                                @else
+                                                    {{$item["bar"]!=$item["return_bar"] && $item["return_bar"]!="" ? "/".$item["return_bar"] : ""}}
+                                                @endif
+                                                    </span>
                                         @endif
                                     </span>
                                             </div>
@@ -722,15 +731,38 @@ if (!isset($start)) $start=0;
                                         <div class="deal_section_baggage_container">
                                         <span class="deal_section_baggage" id="baggage_rules"
                                               data-token="{{$item["token"]}}">
-                                        @if (!$item["bar_exist"] && !$item["return_bar_exist"] )
+
+
+
+                                            @if (!$item["bar_exist"])
                                                 <i> <img src="images/icon/suitcase-solid.png"></i>
+                                                @if ($item["return_bar_exist"] && $item["DirectionInd"]==2)
+                                                    / <i class="fas fa-suitcase "></i>
+                                                    <span class="d-none d-md-inline">{{$item["return_bar"]}}</span>
+                                                @endif
                                             @else
                                                 <i class="fas fa-suitcase "></i>
-                                                <span class="d-none d-md-inline">{{$item["bar"]}}{{$item["bar"]!=$item["return_bar"] && $item["return_bar"]!="" ? "/".$item["return_bar"] : ""}}
-                                        </span>
+                                                <span class="d-none d-md-inline">{{$item["bar"]}}
+                                                    @if(!$item["return_bar_exist"] && $item["DirectionInd"]==2)
+                                                        / <i> <img src="images/icon/suitcase-solid.png"></i>
+                                                    @else
+                                                        {{$item["bar"]!=$item["return_bar"] && $item["return_bar"]!="" ? "/".$item["return_bar"] : ""}}
+                                                    @endif
+                                                    </span>
                                             @endif
-                                    </span>
+
+
+                                            </span>
                                         </div>
+
+                                        @if (!$item["bar_exist"] || ($item["DirectionInd"]==2 && !$item["return_bar_exist"]))
+                                            <div class="deal_section_baggage_alert">
+                                                <span>
+                                                {{(!$item["bar_exist"] && !$item["return_bar_exist"]) ? trans('trs.no_baggage') : (!$item["bar_exist"] ? trans('trs.no_baggage_depart') : trans('trs.no_baggage_return'))}}
+                                                </span>
+                                            </div>
+
+                                        @endif
 
                                     </div>
 

@@ -404,6 +404,17 @@ return [
 
 //    after 4 june , ads flight update
 
-    "ads_flight_iframe_header" => "cheapest price to tehran",
+    "ads_flight_iframe_header" => "Direct flights to Tehran non-stop",
 
+//    after 14 june offline ticket update
+    "online_ticket_not_active" => "<span style=\"font-size:18px; color:#008888\">Unfortunately, online booking is currently not possible. Please contact support:<br>
+email: <b>info@flyorient.de</b><br>
+WhatsApp: <b>+49-176-618 75 479</b></span>",
+    "support"                  => "Support",
+
+//    after 26 june baggage update
+
+    "no_baggage_depart" => "No baggage by Departure!",
+    "no_baggage_return" => "No baggage by return!",
+    "no_baggage" => "No baggage!",
 ];

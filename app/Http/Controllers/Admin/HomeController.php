@@ -253,11 +253,16 @@ class HomeController extends Controller
         $test_one_euro_with_book = 0;
         if ($request->has("test_one_euro_with_book")) $test_one_euro_with_book = 1;
 
+        $offline_ticket = 0;
+        if ($request->has("offline_ticket")) $offline_ticket = 1;
+
+
         $setting->update([
             'payment'                 => $payment,
             'pure_price'              => $pure_price,
             'test_one_euro'           => $test_one_euro,
             'test_one_euro_with_book' => $test_one_euro_with_book,
+            'offline_ticket'          => $offline_ticket,
         ]);
 
         return redirect()->route('admin.general_setting')->with('message', 'Changes made successfully');

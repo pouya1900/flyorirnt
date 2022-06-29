@@ -804,6 +804,7 @@ class FlightController extends Controller
 //
 //        if ($domain != "parsian.eu") return 0;
 
+        Ads_search::where('id', '>', 0)->delete();
 
         $data = Config::get("iran_air_flight");
 
@@ -865,19 +866,21 @@ class FlightController extends Controller
 
         $ads = Ads_search::where('depart', '>=', $now)->orderBy('origin')->orderBy('month')->get();
         $data = [];
+        $first_month=13;
         foreach ($ads as $row) {
+
+            if ($row->month < $first_month) $first_month = $row->month;
+
             $city = $row->airport->city_de ?: $row->airport->city_en;
             $data[$city][] = $row;
         }
 
-        $first_month = $ads[0]->month;
         $month = [];
         for ($i = $first_month; $i <= $first_month + 4; $i++) {
             $month[] = $this->get_month($i);
         }
-
-
-        return view('front.iframe.flights', compact('data', 'month'));
+        
+        return view('front.iframe.flights', compact('data', 'month', 'first_month'));
 
 
     }

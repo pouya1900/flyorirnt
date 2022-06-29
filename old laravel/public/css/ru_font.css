@@ -1,0 +1,22 @@
+body {
+    font-family: "Arial" !important;
+    font-size: 15px !important;
+    line-height: 25px ;
+}
+
+
+header ul.nav-menu > li > a {
+
+    font-family: "Arial" !important;
+    font-size: 15px !important;
+}
+
+
+header.header-search .form-control-lg,
+header.header-search .input-group-lg > .form-control,
+header.header-search .input-group-lg > .input-group-addon,
+header.header-search .input-group-lg > .input-group-btn > .btn {
+    font-size: 17px ;
+    font-weight: 700;
+    font-family: "Arial" !important;
+}
