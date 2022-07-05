@@ -256,3 +256,210 @@ response :
 --------------------------------------
 --------------------------------------
 --------------------------------------
+21:55 2022-07-02 : 
+service : AirBook
+flight : IR716.....VIE->IKA......2022-09-03 11:50:00->2022-09-03 18:40:00
+return :IKA->VIE......2022-10-01 07:30:00->2022-10-01 10:35:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2022-07-02T21:54:59.000000+02:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR716" ResBookDesigCode="K" DepartureDateTime="2022-09-03T11:50:00.000000+02:00" ArrivalDateTime="2022-09-03T18:40:00.000000+02:00" Duration="04:20:00" StopQuantity="0" RPH="83430">
+           <DepartureAirport LocationCode="VIE"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus A330-200"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="K" ResBookDesigQuantity="7"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR717" ResBookDesigCode="N" DepartureDateTime="2022-10-01T07:30:00.000000+02:00" ArrivalDateTime="2022-10-01T10:35:00.000000+02:00" Duration="04:35" StopQuantity="0" RPH="83423">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="VIE"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus A330-200"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="N" ResBookDesigQuantity="6"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="529.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="583.90"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="2001-09-18" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Mahmood</GivenName>
+				<Surname>Kazemi</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="f1228477" DocType="2" ExpireDate="2026-02-04" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Mahmood</GivenName>
+                <Surname>Kazemi</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(43)069919999044"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>bamafly2022@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="583.90"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Invalid telephone number","Code":"317"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+10:51 2022-07-03 : 
+service : AirBook
+flight : IR716.....VIE->IKA......2022-09-03 11:50:00->2022-09-03 18:40:00
+return :IKA->VIE......2022-10-01 07:30:00->2022-10-01 10:35:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2022-07-03T10:51:03.000000+02:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR716" ResBookDesigCode="K" DepartureDateTime="2022-09-03T11:50:00.000000+02:00" ArrivalDateTime="2022-09-03T18:40:00.000000+02:00" Duration="04:20:00" StopQuantity="0" RPH="83430">
+           <DepartureAirport LocationCode="VIE"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus A330-200"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="K" ResBookDesigQuantity="8"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR717" ResBookDesigCode="N" DepartureDateTime="2022-10-01T07:30:00.000000+02:00" ArrivalDateTime="2022-10-01T10:35:00.000000+02:00" Duration="04:35" StopQuantity="0" RPH="83423">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="VIE"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus A330-200"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="N" ResBookDesigQuantity="6"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="529.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="583.90"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="2001-09-18" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Mahmood</GivenName>
+				<Surname>Kazemi</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="f1228477" DocType="2" ExpireDate="2026-02-04" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Mahmood</GivenName>
+                <Surname>Kazemi</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(43)069919999044"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>bamafly2022@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="583.90"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Invalid telephone number","Code":"317"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+14:25 2022-07-03 : 
+service : AirBook
+flight : XQ903.....CGN->ADB......2022-07-04 05:05:00->2022-07-04 09:15:00
+return :ADB->CGN......2022-07-15 21:25:00->2022-07-15 23:45:00
+request : 
+{"FareSourceCode":"66353335653934316635313534373930613564333230376465336632646461652631323626333631303032323433","ClientUniqueId":"83G181J4393598","TravelerInfo":{"PhoneNumber":"+491725653830","Email":"omidshazada@yahoo.com","AirTravelers":[{"DateOfBirth":"1997-08-27","Gender":0,"PassengerType":1,"PassengerName":{"PassengerFirstName":"Omid","PassengerMiddleName":null,"PassengerLastName":"Shahzad","PassengerTitle":"Mr"},"Passport":{"Country":"AF","ExpiryDate":"2026-06-17","IssueDate":null,"PassportNumber":"P00302681"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0}]}}
+response : 
+{"Success":false,"TktTimeLimit":"0001-01-01T00:00:00","Category":null,"Status":null,"UniqueId":null,"Error":{"Id":"Err0101001","Message":"An unexpected error occurred while processing. team Support notified!"},"PriceChange":false}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+13:08 2022-07-05 : 
+service : AirBook
+flight : TK1592.....FRA->IKA......2022-08-02 15:15:00->2022-08-03 01:45:00
+return :IKA->FRA......2022-09-02 07:35:00->2022-09-02 13:50:00
+request : 
+{"FareSourceCode":"636530623736623636663464343866653939353030373334643166626165636126363726333632323637393939","ClientUniqueId":"52J188F4491915","TravelerInfo":{"PhoneNumber":"+4369919999044","Email":"h.sadeghih@yahoo.com","AirTravelers":[{"DateOfBirth":"2005-06-25","Gender":1,"PassengerType":1,"PassengerName":{"PassengerFirstName":"Sahar","PassengerMiddleName":null,"PassengerLastName":"Haidari","PassengerTitle":"Mrs"},"Passport":{"Country":"AF","ExpiryDate":"2022-09-11","IssueDate":null,"PassportNumber":"O2341379"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0},{"DateOfBirth":"1981-03-02","Gender":1,"PassengerType":1,"PassengerName":{"PassengerFirstName":"Sima","PassengerMiddleName":null,"PassengerLastName":"Ataee","PassengerTitle":"Mrs"},"Passport":{"Country":"AF","ExpiryDate":"2027-09-11","IssueDate":null,"PassportNumber":"O2341388"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0},{"DateOfBirth":"2008-07-26","Gender":0,"PassengerType":1,"PassengerName":{"PassengerFirstName":"Mansour","PassengerMiddleName":null,"PassengerLastName":"Haidari","PassengerTitle":"Mr"},"Passport":{"Country":"AF","ExpiryDate":"2022-09-11","IssueDate":null,"PassportNumber":"O2341371"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0},{"DateOfBirth":"1980-02-01","Gender":0,"PassengerType":1,"PassengerName":{"PassengerFirstName":"Mohsin","PassengerMiddleName":null,"PassengerLastName":"Haidari","PassengerTitle":"Mr"},"Passport":{"Country":"AF","ExpiryDate":"2027-09-11","IssueDate":null,"PassportNumber":"O2341369"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0},{"DateOfBirth":"2018-05-25","Gender":0,"PassengerType":2,"PassengerName":{"PassengerFirstName":"Mohammad Martin","PassengerMiddleName":null,"PassengerLastName":"Haidari","PassengerTitle":"Mstr"},"Passport":{"Country":"AF","ExpiryDate":"2024-11-07","IssueDate":null,"PassportNumber":"P02573971"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0},{"DateOfBirth":"2014-05-18","Gender":0,"PassengerType":2,"PassengerName":{"PassengerFirstName":"M. Meraj","PassengerMiddleName":null,"PassengerLastName":"Haidari","PassengerTitle":"Mstr"},"Passport":{"Country":"AF","ExpiryDate":"2027-09-11","IssueDate":null,"PassportNumber":"O2341367"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0}]}}
+response : 
+{"Success":false,"TktTimeLimit":"0001-01-01T00:00:00","Category":null,"Status":null,"UniqueId":null,"Error":{"Id":"Err0107052","Message":"PassengerName is not valid"},"PriceChange":false}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+13:18 2022-07-05 : 
+service : AirBook
+flight : TK1592.....FRA->IKA......2022-08-02 15:15:00->2022-08-03 01:45:00
+return :IKA->FRA......2022-09-02 07:35:00->2022-09-02 13:50:00
+request : 
+{"FareSourceCode":"326261393764636134633938343232326230393538383266623861393665323726363726333632323931393835","ClientUniqueId":"52K189C4492646","TravelerInfo":{"PhoneNumber":"+4369919999044","Email":"h.sadeghih@yahoo.com","AirTravelers":[{"DateOfBirth":"2005-06-25","Gender":1,"PassengerType":1,"PassengerName":{"PassengerFirstName":"Sahar","PassengerMiddleName":null,"PassengerLastName":"Haidari","PassengerTitle":"Mrs"},"Passport":{"Country":"AF","ExpiryDate":"2027-09-11","IssueDate":null,"PassportNumber":"O2341379"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0},{"DateOfBirth":"1980-02-01","Gender":0,"PassengerType":1,"PassengerName":{"PassengerFirstName":"Mohsin","PassengerMiddleName":null,"PassengerLastName":"Haidari","PassengerTitle":"Mr"},"Passport":{"Country":"AF","ExpiryDate":"2022-09-11","IssueDate":null,"PassportNumber":"O2341369"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0},{"DateOfBirth":"2008-07-26","Gender":0,"PassengerType":1,"PassengerName":{"PassengerFirstName":"Mansour","PassengerMiddleName":null,"PassengerLastName":"Haidari","PassengerTitle":"Mr"},"Passport":{"Country":"AF","ExpiryDate":"2027-09-11","IssueDate":null,"PassportNumber":"O2341371"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0},{"DateOfBirth":"1981-03-02","Gender":1,"PassengerType":1,"PassengerName":{"PassengerFirstName":"Sima","PassengerMiddleName":null,"PassengerLastName":"Ataee","PassengerTitle":"Mrs"},"Passport":{"Country":"AF","ExpiryDate":"2027-09-11","IssueDate":null,"PassportNumber":"O2341388"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0},{"DateOfBirth":"2018-05-25","Gender":0,"PassengerType":2,"PassengerName":{"PassengerFirstName":"Mohammad Martin","PassengerMiddleName":null,"PassengerLastName":"Haidari","PassengerTitle":"Mstr"},"Passport":{"Country":"AF","ExpiryDate":"2024-11-07","IssueDate":null,"PassportNumber":"P02573971"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0},{"DateOfBirth":"2014-05-18","Gender":0,"PassengerType":2,"PassengerName":{"PassengerFirstName":"M. meraj","PassengerMiddleName":null,"PassengerLastName":"Haidari","PassengerTitle":"Mstr"},"Passport":{"Country":"AF","ExpiryDate":"2027-09-11","IssueDate":null,"PassportNumber":"O2341367"},"NationalId":null,"Nationality":"AF","SeatPreference":0,"MealPreference":0}]}}
+response : 
+{"Success":false,"TktTimeLimit":"0001-01-01T00:00:00","Category":null,"Status":null,"UniqueId":null,"Error":{"Id":"Err0107052","Message":"PassengerName is not valid"},"PriceChange":false}
+--------------------------------------
+--------------------------------------
+--------------------------------------

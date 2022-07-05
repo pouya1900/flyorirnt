@@ -20,6 +20,11 @@ class TestController extends Controller
 
     public function test()
     {
+        $paypal = new paypal();
+
+        $result = $paypal->order("7ST52883HR1709012");
+
+        dd($result);
 
         $payment_scheduler = Payment_scheduler::create(["payment_id" => "194"]);
 

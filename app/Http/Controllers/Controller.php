@@ -56,4 +56,14 @@ class Controller extends BaseController
         return $instance_render;
     }
 
+    public function make_mobile_without_zero($mobile)
+    {
+        while (true) {
+            $first = substr($mobile, 0, 1);
+            if ($first) break;
+            $mobile = substr($mobile, 1);
+        }
+        return $mobile;
+    }
+
 }

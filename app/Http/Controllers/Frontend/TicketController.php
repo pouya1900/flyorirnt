@@ -240,7 +240,7 @@ class TicketController extends Controller
 
 
         $user_insert["email"] = $request["email"];
-        $phone = $request["phone"];
+        $phone = $this->make_mobile_without_zero($request["phone"]);
         $dial_code = $request["country_dial_code"];
         //		request validator
         $validator = Validator::make($request, $rule);

@@ -50,9 +50,9 @@ class SetPriceFunction
         }
         //SRA: Fix margin: ----------------------
 		if ($airline == "IR") {
-		    $margin = ($type == 0)? 15:8;
+		    $margin = ($type == 0)? 15:10;
 		} else {
-		    $margin = ($type == 0)? 22:13;
+		    $margin = ($type == 0)? 25:15;
         }	
 		//---------------------------------------
         $EndPrice = ($vendorPrice + $payPal_fix + 1.19 * $margin) / (1 - $payPal_rate);
