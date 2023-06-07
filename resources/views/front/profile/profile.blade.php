@@ -27,6 +27,13 @@
                                         class="fas fa-clipboard-list"></i>
                                 @lang('trs.unseccess_book_history')
                             </li>
+                            @if ($wallet)
+                                <li class="tablinks" data-target="wallet">
+                                    <i class="fas fa-wallet"></i>
+                                    @lang('trs.wallet')
+                                </li>
+                            @endif
+
                             <li class="tablinks" data-target="cip"><i class="fas fa-clipboard-list"></i>
                                 @lang('trs.cip_book_history')
                             </li>
@@ -54,8 +61,9 @@
             <div class="col-lg-9 col-12 tab_container">
 
 
-                <div class="profile tabcontent {{session('action')!="info" && session('action')!="pass" ? "active_tabcontent" : ""}}  "
-                     id="order">
+                <div
+                        class="profile tabcontent {{session('action')!="info" && session('action')!="pass" ? "active_tabcontent" : ""}}  "
+                        id="order">
 
                     <div class="profile_head">
 
@@ -197,6 +205,89 @@
 
                 </div>
 
+                @if ($wallet)
+                    <div class="profile tabcontent "
+                         id="wallet">
+
+                        <div class="profile_head">
+
+                            <span>@lang('trs.wallet')</span>
+
+                        </div>
+
+                        <div class="profile_body">
+
+
+                            <div class="order ">
+
+                                <div class="order_inner">
+
+
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">@lang('trs.amount_sale')(€)</th>
+                                            <th scope="col">@lang('trs.amount_buy')(€)</th>
+                                            <th scope="col">@lang('trs.invoice_number')</th>
+                                            <th scope="col">@lang('trs.before_balance')(€)</th>
+                                            <th scope="col">@lang('trs.after_balance')(€)</th>
+                                            <th scope="col">@lang('trs.booking_number')
+                                                /@lang('trs.tracking_number')</th>
+                                            <th scope="col">@lang('trs.date')</th>
+                                            <th scope="col">@lang('trs.payed')</th>
+                                            <th scope="col">@lang('trs.download_invoice')</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        @if ($wallet)
+                                            @foreach($wallet as $item)
+                                                @php($invoice_number=\Illuminate\Support\Facades\Auth::user()->code.'-'. intval(date('Y',strtotime($item->created_at)))%100 . \App\Services\MyHelperFunction::turn_4digit_format($item->invoice_number))
+                                                <tr>
+                                                    <td>{{$item->books->flights->costs->TotalFare}}</td>
+                                                    <td>{{$item->books->flights->costs->TotalFare - $item->books->flights->costs->TotalAgencyCommission}}</td>
+                                                    <td>{{$invoice_number}}</td>
+                                                    <td>{{$item->before_balance}}</td>
+                                                    <td>{{$item->after_balance}}</td>
+                                                    <td>{{$item->books->UniqueId ?: "-" }}
+                                                        / {{$item->books->token}}</td>
+                                                    {{--                                                <td>{{$item->books->status=="booked" ? trans('trs.booked') : ($item->books->status=="payment_failed" ? trans('trs.payment_failed') : ($item->books->status=="vendor_failed" ? trans('trs.vendor_failed') : ($item->books->status=="vendor_cancelled" ? trans('trs.vendor_cancelled') : ($item->books->status=="payment_cancelled" ? trans('trs.payment_cancelled') : ($item->books->status=="wait_for_ticket" ? trans('trs.pending') : trans('trs.unknown')) )))) }}</td>--}}
+                                                    <td>{{date('d.m.Y',strtotime($item->updated_at))}}</td>
+                                                    <td>
+                                                        @if ($item->status=="COMPLETED")
+                                                            <span class="wallet_payed">
+                                                                <i class="fas fa-check-circle"></i>
+                                                            </span>
+                                                        @else
+                                                            <span class="wallet_not_payed">
+                                                                <i class="fas fa-times-circle"></i>
+                                                            </span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <a href="invoices/{{$invoice_number}}.pdf">@lang('trs.download')</a>
+                                                    </td>
+                                                </tr>
+
+                                            @endforeach
+                                        @endif
+
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                @endif
 
                 <div class="profile tabcontent " id="cip">
 

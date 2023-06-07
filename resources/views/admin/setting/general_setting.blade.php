@@ -58,28 +58,28 @@
                         {{csrf_field()}}
                         <div class="box-body">
 
-                            <div class="form-group">
+{{--                            <div class="form-group">--}}
 
-                                <label for="render">flight active vendor</label>
-                                <select name="render" class="form-control" id="render">
-                                    <option value="{{\App\Models\Setting::parto}}" {{$setting->flight_render==\App\Models\Setting::parto ? "selected" : ""}}>
-                                        parto main
-                                    </option>
-                                    <option value="{{\App\Models\Setting::amadeus}}" {{$setting->flight_render==\App\Models\Setting::amadeus ? "selected" : ""}}>
-                                        amadeus
-                                    </option>
-                                    <option value="{{\App\Models\Setting::parto_demo}}" {{$setting->flight_render==\App\Models\Setting::parto_demo ? "selected" : ""}}>
-                                        parto demo
-                                    </option>
-                                    <option value="{{\App\Models\Setting::iranAir}}" {{$setting->flight_render==\App\Models\Setting::iranAir ? "selected" : ""}}>
-                                        iran air
-                                    </option>
-                                    <option value="{{\App\Models\Setting::iranAir_demo}}" {{$setting->flight_render==\App\Models\Setting::iranAir_demo ? "selected" : ""}}>
-                                        iran air demo
-                                    </option>
-                                </select>
+{{--                                <label for="render">flight active vendor</label>--}}
+{{--                                <select name="render" class="form-control" id="render">--}}
+{{--                                    <option value="{{\App\Models\Setting::parto}}" {{$setting->flight_render==\App\Models\Setting::parto ? "selected" : ""}}>--}}
+{{--                                        parto main--}}
+{{--                                    </option>--}}
+{{--                                    <option value="{{\App\Models\Setting::amadeus}}" {{$setting->flight_render==\App\Models\Setting::amadeus ? "selected" : ""}}>--}}
+{{--                                        amadeus--}}
+{{--                                    </option>--}}
+{{--                                    <option value="{{\App\Models\Setting::parto_demo}}" {{$setting->flight_render==\App\Models\Setting::parto_demo ? "selected" : ""}}>--}}
+{{--                                        parto demo--}}
+{{--                                    </option>--}}
+{{--                                    <option value="{{\App\Models\Setting::iranAir}}" {{$setting->flight_render==\App\Models\Setting::iranAir ? "selected" : ""}}>--}}
+{{--                                        iran air--}}
+{{--                                    </option>--}}
+{{--                                    <option value="{{\App\Models\Setting::iranAir_demo}}" {{$setting->flight_render==\App\Models\Setting::iranAir_demo ? "selected" : ""}}>--}}
+{{--                                        iran air demo--}}
+{{--                                    </option>--}}
+{{--                                </select>--}}
 
-                            </div>
+{{--                            </div>--}}
 
                             <div class="form-group">
 
@@ -117,17 +117,17 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+{{--                            <div class="form-group">--}}
 
-                                <label for="render">other days flight</label>
+{{--                                <label for="render">other days flight</label>--}}
 
-                                <div>
-                                    <input type="checkbox" name="other_days"
-                                           id="other_days" {{$setting->other_days ? "checked" : ""}}>
-                                    <label for="other_days">iran air</label>
-                                </div>
+{{--                                <div>--}}
+{{--                                    <input type="checkbox" name="other_days"--}}
+{{--                                           id="other_days" {{$setting->other_days ? "checked" : ""}}>--}}
+{{--                                    <label for="other_days">iran air</label>--}}
+{{--                                </div>--}}
 
-                            </div>
+{{--                            </div>--}}
 
                         </div>
                         <!-- /.box-body -->
@@ -362,6 +362,16 @@
                                     </label>
                                 </div>
 
+                                <div>
+                                    <label for="offline_ticket">disable payment and issue ticket for admin
+                                        : </label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="no_payment_admin"
+                                               name="no_payment_admin" {{$setting->no_payment_admin ? "checked" : ""}}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+
 
                             </div>
 
@@ -437,6 +447,72 @@
 
             </div>
 
+            <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary box-bg with-border">
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form action="{{route('admin.update_setting7')}}" method="post">
+                        {{csrf_field()}}
+                        <div class="box-body">
+
+                            <div class="form-group">
+                                <div>
+                                    <p>
+                                        Search settings
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label for="nonstop">Nonstop : </label>
+                                    <input type="checkbox" id="nonstop"
+                                           name="nonstop" {{$setting->search_nonstop ? "checked" : ""}}>
+                                </div>
+                                <div>
+                                    <label for="one_stop">1 stop : </label>
+                                    <input type="checkbox" id="one_stop"
+                                           name="one_stop" {{$setting->search_one_stop ? "checked" : ""}}>
+                                </div>
+                                <div>
+                                    <label for="two_stops">2 stops : </label>
+                                    <input type="checkbox" id="two_stops"
+                                           name="two_stops" {{$setting->search_two_stops ? "checked" : ""}}>
+                                </div>
+                                <div>
+                                    <label for="with_bar">With bar : </label>
+                                    <input type="checkbox" id="with_bar"
+                                           name="with_bar" {{$setting->search_with_bar ? "checked" : ""}}>
+                                </div>
+                                <div>
+                                    <label for="without_bar">Without bar : </label>
+                                    <input type="checkbox" id="without_bar"
+                                           name="without_bar" {{$setting->search_without_bar ? "checked" : ""}}>
+                                </div>
+                                <div>
+                                    <label for="min_waiting_time">Min waiting time(hour) : </label>
+                                    <input type="number" id="min_waiting_time"
+                                           name="min_waiting_time" value="{{$setting->search_min_waiting_time}}">
+                                </div>
+                                <div>
+                                    <label for="max_waiting_time">Max waiting time(hour) : </label>
+                                    <input type="number" id="max_waiting_time"
+                                           name="max_waiting_time" value="{{$setting->search_max_waiting_time}}">
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        <!-- /.box-body -->
+
+                        <div class="box-footer text-center">
+                            <button type="submit" name="submit" id="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box -->
+
+            </div>
 
 
         </div>

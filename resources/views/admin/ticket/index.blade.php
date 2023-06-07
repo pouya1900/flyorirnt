@@ -19,6 +19,7 @@
                                 <th>Issued date</th>
                                 <th>token</th>
                                 <th>Status</th>
+                                <th>Payment Status</th>
                                 <th>Arranger name</th>
                                 <th>Ticket number</th>
                                 <th>Airline pnr</th>
@@ -33,12 +34,15 @@
                             @foreach ($books as $book)
 
                                 <tr>
-                                    <td>{{ date("Y-m-d \n H:i",strtotime($book->created_at)) }}</td>
+                                    <td>{{ date("Y-m-d \n H:i",strtotime($book->updated_at)) }}</td>
                                     <td>
                                         {{$book->token}}
                                     </td>
                                     <td>
                                         <a href="{{route('admin.search_ticket_result',[ 'id'=>$book->id ])}}">{{ $book->status }}</a>
+                                    </td>
+                                    <td>
+                                        <a>{{ $book->payments->status }}</a>
                                     </td>
                                     <td>
                                         <a href="{{route('admin.search_ticket_result',[ 'id'=>$book->id ])}}">{{ $book->arranger_first_name." ".$book->arranger_last_name }}</a>
@@ -81,6 +85,7 @@
                                 <th>Issued date</th>
                                 <th>token</th>
                                 <th>Status</th>
+                                <th>Payment Status</th>
                                 <th>Arranger name</th>
                                 <th>Ticket number</th>
                                 <th>Airline pnr</th>

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\SendEmailEvent;
+use App\Listeners\SendEmailListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -15,6 +17,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\SomeEvent' => [
             'App\Listeners\EventListener',
+        ],
+        SendEmailEvent::class => [
+            SendEmailListener::class,
         ],
     ];
 

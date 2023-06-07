@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Requests\UserRequest;
 use App\Mail\ticket;
+use App\Mail\invoice;
 use App\Mail\ticket_sup;
 use App\Models\Book;
 use App\Models\Country;
@@ -34,9 +35,20 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 use Validator;
+use App\Services\Log\log;
+use App\Services\MyHelperFunction;
+use Illuminate\Support\Facades\Event;
+use App\Events\SendEmailEvent;
 
 class TicketController extends Controller
 {
+
+    public $log;
+
+    public function __construct()
+    {
+        $this->log = new log();
+    }
 
     public function turn_title($gender, $type)
     {
@@ -57,8 +69,12 @@ class TicketController extends Controller
     public function passengers(Request $request, $flight_token)
     {
         $lang = App::getLocale();
-
         $setting = Setting::find(1);
+
+        if ($setting->offline_ticket && (!Auth::check() || Auth::user()->role != User::admin)) {
+            return view('front.errors.offline_ticketing', compact('lang'));
+        }
+
 
         $flight = Flight::with([
             'legs.airports1',
@@ -107,10 +123,6 @@ class TicketController extends Controller
         $render_number = $flight["render"];
         $instance_render = $this->set_render($render_number);
 //		choose render
-
-        if ($setting->offline_ticket && $render_number == Setting::parto) {
-            return view('front.errors.offline_ticketing', compact('lang'));
-        }
 
         $validate = $instance_render->revalidate($flight);
         //$validate = 1;
@@ -176,8 +188,8 @@ class TicketController extends Controller
             $twelve = Carbon::parse($last_date)->subYears(12)->format('d.m.Y');
             $two = Carbon::parse($last_date)->subYears(2)->format('d.m.Y');
             $rule['gender' . $i] = 'required';
-            $rule['f_name' . $i] = 'required';
-            $rule['l_name' . $i] = 'required';
+            $rule['f_name' . $i] = 'required|regex:/^[A-za-z\s]+$/i';
+            $rule['l_name' . $i] = 'required|regex:/^[A-za-z\s]+$/i';
             $rule['country' . $i] = 'required';
 
             if ($request['type' . $i] == 1) {
@@ -226,8 +238,8 @@ class TicketController extends Controller
 
 //		contact person is arranger
         if ($request['contact'] == 0) {
-            $rule['arranger_first_name'] = 'required';
-            $rule['arranger_last_name'] = 'required';
+            $rule['arranger_first_name'] = 'required|regex:/^[A-za-z\s]+$/i';
+            $rule['arranger_last_name'] = 'required|regex:/^[A-za-z\s]+$/i';
             $arranger_first_name = $request["arranger_first_name"];
             $arranger_last_name = $request["arranger_last_name"];
         } //		contact person is one of the passengers
@@ -317,12 +329,14 @@ class TicketController extends Controller
 //		token for book table
 
         $lang = App::getLocale();
+        $setting = Setting::get()->first();
 
 
         $book = Book::with([
             'passengers.countries',
             'users',
         ])->where('token', 'like', $book_token)->get();
+        $book_object = $book->first();
         $book = json_decode(json_encode($book), true);
         $book = $book[0];
 
@@ -352,7 +366,54 @@ class TicketController extends Controller
             return redirect()->back();
         }
 
-        return view('front.payment.payment', compact('flight', 'book', 'lang'));
+
+        if ($setting->no_payment_admin && Auth::check() && Auth::user()->role == User::admin) {
+
+            $payment_insert = [
+                "book_id"    => $book["id"],
+                "payment_id" => "paymentByAdmin" . $book["id"],
+                "payer_id"   => Auth::user()->id,
+                "status"     => "COMPLETED",
+                "method"     => "admin",
+            ];
+            Payment::create($payment_insert);
+
+            return redirect()->route('confirm_payment', ['method' => 'admin', 'paymentId' => "paymentByAdmin" . $book["id"], 'payerID' => Auth::user()->id]);
+
+        }
+        $agency = [];
+        if (Auth::check() && Auth::user()->role == User::agency) {
+
+            if (!Auth::user()->active) {
+                return view('front.payment_result.agency_not_active', compact('lang'));
+            }
+
+            if (!$book_object->payment) {
+                $payment_insert = [
+                    "book_id"        => $book["id"],
+                    "payment_id"     => "paymentByAgency" . $book["id"],
+                    "payer_id"       => Auth::user()->id,
+                    "status"         => "CREATED",
+                    "method"         => "agency",
+                    "before_balance" => Auth::user()->balance->amount,
+                ];
+                Payment::create($payment_insert);
+            } else {
+                $book_object->payment->update([
+                    "payment_id"     => "paymentByAgency" . $book["id"],
+                    "payer_id"       => Auth::user()->id,
+                    "status"         => "CREATED",
+                    "method"         => "agency",
+                    "before_balance" => Auth::user()->balance->amount,
+                ]);
+            }
+            $agency = [
+                'balance' => Auth::user()->balance->amount,
+                'link'    => route('confirm_payment', ['method' => 'agency', 'paymentId' => "paymentByAgency" . $book["id"], 'payerID' => Auth::user()->id]),
+            ];
+        }
+
+        return view('front.payment.payment', compact('flight', 'book', 'lang', 'agency'));
 
     }
 
@@ -455,6 +516,9 @@ class TicketController extends Controller
         $result = $paypal->create_payment($create_data);
         if (!isset($result["status"]) || $result["status"] != "CREATED") {
             //error handling
+
+            $this->log->payment_error(json_encode($result), 'create');
+
             return [];
             //dd($result);
 
@@ -466,12 +530,15 @@ class TicketController extends Controller
                 "book_id"    => $book["id"],
                 "payment_id" => $result["id"],
                 "status"     => $result["status"],
+                "method"     => "paypal",
             ];
-            Payment::insert($payment_insert);
+            Payment::create($payment_insert);
         } else {
             $payment_update = [
                 "payment_id" => $result["id"],
+                "payer_id"   => "",
                 "status"     => $result["status"],
+                "method"     => "paypal",
             ];
             Payment::where('book_id', $book["id"])->update($payment_update);
         }
@@ -492,6 +559,8 @@ class TicketController extends Controller
 
         $payment_id = $request->input('paymentId');
         $payer_id = $request->input('payerID');
+        $blocked_payer = \Illuminate\Support\Facades\Config::get("blockPayer");
+
 
         $payment = Payment::where('payment_id', 'like', $payment_id)->first();
 
@@ -522,15 +591,23 @@ class TicketController extends Controller
         if ($flight_obj->return_depart_time) {
             $research_data["return_date"] = date('d.m.Y', strtotime($flight_obj->return_depart_time));
         }
+        $paypal = new paypal();
 
-
+        $flight = Flight::where('id', '=', $flight_id)->join('costs', 'costs.flight_id', '=', 'flights.id')->get();
+        $flight = json_decode(json_encode($flight), true);
+        $flight = $flight[0];
         if ($method == "paypal") {
 
-            $paypal = new paypal();
+            if (in_array($payer_id, $blocked_payer)) {
+                $payment->update([
+                    "status" => "BLOCKED",
+                ]);
 
-            $flight = Flight::where('id', '=', $flight_id)->join('costs', 'costs.flight_id', '=', 'flights.id')->get();
-            $flight = json_decode(json_encode($flight), true);
-            $flight = $flight[0];
+                $book->update([
+                    "status" => "payment_failed",
+                ]);
+                return view('front.payment_result.failed', compact('lang', 'research_data'));
+            }
 
             if ($payment->status == "CREATED") {
 //				//payment is in cancel state or approved
@@ -548,12 +625,33 @@ class TicketController extends Controller
                         "status" => "payment_failed",
                     ]);
 
+                    $this->log->payment_error(json_encode($result), 'orderDetails', $payment);
+
+
+                    return view('front.payment_result.failed', compact('lang', 'research_data'));
+                }
+
+                $result = $paypal->authorize($payment_id);
+
+                if (!isset($result["status"]) || ($result["status"] != "APPROVED" && $result["status"] != "COMPLETED")) {
+                    //failed payment
+                    $payment->update([
+                        "status" => "FAILED",
+                    ]);
+
+                    $book->update([
+                        "status" => "payment_failed",
+                    ]);
+
+                    $this->log->payment_error(json_encode($result), 'authorize', $payment);
+
                     return view('front.payment_result.failed', compact('lang', 'research_data'));
                 }
 
                 $payment->update([
                     "payer_id" => $payer_id,
-                    "status"   => $result["status"],
+                    "auth_id"  => $result["purchase_units"][0]["payments"]["authorizations"][0]["id"],
+                    "status"   => "APPROVED",
                 ]);
 
             } elseif ($payment->status != "APPROVED" && $payment->status != "COMPLETED") {
@@ -562,13 +660,30 @@ class TicketController extends Controller
             }
 
 
+        } elseif ($setting->no_payment_admin && Auth::check() && Auth::user()->role == User::admin) {
+
+        } elseif ($method == "agency") {
+            $user = Auth::user();
+
+            if ($user->balance->amount < $flight["TotalFare"] - $flight["TotalAgencyCommission"]) {
+                $payment->update([
+                    "status" => "FAILED",
+                ]);
+
+                $book->update([
+                    "status" => "payment_failed",
+                ]);
+                return view('front.payment_result.failed', compact('lang', 'research_data'));
+            }
+
         } else {
 //			other method
 
             redirect(route('home') . ($lang != "de" ? "?lang=" . $lang : ""));
         }
 
-//		choose render
+
+        //		choose render
         $render_number = $flight["render"];
         $instance_render = $this->set_book_render($render_number);
         if (!$instance_render) {
@@ -576,10 +691,9 @@ class TicketController extends Controller
         }
 //		choose render
 
-
         //payment was success , go for vendor api call
 
-        if ($setting->test_one_euro && !$setting->test_one_euro_with_book && Auth::check() && Auth::user()->role == User::admin) {
+        if ($setting->test_one_euro && !$setting->test_one_euro_with_book && !$setting->no_payment_admin && Auth::check() && Auth::user()->role == User::admin) {
             $book->update([
                 "status" => "vendor_failed",
             ]);
@@ -601,6 +715,8 @@ class TicketController extends Controller
                     "status" => "vendor_failed",
                 ]);
 
+                $this->void_payment($method, $payment);
+
                 return view('front.payment_result.single_validate_error', compact('research_data', 'lang'));
             }
 
@@ -612,6 +728,7 @@ class TicketController extends Controller
 
 
             if ($book_response["error"] == 1) {
+                $this->void_payment($method, $payment);
                 return view('front.payment_result.failed', compact('lang', 'research_data'));
             }
 
@@ -620,14 +737,63 @@ class TicketController extends Controller
 //		capture order
             if ($method == "paypal" && $payment["status"] != "COMPLETED") {
 
-                $result = $paypal->capture_payment($payment_id);
-                if (!isset($result["purchase_units"][0]["payments"]["captures"][0]["status"]) || $result["purchase_units"][0]["payments"]["captures"][0]["status"] != "COMPLETED") {
-                    $payment_scheduler = Payment_scheduler::create(["payment_id" => $payment_id]);
+                $result = $paypal->capture_payment($payment->auth_id);
+                if (!isset($result["status"]) || $result["status"] != "COMPLETED") {
+//                    $payment_scheduler = Payment_scheduler::create(["payment_id" => $payment_id]);
+                    $this->log->payment_error(json_encode($result), 'capture', $payment);
+
                 } else {
                     $payment->update([
                         "status" => "COMPLETED",
                     ]);
                 }
+            }
+
+            if ($method == "agency" && $payment["status"] != "COMPLETED" && $payment["status"] != "APPROVED") {
+                $before_balance = Auth::user()->balance->amount;
+                Auth::user()->balance->update(['amount' => $before_balance - $flight["TotalFare"] + $flight["TotalAgencyCommission"]]);
+
+                $last_payment = Payment::where('payer_id', Auth::user()->id)
+                    ->where(function ($q) {
+                        return $q->where('status', 'COMPLETED')->orwhere('status', 'APPROVED');
+                    })->orderBy('invoice_number', 'desc')->first();
+
+                if ($last_payment) {
+                    $new_invoice_n = $last_payment->invoice_number + 1;
+                } else {
+                    $new_invoice_n = 0;
+                }
+                $payment->update([
+                    "status"         => "APPROVED",
+                    "before_balance" => $before_balance,
+                    "after_balance"  => Auth::user()->balance->amount,
+                    "invoice_number" => $new_invoice_n,
+                ]);
+
+                require_once "script/xinvoice.php";
+
+                $xinvoice2 = new \Xinvoice();
+
+
+                $number_string = MyHelperFunction::turn_4digit_format($new_invoice_n);
+
+                $this_year = Carbon::now()->year;
+                $this_year = $this_year % 100;
+                $invoice_number = $book->users->code . '-' . $this_year . $number_string;
+
+                $invoice_view = view('front.invoice.agency_invoice', compact('book', 'lang', 'invoice_number'))->render();
+
+
+                $file_name = $invoice_number . '.pdf';
+                $xinvoice2->setSettings("filename", "../../../../../../public/invoices/$file_name");
+                $xinvoice2->setSettings("output", "F");
+                $xinvoice2->setSettings("format", "A4");
+                $xinvoice2->htmlToPDF($invoice_view);
+
+                $file_path = realpath("invoices/" . $file_name);
+
+                Event::dispatch(new SendEmailEvent($user_email, new invoice($lang, $file_path)));
+
             }
 //		/capture order
 
@@ -696,10 +862,14 @@ class TicketController extends Controller
 
             $book = $scheduler->book;
 
-            $render_number = $book->flights->render;
-            $instance_render = $this->set_book_render($render_number);
+            if ($book) {
+                $render_number = $book->flights->render;
+                $instance_render = $this->set_book_render($render_number);
 
-            $this->check_booking_status($instance_render, $book, "en", $book->status);
+                $this->check_booking_status($instance_render, $book, "en", $book->status);
+            } else {
+                $scheduler->update(["status" => "stopped"]);
+            }
         }
 
     }
@@ -732,7 +902,7 @@ class TicketController extends Controller
             app()->setLocale("en");
         }
 
-        $condition = Page::where('name', 'condition')->first();
+        $condition = $instance_render->getCondition();
 
         $confirm_view = view('front.payment_result.confirm', compact('book', 'lang', 'file_name', 'booked', 'pdf_download', 'condition'))->render();
         $ticket_view = view('front.payment_result.confirm', compact('book', 'lang', 'file_name', 'booked', 'condition'))->render();
@@ -746,18 +916,17 @@ class TicketController extends Controller
         $xinvoice->setSettings("format", "A4");
         $xinvoice->htmlToPDF($ticket_view);
 
-
         if ($book_first_status == "booking" || ($book_first_status == "wait_for_ticket" && $book->status == "booked")) {
             //send email to user and admin
 
             $file_path = realpath("tickets/" . $file_name);
 
 
-            Mail::to($user_email)->send(new ticket($lang, $file_path));
+            Event::dispatch(new SendEmailEvent($user_email, new ticket($lang, $file_path)));
 
             $setting = Setting::get()->first();
 
-            Mail::to($setting["email"])->send(new ticket_sup($lang, $file_path));
+            Event::dispatch(new SendEmailEvent($setting["email"], new ticket_sup($lang, $file_path)));
 
         }
 
@@ -803,4 +972,14 @@ class TicketController extends Controller
         }
 
     }
+
+    public function void_payment($method, $payment)
+    {
+        $paypal = new paypal();
+
+        if ($method == "paypal") {
+            $paypal->void_payment($payment->auth_id);
+        }
+    }
+
 }

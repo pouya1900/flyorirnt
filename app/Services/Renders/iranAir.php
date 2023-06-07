@@ -13,6 +13,7 @@ use App\Models\Flight;
 use App\Models\FlightAirline;
 use App\Models\Leg;
 use App\Models\Passenger;
+use App\Models\Page;
 use App\Models\Payment;
 use App\Models\Search;
 use App\Models\Session;
@@ -195,7 +196,8 @@ class iranAir implements render_interface
         curl_setopt($ch, CURLOPT_URL, $service_url);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 400);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             "Content-Type: application/xml",
@@ -248,7 +250,7 @@ class iranAir implements render_interface
             $i = 0;
 
 
-            $query = "INSERT INTO flights(search_id,token,render,FareSourceCode,IsPassportMandatory,IsPassportIssueDateMandatory,IsPassportNumberMandatory,DirectionInd,RefundMethod,ValidatingAirlineCode,flight_number,depart_time,depart_time_range,depart_airport,arrival_time,arrival_airport,stops,total_time,total_waiting,bar,bar_exist,class,class_code,return_flight_number,return_depart_time,return_depart_time_range,return_depart_airport,return_arrival_time,return_arrival_airport,return_stops,return_total_time,return_total_waiting,return_bar,return_bar_exist,return_class,return_class_code,depart_return_time) VALUES ($search_id";
+            $query = "INSERT INTO flights(search_id,token,render,FareSourceCode,IsPassportMandatory,IsPassportIssueDateMandatory,IsPassportNumberMandatory,DirectionInd,RefundMethod,ValidatingAirlineCode,flight_number,depart_time,depart_time_range,depart_airport,arrival_time,arrival_airport,stops,total_time,total_waiting,bar,bar_exist,class,class_code,depart_first_airline,return_flight_number,return_depart_time,return_depart_time_range,return_depart_airport,return_arrival_time,return_arrival_airport,return_stops,return_total_time,return_total_waiting,return_bar,return_bar_exist,return_class,return_class_code,return_first_airline,depart_return_time) VALUES ($search_id";
             foreach ($response as $item) {
 
                 $itinerary_depart = [];
@@ -345,6 +347,7 @@ class iranAir implements render_interface
 
                 $query .= MyHelperFunction::turn_OTA_code_to_class($itinerary_depart[0]["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"]) . ",";
                 $query .= "'" . $itinerary_depart[0]["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"] . "'" . ",";
+                $query .= "'" . $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"] . "'" . ",";
 
                 $depart_return_time = $total_fly_time_segments_per_min;
 
@@ -421,6 +424,7 @@ class iranAir implements render_interface
 
                     $query .= MyHelperFunction::turn_OTA_code_to_class($itinerary_return[0]["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"]) . ",";
                     $query .= "'" . $itinerary_return[0]["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"] . "'" . ",";
+                    $query .= "'" . $itinerary_return[0]["OperatingAirline"]["@attributes"]["Code"] . "'" . ",";
 
 
                     $depart_return_time += $total_return_fly_time_segments_per_min;
@@ -461,13 +465,28 @@ class iranAir implements render_interface
                     }
 
                 } else {
-                    $query .= "null,null,null,null,null,null,null,null,null,null,0,null,null,";
+                    $query .= "null,null,null,null,null,null,null,null,null,null,0,null,null,null,";
                 }
 
                 $query .= $depart_return_time;
 
                 $query .= ")";
 
+                $price_addition_adult = 0;
+                $price_addition_child = 0;
+                $price_addition_infant = 0;
+                $commission_adult = 0;
+                $commission_child = 0;
+                $commission_infant = 0;
+                if (Auth::check() && Auth::user()->role == User::agency) {
+                    $user = Auth::user();
+                    $price_addition_adult = $user->balance->commission_adult - $user->balance->discount_adult;
+                    $price_addition_child = $user->balance->commission_child - $user->balance->discount_child;
+                    $price_addition_infant = $user->balance->commission_infant - $user->balance->discount_infant;
+                    $commission_adult = $user->balance->commission_adult;
+                    $commission_child = $user->balance->commission_child;
+                    $commission_infant = $user->balance->commission_infant;
+                }
 
                 $cost_insert[$i]["FareType"] = 1;
                 $cost_insert[$i]["VendorTotalFare"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["TotalFare"]["@attributes"]["Amount"];
@@ -475,9 +494,10 @@ class iranAir implements render_interface
                 $cost_insert[$i]["TotalTax"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["TotalFare"]["@attributes"]["Amount"] - $item["AirItineraryPricingInfo"]["ItinTotalFare"]["BaseFare"]["@attributes"]["Amount"];
                 $cost_insert[$i]["ServiceTax"] = 0;
                 $cost_insert[$i]["Currency"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["TotalFare"]["@attributes"]["CurrencyCode"];
-                $cost_insert[$i]["FarePerAdult"] = $calc_price->index($PTC_FareBreakdown[0]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 0,$itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"],'iran_air'); //total fare per adult
-                $cost_insert[$i]["serviceAdult"] = $cost_insert[$i]["FarePerAdult"] - $PTC_FareBreakdown[0]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"]; //service fee per adult
+                $cost_insert[$i]["FarePerAdult"] = $calc_price->index($PTC_FareBreakdown[0]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 0, $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"], 'iran_air'); //total fare per adult
+                $cost_insert[$i]["serviceAdult"] = $cost_insert[$i]["FarePerAdult"] - $PTC_FareBreakdown[0]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"] - $price_addition_adult; //service fee per adult
                 $cost_insert[$i]["adult"] = $PTC_FareBreakdown[0]["PassengerTypeQuantity"]["@attributes"]["Quantity"]; //number of adult
+                $cost_insert[$i]["AgencyCommissionAdult"] = $commission_adult;
                 $calc_price->setCount($cost_insert[$i]["adult"], 0);
 
                 $cost_insert[$i]["taxAdult"] = $PTC_FareBreakdown[0]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"] - $PTC_FareBreakdown[0]["PassengerFare"]["BaseFare"]["@attributes"]["Amount"];
@@ -498,21 +518,25 @@ class iranAir implements render_interface
 
                     }
                 }
+
+
                 if (isset($PTC_FareBreakdown[1])) {
 
                     if ($PTC_FareBreakdown[1]["PassengerTypeQuantity"]["@attributes"]["Code"] == "CHD") {
-                        $cost_insert[$i]["FarePerChild"] = $calc_price->index($PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 1,$itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"],'iran_air'); //per child
-                        $cost_insert[$i]["serviceChild"] = $cost_insert[$i]["FarePerChild"] - $PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"]; //service fee per child
+                        $cost_insert[$i]["FarePerChild"] = $calc_price->index($PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 1, $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"], 'iran_air'); //per child
+                        $cost_insert[$i]["serviceChild"] = $cost_insert[$i]["FarePerChild"] - $PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"] - $price_addition_child; //service fee per child
                         $cost_insert[$i]["child"] = $PTC_FareBreakdown[1]["PassengerTypeQuantity"]["@attributes"]["Quantity"]; //number of child
                         $calc_price->setCount($cost_insert[$i]["child"], 1);
                         $cost_insert[$i]["taxChild"] = $PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"] - $PTC_FareBreakdown[1]["PassengerFare"]["BaseFare"]["@attributes"]["Amount"];
+                        $cost_insert[$i]["AgencyCommissionChild"] = $commission_child;
                         $tax_type = 1;
                     } else {
-                        $cost_insert[$i]["FarePerInf"] = $calc_price->index($PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 2,$itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"],'iran_air'); //per inf
-                        $cost_insert[$i]["serviceInfant"] = $cost_insert[$i]["FarePerInf"] - $PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"]; //service fee per inf
+                        $cost_insert[$i]["FarePerInf"] = $calc_price->index($PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 2, $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"], 'iran_air'); //per inf
+                        $cost_insert[$i]["serviceInfant"] = $cost_insert[$i]["FarePerInf"] - $PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"] - $price_addition_infant; //service fee per inf
                         $cost_insert[$i]["infant"] = $PTC_FareBreakdown[1]["PassengerTypeQuantity"]["@attributes"]["Quantity"]; //number of inf
                         $calc_price->setCount($cost_insert[$i]["infant"], 2);
                         $cost_insert[$i]["taxInfant"] = $PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"] - $PTC_FareBreakdown[1]["PassengerFare"]["BaseFare"]["@attributes"]["Amount"];
+                        $cost_insert[$i]["AgencyCommissionInfant"] = $commission_infant;
                         $tax_type = 2;
                     }
 
@@ -534,11 +558,12 @@ class iranAir implements render_interface
                     }
                     if (isset($PTC_FareBreakdown[2])) {
 
-                        $cost_insert[$i]["FarePerInf"] = $calc_price->index($PTC_FareBreakdown[2]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 2,$itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"],'iran_air'); //per inf
-                        $cost_insert[$i]["serviceInfant"] = $cost_insert[$i]["FarePerInf"] - $PTC_FareBreakdown[2]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"]; //service fee per inf
+                        $cost_insert[$i]["FarePerInf"] = $calc_price->index($PTC_FareBreakdown[2]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 2, $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"], 'iran_air'); //per inf
+                        $cost_insert[$i]["serviceInfant"] = $cost_insert[$i]["FarePerInf"] - $PTC_FareBreakdown[2]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"] - $price_addition_infant; //service fee per inf
                         $cost_insert[$i]["infant"] = $PTC_FareBreakdown[2]["PassengerTypeQuantity"]["@attributes"]["Quantity"]; //number of inf
                         $calc_price->setCount($cost_insert[$i]["infant"], 2);
                         $cost_insert[$i]["taxInfant"] = $PTC_FareBreakdown[2]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"] - $PTC_FareBreakdown[2]["PassengerFare"]["BaseFare"]["@attributes"]["Amount"];
+                        $cost_insert[$i]["AgencyCommissionInfant"] = $commission_infant;
 
                         if (isset($xml->PricedItineraries->PricedItinerary->AirItineraryPricingInfo->PTC_FareBreakdowns->PTC_FareBreakdown[2]->PassengerFare->Taxes)) {
                             foreach ($xml->PricedItineraries->PricedItinerary->AirItineraryPricingInfo->PTC_FareBreakdowns->PTC_FareBreakdown[2]->PassengerFare->Taxes->Tax as $x) {
@@ -561,6 +586,7 @@ class iranAir implements render_interface
                 }
 
                 $cost_insert[$i]["TotalFare"] = $calc_price->getTotal();
+                $cost_insert[$i]["TotalAgencyCommission"] = $calc_price->getTotalAgencyCommission();
 
 
                 $i++;
@@ -769,6 +795,7 @@ class iranAir implements render_interface
 
 //        $booking_data = $this->airbookdata($book_unique_id);
 
+        $book = Book::find($book_id);
 
         $returm = [
             "airline_pnr" => "",
@@ -1083,33 +1110,70 @@ class iranAir implements render_interface
                         break;
                     }
                 }
-            }
-        }
 
-        $flight->update([
-            'bar'              => $bar[0],
-            'bar_exist'        => $bar[0] ? 1 : 0,
-            'return_bar'       => $bar[1],
-            'return_bar_exist' => $bar[1] ? 1 : 0,
-        ]);
-
-        foreach ($flight->legs as $leg) {
-            if (!$leg->is_return) {
-                $leg->update([
-                    'leg_bar'       => $bar[0],
-                    'leg_bar_exist' => 1,
-                ]);
-            } else {
-                $leg->update([
-                    'leg_bar'       => $bar[1],
-                    'leg_bar_exist' => 1,
-                ]);
+                if (isset($rules["FareRuleText"]["FlightRefNumberRPH"][1])) {
+                    $bar[1] = $bar[0];
+                }
             }
 
+            $flight->update([
+                'bar'              => $bar[0],
+                'bar_exist'        => $bar[0] ? 1 : 0,
+                'return_bar'       => $bar[1],
+                'return_bar_exist' => $bar[1] ? 1 : 0,
+            ]);
+
+            foreach ($flight->legs as $leg) {
+                if (!$leg->is_return) {
+                    $leg->update([
+                        'leg_bar'       => $bar[0],
+                        'leg_bar_exist' => 1,
+                    ]);
+                } else {
+                    $leg->update([
+                        'leg_bar'       => $bar[1],
+                        'leg_bar_exist' => 1,
+                    ]);
+                }
+
+            }
+
+
         }
+    }
 
-
+    public function getCondition()
+    {
+        return Page::where('name', 'condition_ir')->first();
     }
 
 
+    public function test()
+    {
+        $req = $this->irr->test();
+        $ch = curl_init();
+        $service_url = $this->base . '/availability/lowfaresearch';
+
+        curl_setopt($ch, CURLOPT_URL, $service_url);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 400);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Content-Type: application/xml",
+            "Accept: application/xml",
+            "Authorization: <$this->auth>",
+        ]);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+
+        $result = curl_exec($ch);
+        curl_close($ch);
+        $xml = simplexml_load_string($result);
+        $json = json_encode($xml);
+        $response = json_decode($json, true);
+        dd($response);
+    }
 }

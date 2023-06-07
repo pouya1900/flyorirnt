@@ -1,5 +1,8 @@
 @extends('layouts.front')
+@section('style')
+    <link rel="stylesheet" href="css/nouislider.min.css">
 
+@endsection
 
 @section('content')
 
@@ -528,5 +531,6 @@
             {{--autoCloseOnSelect: true--}}
         {{--});--}}
     {{--</script>--}}
+    <script type="text/javascript" src="js/nouislider.min.js"></script>
 
 @endsection

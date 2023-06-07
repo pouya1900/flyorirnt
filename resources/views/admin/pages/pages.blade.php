@@ -310,7 +310,7 @@
                     <!-- /.box-header -->
                     <!-- form start -->
                     <div class="box-header with-border">
-                        <h3 class="box-title">condition in ticket</h3>
+                        <h3 class="box-title">condition in ticket for parto</h3>
 
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
@@ -322,35 +322,93 @@
                     <div class="box-body">
                         <form action="{{route('admin.pages_store')}}" method="post">
                             {{csrf_field()}}
-                            <input type="hidden" name="id" value="{{$pages["condition"]->id}}">
+                            <input type="hidden" name="id" value="{{$pages["condition_parto"]->id}}">
 
                             <div class="page_text_container">
                                 <label for="con_en">english</label>
                                 <textarea class="" rows="4" id="con_en"
-                                          name="text_en">{{$pages["condition"]->text_en}}</textarea>
+                                          name="text_en">{{$pages["condition_parto"]->text_en}}</textarea>
                             </div>
 
                             <div class="page_text_container">
                                 <label for="con_de">germany</label>
                                 <textarea class="" rows="4" id="con_de"
-                                          name="text_de">{{$pages["condition"]->text_de}}</textarea>
+                                          name="text_de">{{$pages["condition_parto"]->text_de}}</textarea>
                             </div>
 
                             <div class="page_text_container">
                                 <label for="con_fa">persian</label>
                                 <textarea class="" rows="4" id="con_fa"
-                                          name="text_fa">{{$pages["condition"]->text_fa}}</textarea>
+                                          name="text_fa">{{$pages["condition_parto"]->text_fa}}</textarea>
                             </div>
                             <div class="page_text_container">
                                 <label for="con_ru">russian</label>
                                 <textarea class="" rows="4" id="con_ru"
-                                          name="text_ru">{{$pages["condition"]->text_ru}}</textarea>
+                                          name="text_ru">{{$pages["condition_parto"]->text_ru}}</textarea>
                             </div>
 
                             <div>
                                 <label for="con_rtl">ignore rtl in right to left language</label>
                                 <input type="checkbox" name="rtl_ignore"
-                                       id="con_rtl" {{$pages["condition"]->rtl_ignore ? "checked" : ""}}>
+                                       id="con_rtl" {{$pages["condition_parto"]->rtl_ignore ? "checked" : ""}}>
+                            </div>
+
+                            <button class="submit_page" name="con_action" value="1" type="submit">save</button>
+                        </form>
+                    </div>
+
+                </div>
+                <!-- /.box -->
+
+            </div>
+
+            <div class="col-md-10 col-md-offset-1">
+                <!-- general form elements -->
+                <div class="box box-primary box-bg with-border collapsed-box">
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <div class="box-header with-border">
+                        <h3 class="box-title">condition in ticket for iran air</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="box-body">
+                        <form action="{{route('admin.pages_store')}}" method="post">
+                            {{csrf_field()}}
+                            <input type="hidden" name="id" value="{{$pages["condition_ir"]->id}}">
+
+                            <div class="page_text_container">
+                                <label for="con_en">english</label>
+                                <textarea class="" rows="4" id="con_en"
+                                          name="text_en">{{$pages["condition_ir"]->text_en}}</textarea>
+                            </div>
+
+                            <div class="page_text_container">
+                                <label for="con_de">germany</label>
+                                <textarea class="" rows="4" id="con_de"
+                                          name="text_de">{{$pages["condition_ir"]->text_de}}</textarea>
+                            </div>
+
+                            <div class="page_text_container">
+                                <label for="con_fa">persian</label>
+                                <textarea class="" rows="4" id="con_fa"
+                                          name="text_fa">{{$pages["condition_ir"]->text_fa}}</textarea>
+                            </div>
+                            <div class="page_text_container">
+                                <label for="con_ru">russian</label>
+                                <textarea class="" rows="4" id="con_ru"
+                                          name="text_ru">{{$pages["condition_ir"]->text_ru}}</textarea>
+                            </div>
+
+                            <div>
+                                <label for="con_rtl">ignore rtl in right to left language</label>
+                                <input type="checkbox" name="rtl_ignore"
+                                       id="con_rtl" {{$pages["condition_ir"]->rtl_ignore ? "checked" : ""}}>
                             </div>
 
                             <button class="submit_page" name="con_action" value="1" type="submit">save</button>

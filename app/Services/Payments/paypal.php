@@ -28,7 +28,6 @@ class paypal
             $this->base = "https://api.sandbox.paypal.com";
         }
 
-
         curl_setopt($ch, CURLOPT_URL, $this->base . "/v1/oauth2/token");
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
@@ -102,7 +101,7 @@ class paypal
 //		];
 
         $data = [
-            "intent"              => "CAPTURE",
+            "intent"              => "AUTHORIZE",
             "application_context" => [
                 'brand_name'           => 'fly orient',
                 'shipping_preferences' => 'NO_SHIPPING',
@@ -143,13 +142,40 @@ class paypal
 
     }
 
-    public function capture_payment($payment_id)
+    public function capture_payment($auth_id)
     {
 
         $ch = curl_init();
 
 
-        $req_uri = $this->base . "/v2/checkout/orders/" . $payment_id . "/capture";
+        $req_uri = $this->base . "/v2/payments/authorizations/" . $auth_id . "/capture";
+
+        curl_setopt($ch, CURLOPT_URL, $req_uri);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Content-Type: application/json",
+            "Authorization: Bearer $this->token",
+        ]);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        $result = curl_exec($ch);
+        $result = json_decode($result, true);
+        curl_close($ch);
+
+        return $result;
+    }
+
+    public function void_payment($auth_id)
+    {
+
+        $ch = curl_init();
+
+
+        $req_uri = $this->base . "/v2/payments/authorizations/" . $auth_id . "/void";
 
         curl_setopt($ch, CURLOPT_URL, $req_uri);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
@@ -193,5 +219,29 @@ class paypal
         return $result;
 
     }
+
+
+    public function authorize($payment_id)
+    {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $this->base . "/v2/checkout/orders/$payment_id/authorize");
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Content-Type: application/json",
+            "Authorization: Bearer $this->token",
+        ]);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);
+        $result = json_decode($result, true);
+        curl_close($ch);
+
+        return $result;
+    }
+
 
 }

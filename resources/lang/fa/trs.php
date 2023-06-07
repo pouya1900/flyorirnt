@@ -190,7 +190,8 @@ return [
 	"depart_and_return"                 => "رفت و بازگشت",
 	"flying_from"                       => "مبدأ",
 	"flying_to"                         => "مقصد",
-	"waiting_time"                      => "زمان انتظار",
+	"waiting_time"                      => "زمان انتظار برای پروازهای غیر مستقیم" ,
+	"waiting_time_search"               => "زمان انتظار برای پروازهای غیر مستقیم" ,
 	"airlines"                          => "هواپیمایی",
 	"Flying_from_the_following_airport" => "پرواز از فرودگاه زیر",
 	"Flying_to_the_following_airport"   => "پرواز به فرودگاه زیر",
@@ -228,7 +229,7 @@ return [
 	"FAQ"                                           => "سوالهای متدوال ",
 "footer_text"                                   => '
 <span style="font-size:14px; direction:rtl;">
-فلای اورینت یک سایت تخصصی رزرو بلیت هواپیما به تمامی نقاط دنیا با مدرنتری روشهای روز میباشد . همچنین شما میتوانید خدمات فرودگاهی تهران را نیز روی این سایت رزرو کنید. فیلترهای متفاوت جستجو به شما امکان میدهد که نتایج جستجوی پرواز را به دلخواه خود فیلتر کنید .
+فلای اورینت یک سایت تخصصی رزرو بلیت هواپیما به تمامی نقاط دنیا با مدرنتری روشهای روز میباشد . فیلترهای متفاوت جستجو به شما امکان میدهد که نتایج جستجوی پرواز را به دلخواه خود فیلتر کنید .
 </span>
 		<br><br><span style="font-size:14px;"> E-mail: </span> <a style="color:#ffffff; font-size:14px;" href="mailto:info@flyorient.de">info@flyorient.de</a>
 	<br><span style="font-size:14px;">Tel.</span> <span style="color:#ffffff; font-size:14px;""><a href="tel:+4921117420289">+49-211-174 202 89</a> </span><br><span style="font-size:14px;"> WhatsApp: </span><a style="color:#ffffff; font-size:14px;" target="_blank" href="https://wa.me/+4917661875479">+49-176-618 75 479</a>',

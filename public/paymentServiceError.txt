@@ -1,0 +1,64 @@
+08:15 2022-07-09 : 
+service : authorize
+payment : 290
+response : 
+null
+--------------------------------------
+--------------------------------------
+--------------------------------------
+08:22 2022-07-09 : 
+service : authorize
+payment : 291
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"ACTION_DOES_NOT_MATCH_INTENT","description":"Order was created with an intent to 'CAPTURE'. Please use v2\/checkout\/orders\/order_id\/capture to complete the transaction or alternately Create an order with an intent of 'AUTHORIZE'."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"e0b82d66356c8","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-ACTION_DOES_NOT_MATCH_INTENT","rel":"information_link","method":"GET"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+12:28 2022-07-09 : 
+service : capture
+payment : 303
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"ACTION_DOES_NOT_MATCH_INTENT","description":"Order was created with an intent to 'AUTHORIZE'. Please use v2\/checkout\/orders\/order_id\/authorize to perform authorization or alternately Create an order with an intent of 'CAPTURE'."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"b571d13be6607","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-ACTION_DOES_NOT_MATCH_INTENT","rel":"information_link","method":"GET"},{"href":"https:\/\/api.sandbox.paypal.com\/v1\/checkout\/orders\/null\/capture","rel":"capture","method":"POST"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+00:15 2022-07-12 : 
+service : authorize
+payment : 315
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"INSTRUMENT_DECLINED","description":"The instrument presented  was either declined by the processor or bank, or it can't be used for this payment."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"4ff728641534f","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-INSTRUMENT_DECLINED","rel":"information_link","method":"GET"},{"href":"https:\/\/www.paypal.com\/checkoutnow?token=8NU59923UB0260725","rel":"redirect","method":"GET"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+16:07 2022-07-12 : 
+service : authorize
+payment : 317
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"INSTRUMENT_DECLINED","description":"The instrument presented  was either declined by the processor or bank, or it can't be used for this payment."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"77446f7d1c163","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-INSTRUMENT_DECLINED","rel":"information_link","method":"GET"},{"href":"https:\/\/www.paypal.com\/checkoutnow?token=7WJ8894733150273H","rel":"redirect","method":"GET"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+15:15 2023-03-20 : 
+service : authorize
+payment : 369
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"COMPLIANCE_VIOLATION","description":"Transaction cannot be processed due to a possible compliance violation. To get more information about the transaction, call Customer Support."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"5d0e1fc5ca144","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-COMPLIANCE_VIOLATION","rel":"information_link","method":"GET"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+20:04 2023-04-04 : 
+service : authorize
+payment : 378
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"COMPLIANCE_VIOLATION","description":"Transaction cannot be processed due to a possible compliance violation. To get more information about the transaction, call Customer Support."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"9a5f3863b8ba4","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-COMPLIANCE_VIOLATION","rel":"information_link","method":"GET"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+17:02 2023-05-09 : 
+service : authorize
+payment : 392
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"INSTRUMENT_DECLINED","description":"The instrument presented  was either declined by the processor or bank, or it can't be used for this payment."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"00f4d3af2771f","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-INSTRUMENT_DECLINED","rel":"information_link","method":"GET"},{"href":"https:\/\/www.paypal.com\/checkoutnow?token=0LE238972M824833L","rel":"redirect","method":"GET"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------

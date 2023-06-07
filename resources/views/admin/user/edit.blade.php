@@ -87,6 +87,9 @@
                                             <option value="{{\App\User::admin}} " {{$user->role==\App\User::admin ? "selected" : ""}}>
                                                 admin
                                             </option>
+                                            <option value="{{\App\User::agency}} " {{$user->role==\App\User::agency ? "selected" : ""}}>
+                                                agency
+                                            </option>
                                         </select>
                                     </div>
                                 </div>

@@ -179,7 +179,7 @@ return [
     "site_title"                                    => "Site title ",
     "admin"                                         => "admin ",
     "fax"                                           => "fax ",
-    "email_confirm_text"                            => "Thanks for using flyorient.de! Please confirm your email address by clicking on the link below.",
+    "email_confirm_text"                            => "Thanks for using flyorient.de! Please confirm your email address by clicking on the link below. (please check also spam folder)s",
     "email_confirm_ignore_text"                     => "If you did not sign up for a flyorient.de account please disregard this email.",
     "have_a_happy_time"                             => "have a happy time",
     "fly_orient_supports"                           => "FlyOrient supports",
@@ -190,6 +190,8 @@ return [
     "flying_from"                                   => "Flying from",
     "flying_to"                                     => "Flying to",
     "waiting_time"                                  => "Waiting Time",
+    // after 18 sep , adding search filter
+    "waiting_time_search"                           => "Waiting Time for connection Flights",
     "airlines"                                      => "Airlines",
     "Flying_from_the_following_airport"             => "Flying from the following airport",
     "Flying_to_the_following_airport"               => "Flying to the following airport",
@@ -225,7 +227,7 @@ return [
     "imprint"                                       => "Imprint",
     "AGB"                                           => "AGB",
     "FAQ"                                           => "FAQ",
-    "footer_text"                                   => 'FlyOrient is a modern web page for search and book flight tickets word wide. You can also book CIP airport services in Tehran Airport IKA. Through different filters you can optimize your flight searches.
+    "footer_text"                                   => 'FlyOrient is a modern web page for search and book flight tickets word wide. Through different filters you can optimize your flight searches.
 		<br><br><span style="font-size:14px;"> E-mail: </span> <a style="color:#ffffff; font-size:14px;" href="mailto:info@flyorient.de">info@flyorient.de</a>
 	<br><span style="font-size:14px;">Tel.</span> <span style="color:#ffffff; font-size:14px;""><a href="tel:+4921117420289">+49-211-174 202 89</a> </span><br><span style="font-size:14px;"> WhatsApp: </span><a style="color:#ffffff; font-size:14px;" target="_blank" href="https://wa.me/+4917661875479">+49-176-618 75 479</a>',
 
@@ -295,9 +297,9 @@ return [
     "information_updated_successfully" => "your information updated successfully",
     "somethings_went_wrong"            => "somethings went wrong ! try again please .",
     "contact_us_page_description"      => "Contact us:",
-    "tracking_number"                  => "Tracking number",
-    "with_bar"                         => "with baggage",
-    "without_bar"                      => "without baggage",
+    "tracking_number"                  => "Tracking Number",
+    "with_bar"                         => "With baggage",
+    "without_bar"                      => "Without baggage",
 
 //	site setting translation
     "tab_title"                        => "Fly Orient- Online Flight Ticket Booking",
@@ -414,7 +416,38 @@ WhatsApp: <b>+49-176-618 75 479</b></span>",
 
 //    after 26 june baggage update
 
-    "no_baggage_depart" => "No baggage by Departure!",
-    "no_baggage_return" => "No baggage by return!",
-    "no_baggage" => "No baggage!",
+    "no_baggage_depart"               => "No baggage by Departure!",
+    "no_baggage_return"               => "No baggage by return!",
+    "no_baggage"                      => "No baggage!",
+
+
+//    after 8 july , adding agency
+    "credit"                          => "Credit",
+    "pay_with_balance"                => "Pay with balance",
+
+//    after 18 Jun agency profile
+    "amount"                          => "Amount",
+    "payment_status"                  => "Payment status",
+    "before_balance"                  => "Before balance",
+    "after_balance"                   => "After balance",
+    "book_status"                     => "Book status",
+    "wallet"                          => "Wallet",
+
+    // after 18 Feb agency invoice
+    "electronic_invoice"              => "INVOICE",
+    "account_holder"                  => "Account holder",
+    "purpose"                         => "Purpose",
+    "invoice_payment_text"            => "Payment of € :amount is requested by bank transfer to our bank account.",
+    "your_invoice_issued"             => "Your invoice issued",
+    "invoice_attached"                => "Invoice attached",
+    "invoice_number"                  => "Invoice number",
+    "issued_date"                     => "Issued date",
+    "amount_sale"                     => "Amount sale",
+    "amount_buy"                      => "Amount buy",
+    "download_invoice"                => "Download invoice",
+
+//    1 march final agency update
+    "agency_not_active_you_cant_book" => "Sorry! your agency account isn't active, you cant book any ticket",
+
+
 ];

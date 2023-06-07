@@ -84,10 +84,33 @@ class HomeController extends Controller {
 			$data['none_stop'] = 1;
 		}
 
-		$link = route( 'flights', $data );
-		if ( $lang != "de" ) {
-			$link .= "?lang=" . $lang;
-		}
+
+        if ($lang != "de") {
+            $data["lang"] = $lang;
+        }
+
+        if (!$request->input('stops0')) {
+            $data['stops0'] = 1;
+        }
+        if (!$request->input('stops1')) {
+            $data['stops1'] = 1;
+        }
+        if (!$request->input('stops2')) {
+            $data['stops2'] = 1;
+        }
+        if (!$request->input('bar0')) {
+            $data['bar0'] = 1;
+        }
+        if (!$request->input('bar1')) {
+            $data['bar1'] = 1;
+        }
+
+        $data['wait0'] = intval($request->input('wait0'));
+        $data['wait1'] = intval($request->input('wait1'));
+
+
+        $link = route( 'flights', $data );
+
 
 		return redirect( $link );
 

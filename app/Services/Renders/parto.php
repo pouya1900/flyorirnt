@@ -15,6 +15,7 @@ use App\Models\Leg;
 use App\Models\Search;
 use App\Models\Session;
 use App\Models\Setting;
+use App\Models\Page;
 use App\Models\Airplane;
 use App\Models\Scheduler;
 use App\Services\MyHelperFunction;
@@ -22,6 +23,7 @@ use App\Services\SetPriceFunction;
 use App\Services\Log\log;
 use App\User;
 use Carbon\Carbon;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +37,6 @@ class parto implements render_interface
     private $session;
     public $base;
     public $render_code;
-
     public $log;
 
     public function __construct($code = 0)
@@ -175,6 +176,7 @@ class parto implements render_interface
 
         $airplanes = Airplane::all();
 
+        $setting = Setting::find(1);
 
         $destination_airport = Airport::where('code', $destination)->first();
         $adl = intval($adl);
@@ -261,6 +263,7 @@ class parto implements render_interface
         }
 
         if (!empty($response)) {
+            global $cost_insert, $tax_insert;
 
             $cost_insert = [];
             $tax_insert = [];
@@ -271,18 +274,35 @@ class parto implements render_interface
             $final_leg_insert = [];
             $i = 0;
             $leg_insert_equal = [];
-            $query = "INSERT INTO flights(search_id,token,render,FareSourceCode,IsPassportMandatory,IsPassportIssueDateMandatory,IsPassportNumberMandatory,DirectionInd,RefundMethod,ValidatingAirlineCode,flight_number,depart_time,depart_time_range,depart_airport,arrival_time,arrival_airport,stops,total_time,total_waiting,bar,bar_exist,class,class_code,return_flight_number,return_depart_time,return_depart_time_range,return_depart_airport,return_arrival_time,return_arrival_airport,return_stops,return_total_time,return_total_waiting,return_bar,return_bar_exist,return_class,return_class_code,depart_return_time) VALUES ($search_id";
+            $query = "INSERT INTO flights(search_id,token,render,FareSourceCode,IsPassportMandatory,IsPassportIssueDateMandatory,IsPassportNumberMandatory,DirectionInd,RefundMethod,ValidatingAirlineCode,flight_number,depart_time,depart_time_range,depart_airport,arrival_time,arrival_airport,stops,total_time,total_waiting,bar,bar_exist,class,class_code,depart_first_airline,return_flight_number,return_depart_time,return_depart_time_range,return_depart_airport,return_arrival_time,return_arrival_airport,return_stops,return_total_time,return_total_waiting,return_bar,return_bar_exist,return_class,return_class_code,return_first_airline,depart_return_time) VALUES ($search_id";
             foreach ($response as $item) {
                 $leg_insert_equal_text = "";
+                $before_arrival = "";
+                $different_airport_error = 0;
                 foreach ($item["OriginDestinationOptions"][0]["FlightSegments"] as $segment) {
                     $baggage_equal = $this->equal_bar($segment["Baggage"]);
                     $leg_insert_equal_text .= $segment["FlightNumber"] . $baggage_equal;
+                    if ($before_arrival && $before_arrival != $segment["DepartureAirportLocationCode"]) {
+                        $different_airport_error = 1;
+                    }
+
+                    $before_arrival = $segment["ArrivalAirportLocationCode"];
                 }
                 if (isset($item["OriginDestinationOptions"][1]) and $item["DirectionInd"] == 2) {
+                    $before_arrival = "";
                     foreach ($item["OriginDestinationOptions"][1]["FlightSegments"] as $segment) {
                         $baggage_equal = $this->equal_bar($segment["Baggage"]);
                         $leg_insert_equal_text .= $segment["FlightNumber"] . $baggage_equal;
+                        if ($before_arrival && $before_arrival != $segment["DepartureAirportLocationCode"]) {
+                            $different_airport_error = 1;
+                        }
+
+                        $before_arrival = $segment["ArrivalAirportLocationCode"];
                     }
+                }
+
+                if ($different_airport_error) {
+                    continue;
                 }
 
                 if (in_array($leg_insert_equal_text, $leg_insert_equal)) {
@@ -291,7 +311,7 @@ class parto implements render_interface
 
                 $leg_insert_equal[] = $leg_insert_equal_text;
 
-                if ($item["ValidatingAirlineCode"] == "IR") {
+                if ($item["ValidatingAirlineCode"] == "IR" && ($setting->flight_render == Setting::iranAir || ($setting->flight_render_ajax && in_array(Setting::iranAir, json_decode($setting->flight_render_ajax, true))))) {
                     continue;
                 }
                 if ($item["ValidatingAirlineCode"] == "W5") {
@@ -354,7 +374,7 @@ class parto implements render_interface
 
                 $query .= $item["OriginDestinationOptions"][0]["FlightSegments"][0]["CabinClassCode"] . ",";
                 $query .= "'" . $item["OriginDestinationOptions"][0]["FlightSegments"][0]["ResBookDesigCode"] . "'" . ",";
-
+                $query .= "'" . $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"] . "'" . ",";
                 $depart_return_time = $item["OriginDestinationOptions"][0]["JourneyDurationPerMinute"] + $item["OriginDestinationOptions"][0]["ConnectionTimePerMinute"];
 
                 $j = 0;
@@ -429,6 +449,7 @@ class parto implements render_interface
 
                     $query .= $item["OriginDestinationOptions"][1]["FlightSegments"][0]["CabinClassCode"] . ",";
                     $query .= "'" . $item["OriginDestinationOptions"][1]["FlightSegments"][0]["ResBookDesigCode"] . "'" . ",";
+                    $query .= "'" . $item["OriginDestinationOptions"][1]["FlightSegments"][0]["MarketingAirlineCode"] . "'" . ",";
 
                     $depart_return_time += $item["OriginDestinationOptions"][1]["JourneyDurationPerMinute"] + $item["OriginDestinationOptions"][1]["ConnectionTimePerMinute"];
 
@@ -466,7 +487,7 @@ class parto implements render_interface
                     }
 
                 } else {
-                    $query .= "null,null,null,null,null,null,null,null,null,null,0,null,null,";
+                    $query .= "null,null,null,null,null,null,null,null,null,null,0,null,null,null,";
                 }
 
                 $query .= $depart_return_time;
@@ -479,82 +500,23 @@ class parto implements render_interface
                 $cost_insert[$i]["TotalTax"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["TotalTax"];
                 $cost_insert[$i]["ServiceTax"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["ServiceTax"];
                 $cost_insert[$i]["Currency"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["Currency"];
-                $cost_insert[$i]["FarePerAdult"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][0]["PassengerFare"]["TotalFare"], 0, $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"], 'parto'); //total fare per adult
-                $cost_insert[$i]["serviceAdult"] = $cost_insert[$i]["FarePerAdult"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][0]["PassengerFare"]["TotalFare"]; //service fee per adult
-                $cost_insert[$i]["adult"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][0]["PassengerTypeQuantity"]["Quantity"]; //number of adult
-                $calc_price->setCount($cost_insert[$i]["adult"], 0);
-                $cost_insert[$i]["taxAdult"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][0]["PassengerFare"]["TotalFare"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][0]["PassengerFare"]["BaseFare"];
 
-                $tax_insert[$i][] = [
-                    "type"  => 0,
-                    "name"  => "Tax",
-                    "code"  => "",
-                    "price" => $cost_insert[$i]["taxAdult"],
-                ];
+                $calc_price = $this->price_type($item, $calc_price, 0, $i);
+
 
                 if (isset($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1])) {
-                    if ($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerTypeQuantity"]["PassengerType"] == 2) {
-                        $cost_insert[$i]["FarePerChild"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["TotalFare"], 1,$item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"],'parto'); //per child
-                        $cost_insert[$i]["serviceChild"] = $cost_insert[$i]["FarePerChild"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["TotalFare"]; //service fee per child
-                        $cost_insert[$i]["child"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerTypeQuantity"]["Quantity"]; //number of child
-                        $calc_price->setCount($cost_insert[$i]["child"], 1);
-                        $cost_insert[$i]["taxChild"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["TotalFare"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["BaseFare"];
 
-                        $tax_insert[$i][] = [
-                            "type"  => 1,
-                            "name"  => "Tax",
-                            "code"  => "",
-                            "price" => $cost_insert[$i]["taxChild"],
-                        ];
-
-                    } else {
-                        $cost_insert[$i]["FarePerInf"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["TotalFare"], 2,$item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"],'parto'); //per inf
-                        $cost_insert[$i]["serviceInfant"] = $cost_insert[$i]["FarePerInf"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["TotalFare"]; //service fee per inf
-                        $cost_insert[$i]["infant"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerTypeQuantity"]["Quantity"]; //number of inf
-                        $calc_price->setCount($cost_insert[$i]["infant"], 2);
-                        $cost_insert[$i]["taxInfant"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["TotalFare"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1]["PassengerFare"]["BaseFare"];
-                        $tax_insert[$i][] = [
-                            "type"  => 2,
-                            "name"  => "Tax",
-                            "code"  => "",
-                            "price" => $cost_insert[$i]["taxInfant"],
-                        ];
-                    }
+                    $calc_price = $this->price_type($item, $calc_price, 1, $i);
 
                     if (isset($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2])) {
-                        if ($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerTypeQuantity"]["PassengerType"] == 2) {
-                            $cost_insert[$i]["FarePerChild"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["TotalFare"], 1,$item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"],'parto'); //per child
-                            $cost_insert[$i]["serviceChild"] = $cost_insert[$i]["FarePerChild"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["TotalFare"]; //service fee per child
-                            $cost_insert[$i]["child"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerTypeQuantity"]["Quantity"]; //number of child
-                            $calc_price->setCount($cost_insert[$i]["child"], 1);
-                            $cost_insert[$i]["taxChild"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["TotalFare"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["BaseFare"];
-                            $tax_insert[$i][] = [
-                                "type"  => 1,
-                                "name"  => "Tax",
-                                "code"  => "",
-                                "price" => $cost_insert[$i]["taxChild"],
-                            ];
-                        } else {
-                            $cost_insert[$i]["FarePerInf"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["TotalFare"], 2,$item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"],'parto'); //per inf
-                            $cost_insert[$i]["serviceInfant"] = $cost_insert[$i]["FarePerInf"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["TotalFare"]; //service fee per inf
-                            $cost_insert[$i]["infant"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerTypeQuantity"]["Quantity"]; //number of inf
-                            $calc_price->setCount($cost_insert[$i]["infant"], 2);
-                            $cost_insert[$i]["taxInfant"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["TotalFare"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][2]["PassengerFare"]["BaseFare"];
-                            $tax_insert[$i][] = [
-                                "type"  => 2,
-                                "name"  => "Tax",
-                                "code"  => "",
-                                "price" => $cost_insert[$i]["taxInfant"],
-                            ];
-                        }
-
-
+                        $calc_price = $this->price_type($item, $calc_price, 2, $i);
                     }
 
                 }
 
 
                 $cost_insert[$i]["TotalFare"] = $calc_price->getTotal();
+                $cost_insert[$i]["TotalAgencyCommission"] = $calc_price->getTotalAgencyCommission();
 
 
                 $i++;
@@ -920,14 +882,22 @@ class parto implements render_interface
             if ($booking_data["Status"] == 21) {
 
                 $ticket_number = $booking_data["TravelItinerary"]["ItineraryInfo"]["CustomerInfoes"][0]["ETicketNumbers"][0]["ETicketNumber"];
+
+                $j = 0;
+                foreach ($book->passengers as $passenger) {
+                    $passenger->update([
+                        "ticket_number" => $booking_data["TravelItinerary"]["ItineraryInfo"]["CustomerInfoes"][$j]["ETickets"],
+                    ]);
+                    $j++;
+                }
+
                 $airline_pnr = $booking_data["TravelItinerary"]["ItineraryInfo"]["ReservationItems"][0]["AirlinePnr"];
 
 
                 //fare type was webfare or price was ok and airorder done successfully
                 $book->update([
-                    "status"        => "booked",
-                    "ticket_number" => $ticket_number,
-                    "airline_pnr"   => $airline_pnr,
+                    "status"      => "booked",
+                    "airline_pnr" => $airline_pnr,
                 ]);
                 Flight::where('id', '=', $flight_id)->update(["status" => "booked"]);
 
@@ -1005,7 +975,6 @@ class parto implements render_interface
         $result = curl_exec($ch);
         $response = json_decode($result, true);
         curl_close($ch);
-
 
         return $response;
 
@@ -1167,6 +1136,77 @@ class parto implements render_interface
         if (intval($bar) == 1) $bar = $bar . " " . trans('trs.suitcase');
         if (intval($bar) > 1) $bar = $bar . " " . trans('trs.suitcase_plural_format');
         return $bar;
+    }
+
+    public function price_type($item, $calc_price, $k, $i)
+    {
+        global $cost_insert, $tax_insert;
+
+        $price_addition_adult = 0;
+        $price_addition_child = 0;
+        $price_addition_infant = 0;
+        $commission_adult = 0;
+        $commission_child = 0;
+        $commission_infant = 0;
+        if (Auth::check() && Auth::user()->role == User::agency) {
+            $user = Auth::user();
+            $price_addition_adult = $user->balance->commission_adult - $user->balance->discount_adult;
+            $price_addition_child = $user->balance->commission_child - $user->balance->discount_child;
+            $price_addition_infant = $user->balance->commission_infant - $user->balance->discount_infant;
+            $commission_adult = $user->balance->commission_adult;
+            $commission_child = $user->balance->commission_child;
+            $commission_infant = $user->balance->commission_infant;
+        }
+
+        if ($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerTypeQuantity"]["PassengerType"] == 1) {
+
+            $cost_insert[$i]["FarePerAdult"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerFare"]["TotalFare"], 0, $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"], 'parto'); //total fare per adult
+            $cost_insert[$i]["serviceAdult"] = $cost_insert[$i]["FarePerAdult"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerFare"]["TotalFare"] - $price_addition_adult; //service fee per adult
+            $cost_insert[$i]["adult"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerTypeQuantity"]["Quantity"]; //number of adult
+            $calc_price->setCount($cost_insert[$i]["adult"], 0);
+            $cost_insert[$i]["taxAdult"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerFare"]["TotalFare"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerFare"]["BaseFare"];
+            $cost_insert[$i]["AgencyCommissionAdult"] = $commission_adult;
+            $tax_insert[$i][] = [
+                "type"  => 0,
+                "name"  => "Tax",
+                "code"  => "",
+                "price" => $cost_insert[$i]["taxAdult"],
+            ];
+        } elseif ($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerTypeQuantity"]["PassengerType"] == 2) {
+            $cost_insert[$i]["FarePerChild"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerFare"]["TotalFare"], 1, $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"], 'parto'); //per child
+            $cost_insert[$i]["serviceChild"] = $cost_insert[$i]["FarePerChild"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerFare"]["TotalFare"] - $price_addition_child; //service fee per child
+            $cost_insert[$i]["child"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerTypeQuantity"]["Quantity"]; //number of child
+            $calc_price->setCount($cost_insert[$i]["child"], 1);
+            $cost_insert[$i]["taxChild"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerFare"]["TotalFare"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerFare"]["BaseFare"];
+            $cost_insert[$i]["AgencyCommissionChild"] = $commission_child;
+            $tax_insert[$i][] = [
+                "type"  => 1,
+                "name"  => "Tax",
+                "code"  => "",
+                "price" => $cost_insert[$i]["taxChild"],
+            ];
+
+        } else {
+            $cost_insert[$i]["FarePerInf"] = $calc_price->index($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerFare"]["TotalFare"], 2, $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"], 'parto'); //per inf
+            $cost_insert[$i]["serviceInfant"] = $cost_insert[$i]["FarePerInf"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerFare"]["TotalFare"] - $price_addition_infant; //service fee per inf
+            $cost_insert[$i]["infant"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerTypeQuantity"]["Quantity"]; //number of inf
+            $calc_price->setCount($cost_insert[$i]["infant"], 2);
+            $cost_insert[$i]["taxInfant"] = $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerFare"]["TotalFare"] - $item["AirItineraryPricingInfo"]["PtcFareBreakdown"][$k]["PassengerFare"]["BaseFare"];
+            $cost_insert[$i]["AgencyCommissionInfant"] = $commission_infant;
+            $tax_insert[$i][] = [
+                "type"  => 2,
+                "name"  => "Tax",
+                "code"  => "",
+                "price" => $cost_insert[$i]["taxInfant"],
+            ];
+        }
+
+        return $calc_price;
+    }
+
+    public function getCondition()
+    {
+        return Page::where('name', 'condition_parto')->first();
     }
 
 }

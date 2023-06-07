@@ -95,7 +95,7 @@ return [
 	'numeric'              => ':attribute muss eine Zahl sein.',
 	'password'             => 'Das Passwort ist falsch.',
 	'present'              => ':attribute muss vorhanden sein.',
-	'regex'                => ':attribute Format ist ungültig.',
+	'regex'                => 'Dieses Feldformat ist ungültig. Verwenden Sie nur Buchstaben und Leerzeichen.',
 	'required'             => 'Dieses Feld muss ausgefüllt werden.',
 	'required_if'          => ':attribute muss ausgefüllt werden, wenn :other den Wert :value hat.',
 	'required_unless'      => ':attribute muss ausgefüllt werden, wenn :other nicht den Wert :values hat.',

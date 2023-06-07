@@ -162,6 +162,10 @@
                      International flights worldwide<br>Search & Book!
                 </div>
             </li>
+<?php
+	if (0)
+	{
+?>
             <!-- SLIDE 5-CIP -->
             <li data-index="rs-6" data-transition="fade" data-slotamount="default" data-hideafterloop="0"
                 data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300"
@@ -233,8 +237,10 @@
                      style="z-index: 8; min-width: 252px; max-width: 252px; max-width: 42px; max-width: 42px; white-space: normal; font-size: 19px; line-height: 17px; font-weight: 500; color: rgba(255,153,51,1);font-family:Raleway;background-color:rgba(0,0,0,0.55);border-color:rgba(0,0,0,1);outline:none;box-shadow;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;">
 					<a href="CIPIran?lang=en">Learn more ..!</a>
                 </div>
-
             </li>
+<?php
+}
+?>
         </ul>
         <div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>
     </div>

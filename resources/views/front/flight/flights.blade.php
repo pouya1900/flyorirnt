@@ -91,6 +91,8 @@
 
     <div id="modal-backdrop-div"></div>
 
+    <input type="hidden" id="render_number_counter" value="0">
+
 @endsection
 
 @section('script')

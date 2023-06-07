@@ -148,7 +148,7 @@ return [
     "download"                                      => "Herunterladen",
     "E-ticket"                                      => "E-Ticket",
     "your_info"                                     => "Ihre Info",
-    "submit_change"                                 => "Änderung einreichen",
+    "submit_change"                                 => "Änderungen übernehmn",
     "change_password"                               => "Passwort ändern",
     "old_password"                                  => "Altes Passwort",
     "new_password"                                  => "Neues Kennwort",
@@ -180,7 +180,7 @@ return [
     "admin"                                         => "Administrator",
     "fax"                                           => "Fax",
     "email_confirm_text"                            => "Danke, dass Sie flyorient.de benutzt haben! Bitte bestätigen Sie Ihre E-Mail-Adresse.",
-    "email_confirm_ignore_text"                     => "Wenn diese E-mail Mail nicht für an Sie adresseiertadressiert ist, bitte löschen Sie bitte diese E-Mail und ignorieren Sie den Inhalt.",
+    "email_confirm_ignore_text"                     => "Wenn diese E-mail Mail nicht für an Sie adressiert ist, bitte löschen Sie bitte diese E-Mail und ignorieren Sie den Inhalt.",
     "have_a_happy_time"                             => "Wir wünschen Ihnen noch einen schönen Tag",
     "fly_orient_supports"                           => "flyorient.de Support",
     "hi"                                            => "Hallo",
@@ -189,7 +189,9 @@ return [
     "depart_and_return"                             => "Hin- und Rückflug",
     "flying_from"                                   => "Von",
     "flying_to"                                     => "Nach",
-    "waiting_time"                                  => "Wartezeit",
+    "waiting_time"                                  => "Wartezeit bei Anschlussflug",
+	// after 18 sep , adding search filter
+    "waiting_time_search"                           => "Wartezeit bei Anschlussflug",
     "airlines"                                      => "Airline",
     "Flying_from_the_following_airport"             => "Aus Von folgenden Flughäfen aus fliegen",
     "Flying_to_the_following_airport"               => "Zu folgenden Flughäfen fliegen",
@@ -208,8 +210,8 @@ return [
     "search_best_flight"                            => "Bitte haben Sie etwas Geduld. Wir suchen für Sie die passenden Flüge",
     "download_ticket"                               => "E-Ticket herunterladen",
     "already_registered"                            => "Sie sind bereits registriert",
-    "password_reset_text"                           => "Über folgenden folgenden Linkr, können Sie Ihr Password Passwort zurücksetzen.",
-    "registered_successfully_activation_email_send" => "Ihre Registrierung war erfolgreich. Eine E-mail Mail mit einem Link ist an Ihre E-mail Mail-Adresse geschickt worden. Bitte bestätigen Sie Ihre E-mailMail, in dem auf diese den Link clickenklicken.",
+    "password_reset_text"                           => "Über folgenden Link, können Sie Ihr Password Passwort zurücksetzen.",
+    "registered_successfully_activation_email_send" => "Eine E-mail mit einem Link ist an Ihre E-mail geschickt worden (Bitte überprüfen Sie auch Spam Verzeichnis). Bitte bestätigen Sie Ihre E-mailMail, in dem auf diese den Link klicken.",
     "confirmed_successfully"                        => "Ihre E-mail Mail wurde erfolgreich bestätigt.",
     "reset_password_link_sent"                      => "an email with reset password link sent to your email.",
     "active_link_not_valid"                         => "this activation token is not valid.",
@@ -225,7 +227,7 @@ return [
     "imprint"                                       => "Impressum",
     "AGB"                                           => "AGB",
     "FAQ"                                           => "FAQ",
-    "footer_text"                                   => 'FlyOrient.de ist eine moderne Webseite zum Suchen und Buchen von Flugreisen weltweit. Sie haben auch die Möglichkeit, Flughafen-Dienstleistungen im Teheraner Flughafen IKA zu buchen. Die verschiedenen Filter helfen, Ihre Flugsuche zu optimieren.
+    "footer_text"                                   => 'FlyOrient.de ist eine moderne Webseite zum Suchen und Buchen von Flugreisen weltweit. Die verschiedenen Filter helfen, Ihre Flugsuche zu optimieren.
 		<br><br><span style="font-size:14px;"> E-mail: </span> <a style="color:#ffffff; font-size:14px;" href="mailto:info@flyorient.de">info@flyorient.de</a>
 <br><span style="font-size:14px;">Tel.</span> <span style="color:#ffffff; font-size:14px;""><a href="tel:+4921117420289">+49-211-174 202 89</a> </span>	<br><span style="font-size:14px;"> Mob. & WhatsApp: </span><a style="color:#ffffff; font-size:14px;" target="_blank" href="https://wa.me/+4917661875479">+49-176-618 75 479</a>',
 		        
@@ -342,29 +344,30 @@ return [
     "company_name"                   => "flyorient.de",
     "aircraft_type"                  => "Flugzeugstyp",
     "cabin"                          => "Kabin",
-    "adult_base_price_per_each"      => "Base Price für jeden Erwachsener",
-    "child_base_price_per_each"      => "Base Price für jedes Kind",
-    "infant_base_price_per_each"     => "Base Price für jedes Säugling",
+    "adult_base_price_per_each"      => "Basistarif für jeden Erwachsener",
+    "child_base_price_per_each"      => "Basistarif für jedes Kind",
+    "infant_base_price_per_each"     => "Basistarif für jedes Säugling",
     "condition"                      => "Bedingung",
     "price_detail"                   => "Preisdetail",
-    "ajax_flight_loader_text"        => "Weitere Flüge werden gesucht... Bitte warten!",
+    "ajax_flight_loader_text"        => ">>> Flüge werden gesucht... Bitte warten! <<<",
     "ajax_flight_loader_result_text" => "",
-    "base_price"                     => "Base price",
+	//	last update 23 nov
+    "base_price"                     => "Basistarif",
     "our_recommend"                  => "Unsere Empfehlung",
     "pass_number"                    => "Reisepassnummer",
     "passenger_name"                 => "Passagier-Name",
     "id/passport_number"             => "ID/Passport Nummer",
-    "booking_number"                 => "Booking Nummer",
-    "booked_date"                    => "Booked Date",
-    "unseccess_book_history"         => "unsuccess book",
-    "seats_remains"                  => "Seats",
-    "booked"                         => "Booked",
-    "pending"                        => "Pending",
+    "booking_number"                 => "Buchungsnummer",
+    "booked_date"                    => "Buchungsdatum",
+    "unseccess_book_history"         => "Fehlgeschlagene Buchungen",
+    "seats_remains"                  => "Sitze",
+    "booked"                         => "Gebucht",
+    "pending"                        => "Warten",
     "status"                         => "Status",
-    "payment_failed"                 => "Payment failed",
-    "vendor_failed"                  => "Booking failed",
-    "vendor_cancelled"               => "Booking cancelled",
-    "unknown"                        => "Unknown",
+    "payment_failed"                 => "Zahlung Fehlgeschlagen",
+    "vendor_failed"                  => "Buchung Fehlgeschlagen",
+    "vendor_cancelled"               => "Buchung abgebrochen",
+    "unknown"                        => "Unbekannt",
     "departure_date"                 => "Abflugdatum",
 //
     "infant_bar_text" => "Freigepäck für Baby :",
@@ -390,20 +393,29 @@ return [
     "show_filter_result"               => "Zurück zu den Ergebnissen",
 
     "ads_flight_iframe_header" => "
-	<a href='https://flyorient.de/' target='_blank'>
-	<img src='images/settings/logo.png' width=180px>
-	<span style='color:blue;font-size:20px;'>
-		 : پرواز مستقیم به تهران با ایران ایر . قیمت ها برای هر نفر ، از 
-</span><br>
-<span style='color:black;font-size:16px;'>
-	Direktflüge nach Teheran mit Iran Air, Preise pro Person ab:
-</span>	
-</a>",
-	
-    "ads_flight_iframe_header__" => "Direktflüge nach Teheran mit Iran Air, Preise pro Person ab:
-	<span style='color:blue;font-size:22px;'><br>
-		 : پرواز مستقیم به تهران با ایران ایر . قیمت ها برای هر نفر ، از 
-</span>",
+	<a href='https://flyorient.de/' target='_blank'><span style='font-size:18px;'>www.flyorient.de</span>
+	<img src='images/settings/logo.png' width=160px>
+	<span style='font-family:verdana;color:blue;font-size:20px;'>
+	  : پرواز مستقیم به تهران با ایران ایر . نمونه قیمت ها  
+	  </span>
+	</a>  
+
+    <table align='center' dir='rtl' border='1' bordercolor='#fff' width='90%'>
+       <tr align='right'>
+        <td style='background-color:#B0B0B0' width='18%'>&nbsp; از کلن :</td>
+		<td style='background-color:#C0C0C0' width='32%'>&nbsp;جمعه ها</td>
+        <td style='background-color:#B0B0B0' >&nbsp;از فرانکفورت :</td>
+		<td style='background-color:#C0C0C0'>&nbsp;چهارشنبه و شنبه ها</td>
+      </tr>
+       <tr align='right'>
+        <td style='background-color:#B0B0B0' width='18%'>&nbsp;از هامبورگ :</td>
+		<td style='background-color:#C0C0C0' width='32%'>&nbsp;دو شنبه و پنجشنبه ها</td>
+        <td style='background-color:#B0B0B0' >&nbsp;از وین :</td>
+		<td style='background-color:#C0C0C0'>&nbsp;شنبه ها</td>
+      </tr>
+    </table>
+
+",
     "online_ticket_not_active" => "<span style=\"font-size:18px; color:#008888\">Leider ist zur Zeit Online Buchen nicht möglich. Bitte Kontaktieren Sie Support:<br>
 email: <b>info@flyorient.de</b><br>
 WhatsApp: <b>+49-176-618 75 479</b></span>",
@@ -412,4 +424,27 @@ WhatsApp: <b>+49-176-618 75 479</b></span>",
     "no_baggage_depart" => "Kein Freigepäck beim Hinflug!",
     "no_baggage_return" => "Kein Freigepäck beim Rückflug!",
     "no_baggage" => "Kein Freigepäck!",
+	
+	//    after 8 july , adding agency
+    "credit"               => "Ihr Guthaben",
+    "pay_with_balance"     => "Zahlung aus Guthaben",
+
+//    after 18 Jun agency profile
+    "amount"               => "Betrag",
+    "payment_status"       => "Zahlungsstatus",
+    "before_balance"       => "Vor dem Balance",
+    "after_balance"        => "Nach dem Balance",
+    "book_status"          => "Buchungsstatus",
+    "wallet"               => "Geldbörse",
+
+    // after 18 Feb agency invoice
+    "electronic_invoice"   => "                          R E C H N U N G ",
+    "account_holder"       => "Kontoinhaber",
+    "purpose"              => "Verwendungszweck: RechnungsNr.",
+    "invoice_payment_text" => "Die Zahlung von Euro € wird erbeten durch Überweisung auf unser Bankkonto.",
+    "your_invoice_issued"  => "Ihre Rechnung wurde ausgestellt",
+    "invoice_attached"     => "Rechnung angehängt",
+    "invoice_number"       => "Rechnungsnummer",
+    "issued_date"          => "Ausstellungsdatum",
+
 ];

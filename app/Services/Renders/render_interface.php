@@ -21,6 +21,7 @@ interface render_interface {
 
 	public function airrules( $flight );
 
+    public function getCondition();
 	
 	public function bag( $flight );
 }

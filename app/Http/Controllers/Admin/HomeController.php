@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Book;
+use App\Models\Payment;
 use App\Models\Setting;
 use App\Models\Session;
 use App\Models\Payment_scheduler;
@@ -122,6 +123,12 @@ class HomeController extends Controller
 
     }
 
+    public function payments()
+    {
+        $payments = Payment::orderBy('updated_at', 'desc')->get();
+        return view('admin.payment.index', compact('payments'));
+
+    }
 
     public function general_setting()
     {
@@ -256,6 +263,8 @@ class HomeController extends Controller
         $offline_ticket = 0;
         if ($request->has("offline_ticket")) $offline_ticket = 1;
 
+        $no_payment_admin = 0;
+        if ($request->has("no_payment_admin")) $no_payment_admin = 1;
 
         $setting->update([
             'payment'                 => $payment,
@@ -263,6 +272,7 @@ class HomeController extends Controller
             'test_one_euro'           => $test_one_euro,
             'test_one_euro_with_book' => $test_one_euro_with_book,
             'offline_ticket'          => $offline_ticket,
+            'no_payment_admin'        => $no_payment_admin,
         ]);
 
         return redirect()->route('admin.general_setting')->with('message', 'Changes made successfully');
@@ -310,5 +320,22 @@ class HomeController extends Controller
         return redirect()->route('admin.general_setting')->with('message', 'Changes made successfully');
     }
 
+    public function update_setting7(Request $request)
+    {
+        $setting = Setting::find(1);
+
+
+        $setting->update([
+            'search_nonstop'          => $request->input('nonstop') ? 1 : 0,
+            'search_one_stop'         => $request->input('one_stop') ? 1 : 0,
+            'search_two_stops'        => $request->input('two_stops') ? 1 : 0,
+            'search_with_bar'         => $request->input('with_bar') ? 1 : 0,
+            'search_without_bar'      => $request->input('without_bar') ? 1 : 0,
+            'search_min_waiting_time' => $request->input('min_waiting_time') ?? 0,
+            'search_max_waiting_time' => $request->input('max_waiting_time') ?? 5,
+        ]);
+
+        return redirect()->route('admin.general_setting')->with('message', 'Changes made successfully');
+    }
 
 }

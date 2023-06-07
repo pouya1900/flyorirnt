@@ -107,6 +107,7 @@ if (!isset($start)) $start=0;
                         @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->role==3)
                             {{$item["FareType"]}}
                         @endif
+						
                         {{--main flight section--}}
                         <div class="flight_post_container">
                             <div class="row">
@@ -682,7 +683,7 @@ if (!isset($start)) $start=0;
                                             @endif
                                         @else
                                             <i class="fas fa-suitcase "></i>
-                                            <span class="d-none d-md-inline">{{$item["bar"]}}
+                                            <span class="d-md-inline">{{$item["bar"]}}
                                                 @if(!$item["return_bar_exist"] && $item["DirectionInd"]==2)
                                                     / <i> <img src="images/icon/suitcase-solid.png"></i>
                                                 @else

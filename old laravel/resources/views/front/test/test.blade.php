@@ -1,1 +1,0 @@
-<iframe style="width: 1000px; height: 300px" src="https://alemaniasoft.de/iframe-result"></iframe>

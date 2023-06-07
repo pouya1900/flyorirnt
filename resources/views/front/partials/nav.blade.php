@@ -49,7 +49,13 @@
                                         href="{{route('profile'). ($lang!="de"? "?lang=".$lang : "")}}"><i
                                             class="fas fa-user"></i> {{\Illuminate\Support\Facades\Auth::user()->f_name}} {{\Illuminate\Support\Facades\Auth::user()->l_name}}
                                 </a></li>
-
+                            <li class="list-inline-item user_area_li ">
+                                @if(\Illuminate\Support\Facades\Auth::user()->role==\App\User::agency)
+                                    @lang('trs.credit')
+                                    : {{\Illuminate\Support\Facades\Auth::user()->balance ? \Illuminate\Support\Facades\Auth::user()->balance->amount : 0}}
+                                    €
+                                @endif
+                            </li>
                             <li class="list-inline-item user_area_li"><a
                                         href="{{route('logout'). ($lang!="de"? "?lang=".$lang : "")}}"><i
                                             class="fas fa-sign-out-alt"></i> @lang('trs.log_out')</a></li>
@@ -140,10 +146,10 @@
                                                                                                title="@lang('trs.persian')"
                                                                                                alt="fa"></a>
                                 </li>
-{{--                                <li class="lang_item"><a href="{{$lang_link."?lang=ru"}}"><img src="flags/1x1/ru.svg"--}}
-{{--                                                                                               title="@lang('trs.russia')"--}}
-{{--                                                                                               alt="ru"></a>--}}
-{{--                                </li>--}}
+                                {{--                                <li class="lang_item"><a href="{{$lang_link."?lang=ru"}}"><img src="flags/1x1/ru.svg"--}}
+                                {{--                                                                                               title="@lang('trs.russia')"--}}
+                                {{--                                                                                               alt="ru"></a>--}}
+                                {{--                                </li>--}}
 
 
                             </ul>

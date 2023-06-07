@@ -7,7 +7,7 @@
     <meta name="author" content="Nile-Theme">
     <meta name="robots" content="index follow">
     <meta name="googlebot" content="index follow">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="keywords" content="Travel, HTML5, CSS3, Hotel , Multipurpose, Template, Create a Travel website fast">
     <meta name="description" content="HTML5 Multipurpose Template, Create a website fast">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,8 +41,8 @@
 
 {{--    @else--}}
         <link rel="stylesheet" href="css/bootstrapa.css">
-        <link rel="stylesheet" href="css/style.css?ver=31">
-        <link rel="stylesheet" href="css/test_style.css?ver=3">
+        <link rel="stylesheet" href="css/style1.css">
+{{--        <link rel="stylesheet" href="css/test_style.css">--}}
 
 {{--    @endif    --}}
 

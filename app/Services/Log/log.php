@@ -50,4 +50,26 @@ class log
         fclose($my_file);
     }
 
+    public function payment_error($res, $service, $payment = null)
+    {
+        header("Content-type: application/json; charset=utf-8");
+
+
+        $filename = "paymentServiceError.txt";
+
+        $text = date("H:i Y-m-d", strtotime('now')) . " : \n"
+            . "service : " . $service . "\n"
+            . "payment : " . $payment->id . "\n";
+
+
+        $text .= "response : \n" . $res . "\n"
+            . "--------------------------------------\n--------------------------------------\n--------------------------------------\n";
+
+        $my_file = fopen($filename, "a");
+        fwrite($my_file, $text);
+
+        fclose($my_file);
+
+    }
+
 }

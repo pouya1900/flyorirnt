@@ -14,10 +14,18 @@
                 <tbody>
                 <tr>
                     <td class="company_name">
-                        @lang('trs.company_name')
+                        @if ($book->users->role==\App\User::agency)
+                            {{$book->users->f_name." ".$book->users->l_name}}
+                        @else
+                            @lang('trs.company_name')
+                        @endif
                     </td>
                     <td class="company_logo_in_ticket">
-                        <img class="company_logo_image_ticket" src="images/{{$setting->logo}}">
+                        @if ($book->users->role==\App\User::agency)
+                            <img class="company_logo_image_ticket" src="images/{{$book->users->logo}}">
+                        @else
+                            <img class="company_logo_image_ticket" src="images/{{$setting->logo}}">
+                        @endif
                     </td>
                 </tr>
                 </tbody>
@@ -34,8 +42,8 @@
                     {{--                            <td class="ticket_bold_section">{{$passenger->first_name." ".$passenger->middle_name."".$passenger->last_name}}</td>--}}
                     {{--                        </tr>--}}
                     <tr>
-                        <td>@lang('trs.booking_number'):</td>
-                        <td class="ticket_bold_section">{{$book->UniqueId}}</td>
+                        <td>@lang('trs.airline_PNR'):</td>
+                        <td class="ticket_bold_section">{{$book->airline_pnr}}</td>
                     </tr>
                     <tr>
                         <td>@lang('trs.date'):</td>
@@ -163,36 +171,36 @@
             </div>
         </div>
 
+        @if ($book->users->role!=\App\User::agency)
+            <div class="ticket_section_container">
+                <div class="ticket_section_title">@lang('trs.price_detail')</div>
+                <div class="into_line">
 
-        <div class="ticket_section_container">
-            <div class="ticket_section_title">@lang('trs.price_detail')</div>
-            <div class="into_line">
-
-                <table>
-                    <tr>
-                        <td>@lang('trs.adult_base_price_per_each'):</td>
-                        <td class="ticket_bold_section">{{round($book->flights->costs->FarePerAdult)}} €</td>
-                    </tr>
-
-                    @if ($book->flights->costs->child)
+                    <table>
                         <tr>
-                            <td>@lang('trs.child_base_price_per_each'):</td>
-                            <td class="ticket_bold_section">{{round($book->flights->costs->FarePerChild)}} €</td>
+                            <td>@lang('trs.adult_base_price_per_each'):</td>
+                            <td class="ticket_bold_section">{{round($book->flights->costs->FarePerAdult)}} €</td>
                         </tr>
-                    @endif
 
-                    @if ($book->flights->costs->infant)
-                        <tr>
-                            <td>@lang('trs.infant_base_price_per_each'):</td>
-                            <td class="ticket_bold_section">{{round($book->flights->costs->FarePerInf)}} €</td>
-                        </tr>
-                    @endif
+                        @if ($book->flights->costs->child)
+                            <tr>
+                                <td>@lang('trs.child_base_price_per_each'):</td>
+                                <td class="ticket_bold_section">{{round($book->flights->costs->FarePerChild)}} €</td>
+                            </tr>
+                        @endif
 
-                </table>
+                        @if ($book->flights->costs->infant)
+                            <tr>
+                                <td>@lang('trs.infant_base_price_per_each'):</td>
+                                <td class="ticket_bold_section">{{round($book->flights->costs->FarePerInf)}} €</td>
+                            </tr>
+                        @endif
+
+                    </table>
+                </div>
+
             </div>
-
-        </div>
-
+        @endif
 
         <div class="ticket_section_container">
             <div class="ticket_section_title">@lang('trs.condition')</div>

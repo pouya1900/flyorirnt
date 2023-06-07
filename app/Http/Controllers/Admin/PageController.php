@@ -16,7 +16,8 @@ class PageController extends Controller
         $pages["AGB"] = Page::where('name', 'AGB')->first();
         $pages["imprint"] = Page::where('name', 'imprint')->first();
         $pages["cip"] = Page::where('name', 'cip')->first();
-        $pages["condition"] = Page::where('name', 'condition')->first();
+        $pages["condition_parto"] = Page::where('name', 'condition_parto')->first();
+        $pages["condition_ir"] = Page::where('name', 'condition_ir')->first();
         $pages["contact"] = Page::where('name', 'contact')->first();
 
         return view('admin.pages.pages', compact('pages'));

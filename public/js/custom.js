@@ -816,9 +816,21 @@ jQuery(document).ready(function ($) {
         var rangeSlider1 = document.getElementById("slide_filter1");
         var rangeSlider2 = document.getElementById("slide_filter2");
 
+        var lang = $("input[name='lang']").val();
+        var dir;
+        if (lang == "fa") {
+            dir = "rtl";
+        } else {
+            dir = "ltr";
+        }
+
         if (rangeSlider1) {
             noUiSlider.create(rangeSlider1, {
-                start: [0, parseInt($("input[name='max_waiting']").val())], connect: true, step: 30, range: {
+                start: [parseInt($('#slide_filter1').attr('data-start')), Math.min(parseInt($('#slide_filter1').attr('data-end')), parseInt($("input[name='max_waiting']").val()))],
+                direction: dir,
+                connect: true,
+                step: 30,
+                range: {
                     'min': 0, 'max': parseInt($("input[name='max_waiting']").val())
                 }
             });
@@ -889,9 +901,9 @@ jQuery(document).ready(function ($) {
 
 
             var target = "#" + $(this).attr('data-target');
-            var start_hour = 0;  //parseInt($(this).slider("values", 0) / 60);
+            var start_hour = parseInt($('#slide_filter1').attr('data-start')) / 60;  //parseInt($(this).slider("values", 0) / 60);
             var start_min = 0;  //parseInt($(this).slider("values", 0) % 60);
-            var end_hour = $("input[name='max_waiting']").val() / 60;    //parseInt($(this).slider("values", 1) / 60);
+            var end_hour = Math.min(parseInt($('#slide_filter1').attr('data-end')), parseInt($("input[name='max_waiting']").val())) / 60;    //parseInt($(this).slider("values", 1) / 60);
             var end_min = 0;   //parseInt($(this).slider("values", 1) % 60);
             if (start_hour < 10) start_hour = "0" + start_hour;
             if (start_min < 10) start_min = "0" + start_min;
@@ -903,20 +915,82 @@ jQuery(document).ready(function ($) {
 
     }
 
-    nouislidefilter_init();
-
-
-    // function for filter and pagination
-    function filtering(start, length, parent, is_none_stop, pagin_id = 0) {
-
+    function nouislidefilter_homepage_init() {
+        var rangeSlider1 = document.getElementById("slide_filter_home");
         var lang = $("input[name='lang']").val();
-        var search_id = $("input[name='sch_id']").val();
-        var order = $(".active_order").attr('data-target');
+        var dir;
+        if (lang == "fa") {
+            dir = "rtl";
+        } else {
+            dir = "ltr";
+        }
+
+        if (rangeSlider1) {
+            noUiSlider.create(rangeSlider1, {
+                start: [parseInt($("input[name='wait0']").val()), parseInt($("input[name='wait1']").val())],
+                direction: dir,
+                connect: true,
+                step: 30,
+                range: {
+                    'min': 0, 'max': parseInt($("input[name='max_waiting']").val())
+                }
+            });
+            rangeSlider1.noUiSlider.on('update', function (values, handle) {
+                var target = "#" + $("#slide_filter_home").attr('data-target');
+                var start_hour = parseInt(values[0] / 60);
+                var start_min = parseInt(values[0] % 60);
+                var end_hour = parseInt(values[1] / 60);
+                var end_min = parseInt(values[1] % 60);
+                if (start_hour < 10) start_hour = "0" + start_hour;
+                if (start_min < 10) start_min = "0" + start_min;
+                if (end_hour < 10) end_hour = "0" + end_hour;
+                if (end_min < 10) end_min = "0" + end_min;
+                $(target).val("" + start_hour + ":" + start_min + " - " + end_hour + ":" + end_min);
+            });
+            rangeSlider1.noUiSlider.on('set', function (values, handle) {
+                var start_min = values[0];
+                var end_min = values[1];
+
+                $('input[name="wait0"]').val(start_min);
+                $('input[name="wait1"]').val(end_min);
+            });
+
+        }
+
+        $(".slide_filter").each(function () {
+
+
+            var target = "#" + $(this).attr('data-target');
+            var start_hour = parseInt($("input[name='wait0']").val()) / 60;  //parseInt($(this).slider("values", 0) / 60);
+            var start_min = 0;  //parseInt($(this).slider("values", 0) % 60);
+            var end_hour = parseInt($("input[name='wait1']").val()) / 60;    //parseInt($(this).slider("values", 1) / 60);
+            var end_min = 0;   //parseInt($(this).slider("values", 1) % 60);
+            if (start_hour < 10) start_hour = "0" + start_hour;
+            if (start_min < 10) start_min = "0" + start_min;
+            if (end_hour < 10) end_hour = "0" + end_hour;
+            if (end_min < 10) end_min = "0" + end_min;
+            $(target).val("" + start_hour + ":" + start_min + " - " + end_hour + ":" + end_min);
+        });
+
+    }
+
+
+    if ($('input[name="page"]').val() == "flight") {
+        nouislidefilter_init();
+    } else if ($('input[name="page"]').val() == "home") {
+        nouislidefilter_homepage_init();
+    }
+
+
+    var is_none_stop = $("input[name='is_none_stop']").val();
+    filtering(0, 25, 2, is_none_stop);
+
+    function set_filter_array() {
 
         var filter_array = [];
+        var filter_array2 = [];
         var i = 0;
-
-        $('#ajax_flight_main_container').html("");
+        var j = 0;
 
         // generate an array for check box filter
         $('.filter_input:not(:checked)').each(function () {
@@ -926,13 +1000,24 @@ jQuery(document).ready(function ($) {
             var return_val = $(this).attr('data-return');
 
             filter_array[i] = [name, "!=", value];
+            filter_array2[j] = [name, "!=", value];
+
+            if (name == "ValidatingAirlineCode") {
+                i++;
+                filter_array[i] = ["depart_first_airline", "!=", value];
+                i++;
+                filter_array[i] = ["return_first_airline", "!=", value];
+            }
 
             i++;
+            j++;
             if (return_val) {
                 name = "return_" + name;
                 filter_array[i] = [name, "!=", value];
+                filter_array2[j] = [name, "!=", value];
 
                 i++;
+                j++;
             }
         });
 
@@ -946,19 +1031,44 @@ jQuery(document).ready(function ($) {
             var return_val = $(this).attr('data-return');
 
             filter_array[i] = [target, ">=", start_min];
+            filter_array2[j] = [target, ">=", start_min];
             i++;
+            j++;
             filter_array[i] = [target, "<=", end_min];
+            filter_array2[j] = [target, "<=", end_min];
             i++;
+            j++;
 
             if (return_val) {
                 target = "return_" + target;
                 filter_array[i] = [target, ">=", start_min];
+                filter_array2[j] = [target, ">=", start_min];
                 i++;
+                j++;
                 filter_array[i] = [target, "<=", end_min];
+                filter_array2[j] = [target, "<=", end_min];
                 i++;
+                j++;
             }
         });
 
+        return [filter_array, filter_array2];
+    }
+
+    // function for filter and pagination
+    function filtering(start, length, parent, is_none_stop, pagin_id = 0) {
+
+        var lang = $("input[name='lang']").val();
+        var search_id = $("input[name='sch_id']").val();
+        var order = $(".active_order").attr('data-target');
+
+
+        $('#ajax_flight_main_container').html("");
+
+
+        fi = set_filter_array();
+        filter_array = fi[0];
+        filter_array2 = fi[1];
 
         // ajax
         $.ajax({
@@ -969,6 +1079,7 @@ jQuery(document).ready(function ($) {
                 start: start,
                 length: length,
                 filter: filter_array,
+                filter2: filter_array2,
                 is_none_stop: is_none_stop,
                 render: pagin_id
             }, dataType: 'html', beforeSend: function () {
@@ -984,7 +1095,11 @@ jQuery(document).ready(function ($) {
                     $(post_content).html(old_data + JSON.parse(data).html);
                 } else if (parent == 1) {
                     $(".flight_main_container").remove();
-                    $(".ajax_flight_loader_container").remove();
+                    // $(".ajax_flight_loader_container").remove();
+                    $(post_content).html(JSON.parse(data).html);
+
+                } else if (parent == 2) {
+                    $(".flight_main_container").remove();
                     $(post_content).html(JSON.parse(data).html);
 
                 }
@@ -992,7 +1107,7 @@ jQuery(document).ready(function ($) {
 
                 pagination_counter = pagin_container + " .my_pagination";
 
-                x = parseInt((start + 25) / 25);
+                x = parseInt((start + length) / 25);
                 $(pagination_counter).attr('data-count', x);
 
                 flight_container = post_content + " .flight_container";
@@ -1685,30 +1800,37 @@ jQuery(document).ready(function ($) {
 
         var lang = $("input[name='lang']").val();
 
+        var json_filter = $("#json_filter").val();
+
+        var l_render = render.length;
+        $('#render_number_counter').val(l_render);
+
         render.forEach(function (item) {
 
             $.ajax({
-                url: "/ajax_flight",
-                type: "POST",
-                cache: true,
-                data: {render: item, search_id: search_id, lang: lang},
-                dataType: 'html',
-                beforeSend: function () {
-                },
-                success: function (data) {
+                url: "/ajax_flight", type: "POST", cache: true, data: {
+                    render: item, search_id: search_id, lang: lang, filter: json_filter
+                }, dataType: 'html', beforeSend: function () {
+                }, success: function (data) {
 
                     x = '#flight_main_container' + item;
 
-                    $("#ajax_flight_loader").hide();
-                    $(".ajax_flight_header_before").hide();
+                    var new_render_number_c = parseInt($('#render_number_counter').val()) - 1;
+                    $('#render_number_counter').val(new_render_number_c);
+
+                    if (!new_render_number_c) {
+                        $("#ajax_flight_loader").hide();
+                        $(".ajax_flight_header_before").hide();
+                    }
                     $(".ajax_flight_header_after").show();
                     $(x).html(JSON.parse(data).html);
                     $('#side_filter_main_container .theiaStickySidebar #modal-body-div .side_filter_content').html(JSON.parse(data).side_filter);
                     $('#airline_list_main_container').html(JSON.parse(data).airline_list);
                     nouislidefilter_init();
+                    var is_none_stop = $("input[name='is_none_stop']").val();
+                    filtering(0, 25, 1, is_none_stop);
 
-                },
-                error: function () {
+                }, error: function () {
 
                 }
             });

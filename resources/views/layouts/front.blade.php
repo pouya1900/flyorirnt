@@ -22,7 +22,7 @@
     <meta name="author" content="Nile-Theme">
     <meta name="robots" content="index follow">
     <meta name="googlebot" content="index follow">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="keywords"
           content="booking , flugticket , travel , flight , hotel , flug , پرواز , بلیط , هواپیما , رزرو">
     <meta name="description"
@@ -30,7 +30,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token()  }}">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,800|Poppins:300i,400,300,700,400i,500|Ubuntu:300i,400,300,700,400i,500|Raleway:400,500,600,700"
+    <link href="css/font-loader.css"
           rel="stylesheet">
 
 
@@ -55,14 +55,14 @@
 
     @if ($lang=='fa')
         <link rel="stylesheet" href="css/bootstrap-rtl.min.css">
-        <link rel="stylesheet" href="css/rtl_style.min.css?ver=3">
+        <link rel="stylesheet" href="css/rtl_style.css">
 
     @else
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/style.min.css?ver=3">
+        <link rel="stylesheet" href="css/style1.css">
 
     @endif
-{{--    <link rel="stylesheet" href="css/test_style.css?ver=3">--}}
+{{--    <link rel="stylesheet" href="css/test_style.css?ver=4">--}}
 
     <link rel="stylesheet" href="css/swiper.min.css">
     <link rel="stylesheet" href="css/media_style.min.css?ver=1">
@@ -104,7 +104,7 @@
 
 <!--DATA PICKER FILE-->
     <script src="js/moment.min.js"></script>
-    <script src="js/caleran.min.js"></script>
+    <script src="js/caleran.min.js?ver=2"></script>
     <link href="css/caleran.min.css" rel="stylesheet"/>
 
 
@@ -151,7 +151,7 @@
 
 
 <script type="text/javascript" src="js/sticky-sidebar.min.js"></script>
-<script type="text/javascript" src="js/custom.min.js?ver=2"></script>
+<script type="text/javascript" src="js/custom.js?ver=16"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/popper.min.js"></script>

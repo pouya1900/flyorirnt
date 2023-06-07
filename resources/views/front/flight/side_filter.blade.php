@@ -3,8 +3,9 @@
 @php
     $i=0;
 @endphp
-
+<input type="hidden" id="json_filter" value="{{isset($filter) ? json_encode($filter) : ""}}">
 <input type="hidden" name="max_waiting" value="{{$max}}">
+<input type="hidden" name="page" value="flight">
 <!-- stop search -->
 <div class="widget">
     {{--    <h4 class="widget-title filter_drop_down_link">--}}
@@ -46,7 +47,9 @@
                                      $dis=1;
                                 }
                                  else {$i++;
+                                     if (!isset($filter) || !$filter['stops0']){
                                  echo "checked";}
+                                 }
                         @endphp
                 >
                 <label class="custom-control-label" for="depart_stop0"> @lang('trs.none_stop')
@@ -73,7 +76,9 @@
                                          $dis=1;
                                     }
                                      else {$i++;
-                                     echo "checked";}
+                                         if (!isset($filter) || !$filter['stops1']){
+                                         echo "checked";}
+                                 }
                             @endphp
                     >
                     <label class="custom-control-label" for="depart_stop1"> 1 @lang('trs.stop')
@@ -99,7 +104,9 @@
                                          $dis=1;
      }
                                      else {$i++;
-                                     echo "checked";}
+                                     if (!isset($filter) || !$filter['stops2']){
+                                         echo "checked";}
+                                 }
                             @endphp
                     >
 
@@ -246,7 +253,7 @@
             <div class="custom-control custom-checkbox ">
                 <input type="checkbox" class="custom-control-input filter_input" id="depart_bar0"
                        name="bar_exist" {{!empty($flight) && $flight[0]["DirectionInd"]==2 ? "data-return='1'" : ""}}
-                       value="0" checked
+                       value="0" {{!isset($filter) || ! $filter["bar0"] ? "checked" : ""}}
                 >
                 <label class="custom-control-label" for="depart_bar0"> @lang('trs.without_bar')
                     <i class="bar_filter_icon"><img src="images/icon/suitcase-solid.png"></i>
@@ -263,7 +270,7 @@
             <div class="custom-control custom-checkbox ">
                 <input type="checkbox" class="custom-control-input filter_input" id="depart_bar1"
                        name="bar_exist" {{!empty($flight) && $flight[0]["DirectionInd"]==2 ? "data-return='1'" : ""}}
-                       value="1" checked
+                       value="1" {{!isset($filter) ||  ! $filter["bar1"] ? "checked" : ""}}
                 >
                 <label class="custom-control-label" for="depart_bar1"> @lang('trs.with_bar')
                     <i class="bar_filter_icon fas fa-suitcase"></i>
@@ -492,7 +499,8 @@
                            value=""
                            readonly>
                 </div>
-                <div id="slide_filter1" class="slide_filter slider-styled" data-start="0" data-end="{{$max}}" {{!empty($flight) && $flight[0]["DirectionInd"]==2 ? "data-return='1'" : ""}}
+                <div id="slide_filter1" class="slide_filter slider-styled" data-start="{{isset($filter) && $filter['wait0'] ? $filter['wait0'] : 0}}" data-end="{{isset($filter) && $filter['wait1'] ? $filter['wait1'] : $max}}"
+                     {{!empty($flight) && $flight[0]["DirectionInd"]==2 ? "data-return='1'" : ""}}
                      data-target="total_waiting"></div>
 
             </div>

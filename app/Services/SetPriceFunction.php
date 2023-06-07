@@ -6,6 +6,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Config;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class SetPriceFunction
 {
@@ -16,6 +17,9 @@ class SetPriceFunction
     public $ad_count;
     public $ch_count;
     public $in_count;
+    public $commission_adult = 0;
+    public $commission_child = 0;
+    public $commission_infant = 0;
 
 //	type 0 for adult 1 for child 2 for inf
 
@@ -23,6 +27,21 @@ class SetPriceFunction
 
     public function index($price, $type, $airline = "", $vendor = "")
     {
+
+        $price_addition_adult = 0;
+        $price_addition_child = 0;
+        $price_addition_infant = 0;
+
+        $mwst = 0.19;
+        if (Auth::check() && Auth::user()->role == User::agency) {
+            $user = Auth::user();
+            $price_addition_adult = $user->balance->commission_adult - $user->balance->discount_adult;
+            $this->commission_adult = $user->balance->commission_adult;
+            $price_addition_child = $user->balance->commission_child - $user->balance->discount_child;
+            $this->commission_child = $user->balance->commission_child;
+            $price_addition_infant = $user->balance->commission_infant - $user->balance->discount_infant;
+            $this->commission_infant = $user->balance->commission_infant;
+        }
 
         $setting = Setting::find(1);
 
@@ -49,24 +68,32 @@ class SetPriceFunction
             $margin = $min_margin;
         }
         //SRA: Fix margin: ----------------------
-		if ($airline == "IR") {
-		    $margin = ($type == 0)? 15:10;
-		} else {
-		    $margin = ($type == 0)? 25:15;
-        }	
-		//---------------------------------------
-        $EndPrice = ($vendorPrice + $payPal_fix + 1.19 * $margin) / (1 - $payPal_rate);
-
-        $EndPrice = round($EndPrice);
+        $mwst = 0;
+        if ($airline == "IR") {
+			if ($vendorPrice>900)      $margin = ($type == 0) ? 20 : 15;
+			else if ($vendorPrice>700) $margin = ($type == 0) ? 16 : 13;
+			else if ($vendorPrice>600) $margin = ($type == 0) ? 18 : 13;
+			else if ($vendorPrice>500) $margin = ($type == 0) ? 20 : 14;
+			else $margin = ($type == 0) ? 20 : 15;
+            //$margin = ($type == 0) ? 20 : 15; //IranAir: 22:16
+        } else {
+            $margin = ($type == 0) ? 20 : 15; //sonst: 25:18
+        }
+        //--------------------------------------- 
+        if ($type > 0) $payPal_fix = 0; // no fix paypal fee for children
+        $EndPrice = ($vendorPrice + $payPal_fix + (1 + $mwst) * $margin) / (1 - $payPal_rate);
+        $EndPrice = round($EndPrice + 0.2);
         $paypal_fee = $EndPrice * $payPal_rate + $payPal_fix;
+        $margin = ($EndPrice - $vendorPrice - $paypal_fee) / (1 + $mwst);
+        $tax = $margin * $mwst;
+        if ($type == 0) {
+            $EndPrice += $price_addition_adult;
+        } elseif ($type == 1) {
+            $EndPrice += $price_addition_child;
+        } else {
+            $EndPrice += $price_addition_infant;
+        }
 
-        $margin = ($EndPrice - $vendorPrice - $paypal_fee) / 1.19;
-        $tax = $margin * 0.19;
-
-        $EndPrice = round($EndPrice, 2);
-        $paypal_fee = round($paypal_fee, 2);
-        $margin = round($margin, 2);
-        $tax = round($tax, 2);
 
         if ($config["no_change"] == 1 || ($setting->pure_price && Auth::user() && Auth::user()->role == 3)) $EndPrice = $price;
 
@@ -112,5 +139,10 @@ class SetPriceFunction
     public function getTotal()
     {
         return $this->adult * $this->ad_count + $this->child * $this->ch_count + $this->infant * $this->in_count;
+    }
+
+    public function getTotalAgencyCommission()
+    {
+        return $this->commission_adult * $this->ad_count + $this->commission_child * $this->ch_count + $this->commission_infant * $this->in_count;
     }
 }

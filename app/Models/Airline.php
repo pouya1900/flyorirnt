@@ -26,7 +26,7 @@ class Airline extends Model
 
 	public static function filter_airline_list($search_id) {
 
-		return DB::select("SELECT  airlines.*,costs.*,flights.stops,flights.depart_time FROM (`airlines` INNER JOIN flights ON airlines.code=flights.ValidatingAirlineCode AND flights.search_id='$search_id' INNER JOIN costs ON flights.id=costs.flight_id) WHERE 1 GROUP BY airlines.code , flights.stops HAVING MIN(costs.TotalFare) order by name");
+		return DB::select("SELECT  airlines.*,costs.*,flights.stops,flights.return_stops,flights.depart_time FROM (`airlines` INNER JOIN flights ON airlines.code=flights.ValidatingAirlineCode AND flights.search_id='$search_id' AND (flights.stops=flights.return_stops OR flights.return_stops IS NULL) INNER JOIN costs ON flights.id=costs.flight_id) WHERE 1 GROUP BY airlines.code , flights.stops HAVING MIN(costs.TotalFare) order by name");
 
 	}
 

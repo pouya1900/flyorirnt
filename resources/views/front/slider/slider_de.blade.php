@@ -164,6 +164,10 @@
                 </div>
             </li>
             <!-- SLIDE 5-CIP -->
+<?php
+	if (0)
+	{
+?>
             <li data-index="rs-6" data-transition="fade" data-slotamount="default" data-hideafterloop="0"
                 data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300"
                 data-thumb="assets/100x50_a8dd4-ba_2.jpg" data-rotate="0" data-saveperformance="off" data-title="Slide"
@@ -236,6 +240,9 @@
                 </div>
 
             </li>
+<?php
+}
+?>			
         </ul>
         <div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>
     </div>

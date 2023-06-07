@@ -121,6 +121,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::get('/tickets/booked', 'HomeController@booked_tickets')->name('admin.booked_tickets');
     Route::get('/tickets/booking', 'HomeController@bookings')->name('admin.bookings');
 
+    Route::get('/payments', 'HomeController@payments')->name('admin.payments');
+
+
     Route::get('/cip/tickets', 'CipController@tickets')->name('admin.cip_tickets');
     Route::get('/cip/tickets/booked', 'CipController@booked_tickets')->name('admin.cip_booked_tickets');
     Route::get('/cip/tickets/booking', 'CipController@bookings')->name('admin.cip_bookings');
@@ -134,6 +137,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
     Route::post('/setting/update4', 'HomeController@update_setting4')->name('admin.update_setting4');
     Route::post('/setting/update5', 'HomeController@update_setting5')->name('admin.update_setting5');
     Route::post('/setting/update6', 'HomeController@update_setting6')->name('admin.update_setting6');
+    Route::post('/setting/update7', 'HomeController@update_setting7')->name('admin.update_setting7');
 
     Route::get('/pages', 'PageController@index')->name('admin.pages');
     Route::post('/pages/store', 'PageController@store')->name('admin.pages_store');
@@ -156,6 +160,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admi
 
     Route::get('/analyze', 'AnalyzeController@search')->name('admin.analyze');
 
+    Route::get('/agencies', 'UserController@agencies')->name('admin.agencies');
+    Route::get('/agencies/show/{user}', 'UserController@agency')->name('admin.agency.show');
+    Route::post('/agencies/update/{user}', 'UserController@agency_update')->name('admin.agency.update');
+    Route::get('/agencies/payment/update/{user}/{payment}', 'UserController@complete_payment')->name('admin.agency.complete_payment');
 
 });
 

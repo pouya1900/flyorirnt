@@ -78,6 +78,17 @@
                                 href="{{ url('/user/create') }}"><i class="fa fa-circle-o"></i> Add User</a></li>
                 </ul>
             </li>
+            <li class="{{ url()->current() ==route('admin.agencies') ? 'active' : '' }}">
+                <a href="{{ route('admin.agencies') }}">
+                    <i class="fa fa-sliders"></i> <span>Agencies</span>
+                </a>
+            </li>
+
+            <li class="{{ url()->current() ==route('admin.payments') ? 'active' : '' }}">
+                <a href="{{ route('admin.payments') }}">
+                    <i class="fa fa-sliders"></i> <span>payments</span>
+                </a>
+            </li>
 
             <li class="{{ url()->current() ==route('admin.pages') ? 'active' : '' }}">
                 <a href="{{ route('admin.pages') }}">

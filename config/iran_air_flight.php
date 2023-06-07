@@ -14,6 +14,10 @@ $array = [
         "day"     => [2, 5],
     ],
     [
+        "airport" => "HAM",
+        "day"     => [0, 3],
+    ],
+    [
         "airport" => "CGN",
         "day"     => [4],
     ],
@@ -22,9 +26,13 @@ $array = [
         "day"     => [5],
     ],
     [
-        "airport" => "HAM",
-        "day"     => [0],
+        "airport" => "CDG",
+        "day"     => [1],
     ],
+	//[
+    //    "airport" => "MUC",
+    //    "day"     => [6],
+    //]
 ];
 
 

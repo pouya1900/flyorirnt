@@ -42,6 +42,14 @@
                 {{ csrf_field()  }}
                 <div class="row">
 
+                    <input type="hidden" name="stops0" value="{{!$filter['stops0']}}">
+                    <input type="hidden" name="stops1" value="{{!$filter['stops1']}}">
+                    <input type="hidden" name="stops2" value="{{!$filter['stops2']}}">
+                    <input type="hidden" name="bar0" value="{{!$filter['bar0']}}">
+                    <input type="hidden" name="bar1" value="{{!$filter['bar1']}}">
+                    <input type="hidden" name="wait0" value="{{$filter['wait0']}}">
+                    <input type="hidden" name="wait1" value="{{$filter['wait1']}}">
+
                     <div class="col-md-3">
                         <div class="form-group margin-bottom-5px">
                             <label>@lang('trs.flying_from'):</label>

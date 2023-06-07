@@ -384,5 +384,16 @@ class MyHelperFunction
 
     }
 
+    public static function turn_4digit_format($number)
+    {
+        $number_string = "";
+        for ($i = 4; $i > strlen($number); $i--) {
+            $number_string .= "0";
+        }
+        $number_string .= $number;
+
+        return $number_string;
+    }
+
 
 }

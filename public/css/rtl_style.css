@@ -26360,8 +26360,8 @@ button:focus {
 }
 
 .flight-post .deal_container {
-
     border-right: 1px dotted #7a7a7a;
+    min-height: 170px;
 }
 
 .flight-post .deal_content {
@@ -26387,7 +26387,7 @@ button:focus {
     padding: 10px 20px;
     background-color: #1db8c1;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 10px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -27263,7 +27263,7 @@ button:focus {
     padding: 25px;
 }
 
- .refresh_btn {
+.refresh_btn {
     background-color: #1db8c1;
     border: 1px solid #1db8c1;
     -webkit-border-radius: 4px;
@@ -27313,14 +27313,14 @@ button:focus {
 
 }
 
- .ticket_body {
+.ticket_body {
 
     border: 1px solid #cccccc;
     padding: 50px;
-     margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
- .ticket_details {
+.ticket_details {
 
     margin-bottom: 40px;
     font-size: 15px;
@@ -27328,13 +27328,13 @@ button:focus {
 
 }
 
- .ticket_details div{
+.ticket_details div{
 
     float: left;
     width: 33.3%;
 }
 
- .ticket_details .left_detail {
+.ticket_details .left_detail {
 
     text-align: right;
 
@@ -27346,19 +27346,19 @@ button:focus {
 
 }
 
- .ticket_details .center_detail {
+.ticket_details .center_detail {
 
     text-align: center;
 
 }
 
- .download_ticket {
+.download_ticket {
     margin-top: 40px;
     padding: 10px;
 
 }
 
- .download_ticket .download_ticket_button {
+.download_ticket .download_ticket_button {
 
     padding: 15px;
     background: #00A0D1;
@@ -30097,7 +30097,7 @@ rounded .country .capital {
     height: 18px;
     width: 18px;
     top: -5px;
-    left: -9px; /* half the width */
+    right: -9px; /* half the width */
     border-radius: 9px;
 }
 
@@ -30137,4 +30137,86 @@ rounded .country .capital {
     padding: 2px;
     background: #f7f7f7;
     font-size: 10px;
+}
+
+
+
+.home_page_filter {
+    padding: 0px 8px;
+    margin-top: 10px;
+}
+
+.home_page_filter .home_page_filter--item {
+    padding: 8px;
+    /* box-shadow: 0 0 10px #e7b123; */
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid rgb(29 184 193 / 30%);
+
+}
+
+.home_page_filter--item--slide input {
+    border: none;
+    position: relative !important;
+    text-align: center;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.home_page_filter--item input {
+    position: absolute;
+}
+
+
+#slide_filter_home {
+    height: 10px;
+    margin-top: 10px;
+}
+
+#slide_filter_home .noUi-connect {
+    background: #1db8c1;
+}
+
+#slide_filter_home .noUi-handle {
+    height: 18px;
+    width: 18px;
+    top: -5px;
+    right: -9px; /* half the width */
+    border-radius: 9px;
+}
+
+#slide_filter_home .noUi-handle:before, #slide_filter_home .noUi-handle:after {
+    display: none;
+}
+
+
+/*invoice for agency*/
+.invoice_table td {
+    padding-bottom: 10px;
+}
+
+.invoice_table td img {
+    width: 220px;
+}
+
+.invoice_table td p {
+    margin-bottom: 0;
+}
+
+.invoice_payment {
+    text-align: center;
+}
+
+.invoice_payment p {
+    margin-bottom: 0;
+}
+
+.wallet_payed {
+    color: #0c0;
+    font-size: 14px;
+}
+
+.wallet_not_payed {
+    color: #c00;
+    font-size: 14px;
 }

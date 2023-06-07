@@ -1,4 +1,5 @@
-<form action="{{route('process_payment',['book_token'=>$book["token"]]). ($lang!="de"? "?lang=".$lang : "")}}" method="post">
+<form action="{{route('process_payment',['book_token'=>$book["token"]]). ($lang!="de"? "?lang=".$lang : "")}}"
+      method="post">
     {{csrf_field()}}
     <div class="payment_method_container">
 
@@ -42,6 +43,22 @@
 
                     <div class="col-8 payment_cell">
 
+                        @if ($agency)
+                            <div class="agency-button-container">
+                                <div>
+                                    @if(intval($agency["balance"]) >= intval($flight["TotalFare"]))
+
+                                        <a href="{{$agency["link"]}}">@lang('trs.pay_with_balance')</a>
+
+                                    @else
+                                        <span class="opacity-5">@lang('trs.pay_with_balance')</span>
+                                    @endif
+                                </div>
+
+                            </div>
+                        @endif
+
+
                         <div id="paypal-button-container"></div>
 
 
@@ -58,7 +75,7 @@
 </form>
 
 
-<script src="https://www.paypal.com/sdk/js?client-id={{$setting->payment ? env('PAYPAL_CLIENT_ID') : env('PAYPAL_TEST_CLIENT_ID')}}&currency=EUR"></script>
+<script src="https://www.paypal.com/sdk/js?client-id={{$setting->payment ? env('PAYPAL_CLIENT_ID') : env('PAYPAL_TEST_CLIENT_ID')}}&currency=EUR&intent=authorize"></script>
 
 
 <script>
