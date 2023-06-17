@@ -62,7 +62,7 @@
         <link rel="stylesheet" href="css/style1.css">
 
     @endif
-{{--    <link rel="stylesheet" href="css/test_style.css?ver=4">--}}
+    <link rel="stylesheet" href="css/test_style.css">
 
     <link rel="stylesheet" href="css/swiper.min.css">
     <link rel="stylesheet" href="css/media_style.min.css?ver=1">

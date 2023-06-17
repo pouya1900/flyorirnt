@@ -2,7 +2,7 @@
 <input type="hidden" name="page" value="home">
 <div class="container">
     <div class="row">
-        <div class="col-lg-6">
+        <div id="search_form_main_container" class="col-lg-6">
             <form method="post" action="{{route('search'). ($lang!="de"? "?lang=".$lang : "")}}" class="search_form"
                   data-toggle="1">
                 {{ csrf_field()  }}
@@ -63,8 +63,10 @@
                                                     <label class="custom-control-label"
                                                            for="bar0">@lang('trs.without_bar')</label>
                                                 </div>
-                                                <div class="custom-control custom-checkbox">                                                    <input type="checkbox" name="bar1" class="custom-control-input"
-                                                           id="bar1" {{$setting->search_with_bar ? "checked" : ""}}>
+                                                <div class="custom-control custom-checkbox"><input type="checkbox"
+                                                                                                   name="bar1"
+                                                                                                   class="custom-control-input"
+                                                                                                   id="bar1" {{$setting->search_with_bar ? "checked" : ""}}>
                                                     <label class="custom-control-label"
                                                            for="bar1">@lang('trs.with_bar')</label>
                                                 </div>
@@ -106,9 +108,11 @@
 
                                     <div class="air_trip_type">
                                         <div class="row margin-right-0px margin-left-0px">
-                                            <div class="col-6 way active_tab" data-toggle="R"
+                                            <div class="col-4 way active_tab" data-toggle="R"
                                                  data-id="1">@lang('trs.round_trip')</div>
-                                            <div class="col-6 way" data-toggle="O"
+                                            <div class="col-4 way" data-toggle="O"
+                                                 data-id="1">@lang('trs.one_way')</div>
+                                            <div class="col-4 way" data-toggle="M"
                                                  data-id="1">@lang('trs.one_way')</div>
                                         </div>
 
@@ -298,6 +302,369 @@
                                             <i
                                                     class="fa fa-search"></i> @lang('trs.flight_search')</button>
                                     </div>
+
+                                    <div id="multi" class="custom_nav">
+
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="form-group margin-bottom-5px">
+                                                    <label>@lang('trs.flying_from'):</label>
+                                                    <div class="origin"><input name="origin" type="text"
+                                                                               class="input-text full-width airport_search airport_search3"
+                                                                               data-validation="0" data-sec="3"
+                                                                               autocomplete="off"
+                                                                               placeholder="@lang('trs.flying_from')">
+                                                        <div class="search_result3 search_result"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-group margin-bottom-5px">
+                                                    <label>@lang('trs.flying_to'):</label>
+                                                    <div class="destination">
+                                                        <input name="destination" type="text"
+                                                               class="input-text full-width airport_search airport_search4"
+                                                               data-validation="0" data-sec="4"
+                                                               placeholder="@lang('trs.flying_to')"
+                                                               autocomplete="off">
+
+                                                        {{--ir airport search commented--}}
+
+                                                        {{--<div class="ir_airport_search_result ir_airport_search_result1 display_none">--}}
+
+                                                        {{--<div class="search_box" >--}}
+
+                                                        {{--@foreach($ir_airport as $item)--}}
+                                                        {{--<div class="airport_item" onclick="select_ir_airport(1,this)" >--}}
+                                                        {{--<i class="fas fa-plane"></i>--}}
+                                                        {{--<span data-code="{{$item["code"]}}" class="airport_option"  >{{$item["name"]}}-({{$item["code"]}})</span>--}}
+
+                                                        {{--</div>--}}
+                                                        {{--@endforeach--}}
+
+                                                        {{--</div>--}}
+
+                                                        {{--</div>--}}
+                                                        {{--end ir airport search commented--}}
+
+                                                        <div class="search_result4 search_result"></div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-group margin-bottom-5px">
+                                                    <label>@lang('trs.depart_date') :</label>
+                                                    <div class="date-input"><input id="date1" type="text" name="date"
+                                                                                   data-validation="0"
+                                                                                   autocomplete="off"
+                                                                                   disabled="disabled"
+                                                                                   class="input-text full-width date1"
+                                                                                   value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="form-group margin-bottom-5px">
+                                                    <label>@lang('trs.flying_from'):</label>
+                                                    <div class="origin"><input name="origin" type="text"
+                                                                               class="input-text full-width airport_search airport_search5"
+                                                                               data-validation="0" data-sec="5"
+                                                                               autocomplete="off"
+                                                                               placeholder="@lang('trs.flying_from')">
+                                                        <div class="search_result5 search_result"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-group margin-bottom-5px">
+                                                    <label>@lang('trs.flying_to'):</label>
+                                                    <div class="destination">
+
+
+                                                        <input name="destination" type="text"
+                                                               class="input-text full-width airport_search airport_search6"
+                                                               data-validation="0" data-sec="6"
+                                                               placeholder="@lang('trs.flying_to')"
+                                                               autocomplete="off">
+
+                                                        {{--ir airport search commented--}}
+
+                                                        {{--<div class="ir_airport_search_result ir_airport_search_result1 display_none">--}}
+
+                                                        {{--<div class="search_box" >--}}
+
+                                                        {{--@foreach($ir_airport as $item)--}}
+                                                        {{--<div class="airport_item" onclick="select_ir_airport(1,this)" >--}}
+                                                        {{--<i class="fas fa-plane"></i>--}}
+                                                        {{--<span data-code="{{$item["code"]}}" class="airport_option"  >{{$item["name"]}}-({{$item["code"]}})</span>--}}
+
+                                                        {{--</div>--}}
+                                                        {{--@endforeach--}}
+
+                                                        {{--</div>--}}
+
+                                                        {{--</div>--}}
+                                                        {{--end ir airport search commented--}}
+
+                                                        <div class="search_result6 search_result"></div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-group margin-bottom-5px">
+                                                    <label>@lang('trs.depart_date') :</label>
+                                                    <div class="date-input"><input id="date1" type="text" name="date"
+                                                                                   data-validation="0"
+                                                                                   autocomplete="off"
+                                                                                   disabled="disabled"
+                                                                                   class="input-text full-width date1"
+                                                                                   value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="add_multi" data-count="2"><span>+</span></div>
+
+                                        <div class="addition_multi addition_multi3">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <div class="form-group margin-bottom-5px">
+                                                        <label>@lang('trs.flying_from'):</label>
+                                                        <div class="origin"><input name="origin" type="text"
+                                                                                   class="input-text full-width airport_search airport_search1"
+                                                                                   data-validation="0" data-sec="1"
+                                                                                   autocomplete="off"
+                                                                                   placeholder="@lang('trs.flying_from')">
+                                                            <div class="search_result1 search_result"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group margin-bottom-5px">
+                                                        <label>@lang('trs.flying_to'):</label>
+                                                        <div class="destination">
+
+
+                                                            <input name="destination" type="text"
+                                                                   class="input-text full-width airport_search airport_search2"
+                                                                   data-validation="0" data-sec="2"
+                                                                   placeholder="@lang('trs.flying_to')"
+                                                                   autocomplete="off">
+
+                                                            {{--ir airport search commented--}}
+
+                                                            {{--<div class="ir_airport_search_result ir_airport_search_result1 display_none">--}}
+
+                                                            {{--<div class="search_box" >--}}
+
+                                                            {{--@foreach($ir_airport as $item)--}}
+                                                            {{--<div class="airport_item" onclick="select_ir_airport(1,this)" >--}}
+                                                            {{--<i class="fas fa-plane"></i>--}}
+                                                            {{--<span data-code="{{$item["code"]}}" class="airport_option"  >{{$item["name"]}}-({{$item["code"]}})</span>--}}
+
+                                                            {{--</div>--}}
+                                                            {{--@endforeach--}}
+
+                                                            {{--</div>--}}
+
+                                                            {{--</div>--}}
+                                                            {{--end ir airport search commented--}}
+
+                                                            <div class="search_result2 search_result"></div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group margin-bottom-5px">
+                                                        <label>@lang('trs.depart_date') :</label>
+                                                        <div class="date-input"><input id="date1" type="text"
+                                                                                       name="date"
+                                                                                       data-validation="0"
+                                                                                       autocomplete="off"
+                                                                                       disabled="disabled"
+                                                                                       class="input-text full-width date1"
+                                                                                       value="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="addition_multi addition_multi4">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <div class="form-group margin-bottom-5px">
+                                                        <label>@lang('trs.flying_from'):</label>
+                                                        <div class="origin"><input name="origin" type="text"
+                                                                                   class="input-text full-width airport_search airport_search1"
+                                                                                   data-validation="0" data-sec="1"
+                                                                                   autocomplete="off"
+                                                                                   placeholder="@lang('trs.flying_from')">
+                                                            <div class="search_result1 search_result"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group margin-bottom-5px">
+                                                        <label>@lang('trs.flying_to'):</label>
+                                                        <div class="destination">
+
+
+                                                            <input name="destination" type="text"
+                                                                   class="input-text full-width airport_search airport_search2"
+                                                                   data-validation="0" data-sec="2"
+                                                                   placeholder="@lang('trs.flying_to')"
+                                                                   autocomplete="off">
+
+                                                            {{--ir airport search commented--}}
+
+                                                            {{--<div class="ir_airport_search_result ir_airport_search_result1 display_none">--}}
+
+                                                            {{--<div class="search_box" >--}}
+
+                                                            {{--@foreach($ir_airport as $item)--}}
+                                                            {{--<div class="airport_item" onclick="select_ir_airport(1,this)" >--}}
+                                                            {{--<i class="fas fa-plane"></i>--}}
+                                                            {{--<span data-code="{{$item["code"]}}" class="airport_option"  >{{$item["name"]}}-({{$item["code"]}})</span>--}}
+
+                                                            {{--</div>--}}
+                                                            {{--@endforeach--}}
+
+                                                            {{--</div>--}}
+
+                                                            {{--</div>--}}
+                                                            {{--end ir airport search commented--}}
+
+                                                            <div class="search_result2 search_result"></div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group margin-bottom-5px">
+                                                        <label>@lang('trs.depart_date') :</label>
+                                                        <div class="date-input"><input id="date1" type="text"
+                                                                                       name="date"
+                                                                                       data-validation="0"
+                                                                                       autocomplete="off"
+                                                                                       disabled="disabled"
+                                                                                       class="input-text full-width date1"
+                                                                                       value="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group margin-bottom-10px">
+
+                                            <div class="flight_type">
+                                                <select class="select_type" name="flight_class">
+
+                                                    <option value="economy">@lang('trs.economy')</option>
+                                                    <option value="premium">@lang('trs.premium')</option>
+                                                    <option value="business">@lang('trs.business')</option>
+                                                    <option value="first">@lang('trs.first')</option>
+
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group margin-bottom-10px">
+
+                                            <div class="flight_type">
+
+                                                <div class="row margin-0px">
+
+                                                    <div class="col-4 padding-right-5px padding-left-5px">
+
+                                                        <div class="count_h">
+
+                                                            <div class="font-weight-600 margin-bottom-5px">@lang('trs.adults')</div>
+                                                            <div class="counter_h">
+
+                                                                <div class="count_h_up count_btn">+</div>
+                                                                <input type="text" class="count_number" readonly
+                                                                       value="1"
+                                                                       data-min="1" data-max="9" id="adl" name="adl">
+                                                                <div class="count_h_down count_btn">-</div>
+
+                                                            </div>
+                                                            <div class="age_range">(+12 @lang('trs.years'))</div>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-4 padding-right-5px padding-left-5px">
+
+                                                        <div class="count_h">
+
+                                                            <div class="font-weight-600 margin-bottom-5px">@lang('trs.children')</div>
+                                                            <div class="counter_h">
+
+                                                                <div class="count_h_up count_btn">+</div>
+                                                                <input type="text" class="count_number" readonly
+                                                                       value="0"
+                                                                       data-min="0" data-max="8" id="chl" name="chl">
+                                                                <div class="count_h_down count_btn">-</div>
+
+                                                            </div>
+                                                            <div class="age_range">(2-12 @lang('trs.years'))</div>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-4 padding-right-5px padding-left-5px">
+
+                                                        <div class="count_h">
+
+                                                            <div class="font-weight-600 margin-bottom-5px">@lang('trs.infants')</div>
+                                                            <div class="counter_h">
+
+                                                                <div class="count_h_up count_btn">+</div>
+                                                                <input type="text" class="count_number" readonly
+                                                                       value="0"
+                                                                       data-min="0" data-max="8" id="inf" name="inf">
+                                                                <div class="count_h_down count_btn">-</div>
+
+                                                            </div>
+                                                            <div class="age_range">(-2 @lang('trs.years'))</div>
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group margin-bottom-15px user_select_none">
+
+
+                                            <div class="custom-control custom-checkbox display-inline">
+                                                <input type="checkbox" class="custom-control-input check_stop"
+                                                       id="stop_q" name="stop_q">
+                                                <label class="custom-control-label display-cell"
+                                                       for="stop_q">@lang('trs.none_stop')</label>
+
+                                            </div>
+
+                                        </div>
+
+                                        <button type="submit"
+                                                class="btn-sm btn-lg btn-block background-main-color text-white text-center text-uppercase font-weight-600  ">
+                                            <i
+                                                    class="fa fa-search"></i> @lang('trs.flight_search')</button>
+                                    </div>
+
                                 </div>
 
                                 {{--tab pan for flight from--}}
