@@ -271,8 +271,8 @@ class parto implements render_interface
         //$this->diff_time = Carbon::now()->diffInSeconds( $test_time1 );
 //		test for timing
 
-//        $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
-        $response = array_slice($response["PricedItineraries"], 0, 10);
+        $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
+//        $response = array_slice($response["PricedItineraries"], 0, 10);
 
         if (!$search_id) {
             $search = Search::create();

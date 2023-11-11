@@ -3199,8 +3199,8 @@ export default {
                     && this.depart_time_range.includes(String(item.depart_time_range))
                     && this.return_depart_time_range.includes(String(item.return_depart_time_range))
                     && this.ValidatingAirlineCode.includes(item.ValidatingAirlineCode)
-                    && this.slider.start[0] < item.total_waiting
-                    && this.slider.start[1] > item.total_waiting;
+                    && this.slider.start[0] <= item.total_waiting
+                    && this.slider.start[1] >= item.total_waiting;
             }).sort((a, b) => {
                 if (a.ValidatingAirlineCode == 'IR') {
                     return -1;
