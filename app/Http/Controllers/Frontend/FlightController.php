@@ -112,23 +112,10 @@ class FlightController extends Controller
 
 
         if ($search_id != 0) {
-            $flight = Flight::with([
-                'legs.airports1',
-                'legs.airports2',
-                'legs.airlines',
-                'airports1',
-                'airports2',
-                'airports3',
-                'airports4',
-                'taxes',
-                'airlines' => function ($query) {
-                    $query->distinct();
-                },
-            ])->where('search_id', '=', $search_id)->where(function ($q) use ($render) {
+            $flight = Flight::where('search_id', '=', $search_id)->where('multi_flight_id', null)->where(function ($q) use ($render) {
                 if ($render) {
                     return $q->where('render', '=', $render);
                 }
-
                 return $q->where('render', '>', 0);
             })->where($main_filter)->where(function ($q) use ($filter_waiting) {
                 if ($filter_waiting) {
@@ -139,7 +126,7 @@ class FlightController extends Controller
                     });
                 }
                 return $q;
-            })->join('costs', 'costs.flight_id', '=', 'flights.id')->orderByRaw("$order1 ASC , $order2 ASC , $order3 ASC , $order4 ASC , $order5 ASC
+            })->with('airlines', 'legs', 'legs.airlines')->join('costs', 'costs.flight_id', '=', 'flights.id')->orderByRaw("$order1 ASC , $order2 ASC , $order3 ASC , $order4 ASC , $order5 ASC
 			")->get();
 
             $flight_grouped = Flight::select('stops', DB::raw('count(*) as total'))->where('search_id', '=', $search_id)->groupBy('stops')->orderBy('stops')->get();
@@ -152,14 +139,12 @@ class FlightController extends Controller
             }
             $max = $max - ($max % 60) + 60;
 
-            $flight = json_decode(json_encode($flight), true);
-
-            $count = count($flight);
+            $count = $flight->count();
 
             if ($select_flight_id) {
                 foreach ($flight as $key => $value) {
 
-                    if ($value["id"] == $select_flight_id) {
+                    if ($value->id == $select_flight_id) {
                         $length = $key + 1;
                         break;
                     }
@@ -170,8 +155,7 @@ class FlightController extends Controller
 
             }
 
-            $flight = array_slice($flight, $start, $length);
-
+            $flight = $flight->splice($start, $length);
             $response = [
                 "count"                 => $count,
                 "flight"                => $flight,
@@ -219,8 +203,6 @@ class FlightController extends Controller
             "wait1"  => $this->request->input('wait1') ?? 3000,
         ];
 
-//        $render_number = $setting->flight_render;
-        $render_number = 0;
 
         $ajax_render = json_decode($setting->flight_render_ajax, true);
 
@@ -233,7 +215,7 @@ class FlightController extends Controller
             return redirect()->back();
         }
 
-            if ($origin_airport->country != "IR" && $destination_airport->country != "IR" && $ajax_render) {
+        if ($origin_airport->country != "IR" && $destination_airport->country != "IR" && $ajax_render) {
 
             foreach ($ajax_render as $key => $value) {
                 if ($value == Setting::iranAir) {
@@ -242,15 +224,10 @@ class FlightController extends Controller
             }
         }
 
-//        $instance_render = $this->set_render($render_number);
-
 
         $search = Search::create();
         $search_id = $search->id;
-        //        $search_id = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, 0);
-        $other_days_loader = $setting->other_days;
 
-        $response = $this->search_flight(0, 0);
 
 //        if (!$response["count"] && $ajax_render) {
 //            $render_number = $ajax_render[0];
@@ -259,17 +236,6 @@ class FlightController extends Controller
 //            $search_id = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, 0);
 //            $response = $this->search_flight($search_id, 0);
 //        }
-        $flight = $response["flight"];
-        $count = $response["count"];
-        $max = $response["max"];
-        $flight_grouped = $response["flight_grouped"];
-        $return_flight_grouped = $response["return_flight_grouped"];
-        $airlines = Airline::filter_airline($search_id);
-        $airlines = json_decode(json_encode($airlines), true);
-        $airlines_list = Airline::filter_airline_list($search_id);
-        $airlines_list = json_decode(json_encode($airlines_list), true);
-
-        $airlines_list = $this->sort_airline($airlines_list);
 
 
         $next_day_link = route('flights', [
@@ -317,7 +283,7 @@ class FlightController extends Controller
             "inf"                   => $inf,
             "none_stop"             => $none_stop,
             "search_id"             => $search_id,
-            "render"                => $render_number,
+            "render"                => "",
             "main_vendor"           => true,
             "next"                  => $next_day_link,
             "prev"                  => $prev_day_link,
@@ -340,18 +306,8 @@ class FlightController extends Controller
             "user_id"          => Auth::check() ? Auth::user()->id : null,
         ]);
 
-//		test for timing
-//		$diff_time=Carbon::now()->diffInSeconds($this->time2);
-//
-//		$data=[
-//			"parto"=>$this->diff_time,
-//			"fly"  =>$diff_time
-//		];
-//
-//		$this->test_time($data);
-//		test for timing
 
-        return response(view('front.flight.flights', compact('flight', 'airlines', 'lang', 'count', 'search_data', 'max', 'flight_grouped', 'return_flight_grouped', 'airlines_list', 'ajax_render', 'other_days_loader', 'filter')));
+        return response(view('front.flight.flightsvue', compact('lang', 'search_data', 'ajax_render', 'filter')));
 
     }
 
@@ -465,25 +421,13 @@ class FlightController extends Controller
     public function air_rules(Request $request)
     {
 
-        $flight_token = $request->flight_token;
-        $lang = $request->lang;
+        $id = $request->input('id');
 
-        $flight = Flight::where('token', 'like', $flight_token)->first();
-
+        $flight = Flight::find($id);
 
 //		choose render
         $render_number = $flight->render;
-        if ($render_number == Setting::parto) {
-            $instance_render = new Render(new parto(Setting::parto));
-        } elseif ($render_number == Setting::amadeus) {
-            $instance_render = new Render(new amadeus());
-        } elseif ($render_number == Setting::parto_demo) {
-            $instance_render = new Render(new parto(Setting::parto_demo));
-        } elseif ($render_number == Setting::iranAir) {
-            $instance_render = new Render(new iranAir(Setting::iranAir));
-        } elseif ($render_number == Setting::iranAir_demo) {
-            $instance_render = new Render(new iranAir(Setting::iranAir_demo));
-        }
+        $instance_render = $this->set_render($render_number);
 //		choose render
 
 
@@ -515,37 +459,22 @@ class FlightController extends Controller
             $rules["FareRuleText"]["return"][1] = $flight->return_arrival_airport;
         }
 
-        $returnHTML = view('front.partials.rules_modal', compact('rules', 'lang'))->render();
 
-
-        return response()->json($returnHTML);
+        return response()->json(['status' => 0, 'rules' => $rules]);
 
     }
 
     public function bagRules(Request $request)
     {
 
-        $flight_token = $request->flight_token;
-        $lang = $request->lang;
+        $id = $request->input('id');
 
-        $flight = Flight::where('token', 'like', $flight_token)->first();
-//		$flight = json_decode( json_encode( $flight ), true );
-//		$flight = $flight[0];
+        $flight = Flight::find($id);
 
 
 //		choose render
-        $render_number = $flight["render"];
-        if ($render_number == Setting::parto) {
-            $instance_render = new Render(new parto(Setting::parto));
-        } elseif ($render_number == Setting::amadeus) {
-            $instance_render = new Render(new amadeus());
-        } elseif ($render_number == Setting::parto_demo) {
-            $instance_render = new Render(new parto(Setting::parto_demo));
-        } elseif ($render_number == Setting::iranAir) {
-            $instance_render = new Render(new iranAir(Setting::iranAir));
-        } elseif ($render_number == Setting::iranAir_demo) {
-            $instance_render = new Render(new iranAir(Setting::iranAir_demo));
-        }
+        $render_number = $flight->render;
+        $instance_render = $this->set_render($render_number);
 //		choose render
 
         $response = $instance_render->bag($flight);
@@ -590,9 +519,8 @@ class FlightController extends Controller
 
         }
 
-        $returnHTML = view('front.partials.baggage_rules_modal', compact('rules', 'lang'))->render();
 
-        return response()->json($returnHTML);
+        return response()->json(['status' => 0, 'rules' => $rules]);
 
     }
 
@@ -603,7 +531,7 @@ class FlightController extends Controller
         $search_id = $request->search_id;
         $lang = $request->lang;
         $filter = $request->filter;
-        $filter = json_decode($filter, true);
+//        $filter = json_decode($filter, true);
         $ajax_render = [$render_number];
 
         $search = Search::find($search_id);
@@ -622,21 +550,11 @@ class FlightController extends Controller
             $return = "-";
         }
 //		choose render from database
-        if ($render_number == Setting::parto) {
-            $instance_render = new Render(new parto(Setting::parto));
-        } elseif ($render_number == Setting::parto_demo) {
-            $instance_render = new Render(new parto(Setting::parto_demo));
-        } elseif ($render_number == Setting::amadeus) {
-            $instance_render = new Render(new amadeus());
-        } elseif ($render_number == Setting::iranAir) {
-            $instance_render = new Render(new iranAir(Setting::iranAir));
-        } elseif ($render_number == Setting::iranAir_demo) {
-            $instance_render = new Render(new iranAir(Setting::iranAir_demo));
-        }
+        $instance_render = $this->set_render($render_number);
 //		choose render from database
 
-        $search_id = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
-
+//        $search_id = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
+        $search_id = 454;
         $response = $this->search_flight($search_id, 0, [], 0, 25, 0, $render_number);
 
 
@@ -661,15 +579,20 @@ class FlightController extends Controller
         $return_flight_grouped = $response["return_flight_grouped"];
         $airlines = Airline::filter_airline($search_id);
         $airlines = json_decode(json_encode($airlines), true);
-        $returnHTML = view('front.flight.flights_list', compact('flight', 'count', 'search_data', 'ajax_render'))->render();
-        $returnHTML2 = view('front.flight.side_filter', compact('flight', 'airlines', 'lang', 'search_data', 'max', 'flight_grouped', 'return_flight_grouped', 'filter'))->render();
-        $returnHTML3 = view('front.flight.airline_list', compact('airlines_list', 'flight_grouped'))->render();
+//        $returnHTML = view('front.flight.flights_list', compact('flight', 'count', 'search_data', 'ajax_render'))->render();
+//        $returnHTML2 = view('front.flight.side_filter', compact('flight', 'airlines', 'lang', 'search_data', 'max', 'flight_grouped', 'return_flight_grouped', 'filter'))->render();
+//        $returnHTML3 = view('front.flight.airline_list', compact('airlines_list', 'flight_grouped'))->render();
+
 
         return response()->json([
-            "html"         => $returnHTML,
-            "side_filter"  => $returnHTML2,
-            "airline_list" => $returnHTML3,
-            "count"        => $count,
+            "status"         => 0,
+            "flights"        => $flight,
+            "count"          => $count,
+            "search_data"    => $search_data,
+            "max"            => $max,
+            "airlines_list"  => $airlines_list,
+            "flight_grouped" => $flight_grouped,
+            "airlines"       => $airlines,
         ]);
 
 
@@ -690,17 +613,7 @@ class FlightController extends Controller
         $inf = $search->infant;
         $none_stop = $search->is_none_stop;
 
-        if ($render_number == Setting::parto) {
-            $instance_render = new Render(new parto(Setting::parto));
-        } elseif ($render_number == Setting::parto_demo) {
-            $instance_render = new Render(new parto(Setting::parto_demo));
-        } elseif ($render_number == Setting::amadeus) {
-            $instance_render = new Render(new amadeus());
-        } elseif ($render_number == Setting::iranAir) {
-            $instance_render = new Render(new iranAir(Setting::iranAir));
-        } elseif ($render_number == Setting::iranAir_demo) {
-            $instance_render = new Render(new iranAir(Setting::iranAir_demo));
-        }
+        $instance_render = $this->set_render($render_number);
 
 
         $flight_day = [2, 4];
@@ -1000,6 +913,262 @@ class FlightController extends Controller
         }
 
         return $month;
+    }
+
+    public function multi(Request $request, $origin1, $destination1, $depart1, $origin2, $destination2, $depart2, $class, $adl, $chl, $inf, $none_stop, $origin3 = null, $destination3 = null, $depart3 = null, $origin4 = null, $destination4 = null, $depart4 = null)
+    {
+        $actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+
+        $setting = Setting::find(1);
+
+        $lang = App::getLocale();
+
+        $city_lang = "city_" . $lang;
+
+        $origin_airport1 = Airport::where('code', '=', $origin1)->first();
+        $destination_airport1 = Airport::where('code', '=', $destination1)->first();
+
+        $origin_airport2 = Airport::where('code', '=', $origin2)->first();
+        $destination_airport2 = Airport::where('code', '=', $destination2)->first();
+
+        $origin_airport3 = Airport::where('code', '=', $origin3)->first();
+        $destination_airport3 = Airport::where('code', '=', $destination3)->first();
+
+        $origin_airport4 = Airport::where('code', '=', $origin4)->first();
+        $destination_airport4 = Airport::where('code', '=', $destination4)->first();
+
+        $filter = [
+            "stops0" => $this->request->input('stops0') ?? 0,
+            "stops1" => $this->request->input('stops1') ?? 0,
+            "stops2" => $this->request->input('stops2') ?? 0,
+            "bar0"   => $this->request->input('bar0') ?? 0,
+            "bar1"   => $this->request->input('bar1') ?? 0,
+            "wait0"  => $this->request->input('wait0') ?? 0,
+            "wait1"  => $this->request->input('wait1') ?? 3000,
+        ];
+
+        $render_number = 0;
+
+        $ajax_render = json_decode($setting->flight_render_ajax, true);
+
+        if ($ajax_render) {
+            $ajax_render = array_map('intval', $ajax_render);
+        }
+
+        if ((($origin_airport1->country != "IR" && $destination_airport1->country != "IR")
+                || (($origin_airport2->country != "IR" && $destination_airport2->country != "IR"))
+                || (($origin_airport3 && $origin_airport3->country != "IR" && $destination_airport3->country != "IR"))
+                || (($origin_airport4 && $origin_airport4->country != "IR" && $destination_airport4->country != "IR")))
+            && $ajax_render) {
+
+            foreach ($ajax_render as $key => $value) {
+                if ($value == Setting::iranAir) {
+                    unset($ajax_render[$key]);
+                }
+            }
+        }
+
+        $search = Search::create();
+        $search_id = $search->id;
+        $other_days_loader = $setting->other_days;
+
+        $response = $this->search_flight(0, 0);
+
+//        if (!$response["count"] && $ajax_render) {
+//            $render_number = $ajax_render[0];
+//            unset($ajax_render[0]);
+//            $instance_render = $this->set_render($render_number);
+//            $search_id = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, 0);
+//            $response = $this->search_flight($search_id, 0);
+//        }
+        $flight = $response["flight"];
+        $count = $response["count"];
+        $max = $response["max"];
+        $flight_grouped = $response["flight_grouped"];
+        $return_flight_grouped = $response["return_flight_grouped"];
+        $airlines = Airline::filter_airline($search_id);
+        $airlines = json_decode(json_encode($airlines), true);
+        $airlines_list = Airline::filter_airline_list($search_id);
+        $airlines_list = json_decode(json_encode($airlines_list), true);
+
+        $airlines_list = $this->sort_airline($airlines_list);
+
+
+        $next_day_link = route('multi', [
+            'origin1'      => $origin1,
+            'destination1' => $destination1,
+            'depart1'      => Carbon::createFromFormat("d.m.Y", $depart1)->addDay()->format('d.m.Y'),
+            'origin2'      => $origin2,
+            'destination2' => $destination2,
+            'depart2'      => Carbon::createFromFormat("d.m.Y", $depart2)->addDay()->format('d.m.Y'),
+            'class'        => $class,
+            'adl'          => $adl,
+            'chl'          => $chl,
+            'inf'          => $inf,
+            'none_stop'    => $none_stop,
+            'origin3'      => $origin3 ?: "",
+            'destination3' => $destination3 ?: "",
+            'depart3'      => $depart3 ? Carbon::createFromFormat("d.m.Y", $depart3)->addDay()->format('d.m.Y') : "",
+            'origin4'      => $origin4 ?: "",
+            'destination4' => $destination4 ?: "",
+            'depart4'      => $depart4 ? Carbon::createFromFormat("d.m.Y", $depart4)->addDay()->format('d.m.Y') : "",
+        ]);
+        $prev_day_link = route('multi', [
+            'origin1'      => $origin1,
+            'destination1' => $destination1,
+            'depart1'      => Carbon::createFromFormat("d.m.Y", $depart1)->addDay()->format('d.m.Y'),
+            'origin2'      => $origin2,
+            'destination2' => $destination2,
+            'depart2'      => Carbon::createFromFormat("d.m.Y", $depart2)->addDay()->format('d.m.Y'),
+            'class'        => $class,
+            'adl'          => $adl,
+            'chl'          => $chl,
+            'inf'          => $inf,
+            'none_stop'    => $none_stop,
+            'origin3'      => $origin3 ?: "",
+            'destination3' => $destination3 ?: "",
+            'depart3'      => $depart3 ? Carbon::createFromFormat("d.m.Y", $depart3)->subDay()->format('d.m.Y') : "",
+            'origin4'      => $origin4 ?: "",
+            'destination4' => $destination4 ?: "",
+            'depart4'      => $depart4 ? Carbon::createFromFormat("d.m.Y", $depart4)->subDay()->format('d.m.Y') : "",
+        ]);
+        if ($lang != "de") {
+            $next_day_link .= "?lang=" . $lang;
+            $prev_day_link .= "?lang=" . $lang;
+        }
+
+        $search_data = [
+            "class"       => $class,
+            "adl"         => $adl,
+            "chl"         => $chl,
+            "inf"         => $inf,
+            "none_stop"   => $none_stop,
+            "search_id"   => $search_id,
+            "render"      => $render_number,
+            "main_vendor" => true,
+            "next"        => $next_day_link,
+            "prev"        => $prev_day_link,
+            "multi"       => true,
+        ];
+
+        $search_json = json_encode([
+            "origin1_code"      => $origin1,
+            "destination1_code" => $destination1,
+            "depart1_date"      => date('Y-m-d', strtotime($depart1)),
+            "origin2_code"      => $origin2,
+            "destination2_code" => $destination2,
+            "depart2_date"      => date('Y-m-d', strtotime($depart2)),
+            "origin3_code"      => $origin3,
+            "destination3_code" => $destination3,
+            "depart3_date"      => date('Y-m-d', strtotime($depart3)),
+            "origin4_code"      => $origin4,
+            "destination4_code" => $destination4,
+            "depart4_date"      => date('Y-m-d', strtotime($depart4)),
+        ]);
+
+        //		update search table
+        $search->update([
+            "link"         => $actual_link,
+            "class"        => MyHelperFunction::turn_class_to_code_database($search_data["class"]),
+            "is_none_stop" => $search_data["none_stop"],
+            "adult"        => $adl,
+            "child"        => $chl,
+            "infant"       => $inf,
+            "user_id"      => Auth::check() ? Auth::user()->id : null,
+            "multi"        => $search_json,
+        ]);
+
+//		test for timing
+//		$diff_time=Carbon::now()->diffInSeconds($this->time2);
+//
+//		$data=[
+//			"parto"=>$this->diff_time,
+//			"fly"  =>$diff_time
+//		];
+//
+//		$this->test_time($data);
+//		test for timing
+
+        return response(view('front.flight.flights', compact('flight', 'airlines', 'lang', 'count', 'search_data', 'max', 'flight_grouped', 'return_flight_grouped', 'airlines_list', 'ajax_render', 'other_days_loader', 'filter')));
+
+
+    }
+
+    public function ajax_flight_multi(Request $request)
+    {
+        $render_number = intval($request->render);
+        $search_id = $request->search_id;
+        $lang = $request->lang;
+        $filter = $request->filter;
+        $filter = json_decode($filter, true);
+        $ajax_render = [$render_number];
+
+        $search = Search::find($search_id);
+        $search_multi = json_decode($search->multi);
+        $origin1 = $search_multi->origin1_code;
+        $destination1 = $search_multi->destination1_code;
+        $depart1 = $search_multi->depart1_date;
+        $origin2 = $search_multi->origin2_code;
+        $destination2 = $search_multi->destination2_code;
+        $depart2 = $search_multi->depart2_date;
+        $origin3 = $search_multi->origin3_code;
+        $destination3 = $search_multi->destination3_code;
+        $depart3 = $search_multi->depart3_date;
+        $origin4 = $search_multi->origin4_code;
+        $destination4 = $search_multi->destination4_code;
+        $depart4 = $search_multi->depart4_date;
+
+        $class = MyHelperFunction::turn_class_en($search->class);
+        $adl = $search->adult;
+        $chl = $search->child;
+        $inf = $search->infant;
+        $none_stop = $search->is_none_stop;
+
+
+//		choose render from database
+        $instance_render = $this->set_render($render_number);
+
+//		choose render from database
+
+        $search_id = $instance_render->lowfaresearchMulti($origin1, $destination1, $depart1, $origin2, $destination2, $depart2, $class, $adl, $chl, $inf, $none_stop, $search_id, $origin3, $destination3, $depart3, $origin4, $destination4, $depart4);
+
+        $response = $this->search_flight($search_id, 0, [], 0, 25, 0, $render_number);
+
+
+        $airlines_list = Airline::filter_airline_list($search_id);
+        $airlines_list = json_decode(json_encode($airlines_list), true);
+
+        $airlines_list = $this->sort_airline($airlines_list);
+
+
+        $flight = $response["flight"];
+        $count = $response["count"];
+        $search_data = [
+            "none_stop" => $none_stop,
+            "render"    => $render_number,
+            "search_id" => $search_id,
+            "adl"       => $adl,
+            "chl"       => $chl,
+            "inf"       => $inf,
+        ];
+        $max = $response["max"];
+        $flight_grouped = $response["flight_grouped"];
+        $return_flight_grouped = $response["return_flight_grouped"];
+        $airlines = Airline::filter_airline($search_id);
+        $airlines = json_decode(json_encode($airlines), true);
+
+        $returnHTML = view('front.flight.flights_list', compact('flight', 'count', 'search_data', 'ajax_render'))->render();
+        $returnHTML2 = view('front.flight.side_filter', compact('flight', 'airlines', 'lang', 'search_data', 'max', 'flight_grouped', 'return_flight_grouped', 'filter'))->render();
+        $returnHTML3 = view('front.flight.airline_list', compact('airlines_list', 'flight_grouped'))->render();
+
+        return response()->json([
+            "html"         => $returnHTML,
+            "side_filter"  => $returnHTML2,
+            "airline_list" => $returnHTML3,
+            "count"        => $count,
+        ]);
+
+
     }
 
 }

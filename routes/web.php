@@ -22,6 +22,7 @@ Route::group(['namespace' => 'Frontend'], function () {
     Route::post('/ccc', 'TestController@ccc')->name('ccc');
 
 
+    Route::get('/multi/{origin1}/{destination1}/{depart1}/{origin2}/{destination2}/{depart2}/{class}/{adl}/{chl}/{inf}/{none_stop?}/{origin3?}/{destination3?}/{depart3?}/{origin4?}/{destination4?}/{depart4?}', 'FlightController@multi')->name('multi');
     Route::get('/flights/{origin}/{destination}/{depart}/{return}/{class}/{adl}/{chl}/{inf}/{none_stop?}', 'FlightController@index')->name('flights');
     Route::post('/reorder', 'FlightController@reorder')->name('reorder');
     Route::post('/filter', 'FlightController@filter')->name('filter');
@@ -29,6 +30,7 @@ Route::group(['namespace' => 'Frontend'], function () {
     Route::post('/bagRules', 'FlightController@bagRules')->name('bagRules');
     Route::post('/select_flight', 'FlightController@select_flight')->name('select_flight');
     Route::post('/ajax_flight', 'FlightController@ajax_flight')->name('ajax_flight');
+    Route::post('/ajax_flight_multi', 'FlightController@ajax_flight_multi')->name('ajax_flight_multi');
     Route::post('/ajax_flight_other_days', 'FlightController@ajax_flight_other_days')->name('ajax_flight_other_days');
 
     Route::get('/passengers/{flight_token}', 'TicketController@passengers')->name('passengers_info');

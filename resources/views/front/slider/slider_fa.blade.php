@@ -27,7 +27,7 @@
                      data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
                      data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
                      style="z-index: 7; white-space: nowrap; font-size: 30px; line-height: 52px; font-weight: 600; color: #ffffff;font-family:Raleway;text-transform_:uppercase;">
-                      
+
                 </div>
 
                 <!-- LAYER NR. 2 -->
@@ -40,7 +40,7 @@
                      data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
                      data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
                      style="z-index: 6; white-space: nowrap; font-size: 28px; line-height: 42px; font-weight: 600; color: #00ffff;font-family:Raleway;text-transform_:uppercase;">
-                     جستجو و رزرو کن <br>راحت و سریع 
+                     جستجو و رزرو کن <br>راحت و سریع
                 </div>
                 <!-- LAYER NR. 3 -->
                 <div class="tp-caption   tp-resizeme" id="slide-8-layer-6" data-x="['left','left','center','center']"
@@ -75,7 +75,7 @@
                      data-textAlign="['inherit','inherit','center','center']" data-paddingtop="[0,0,0,0]"
                      data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
                      style="z-index: 5; min-width: 227px; max-width: 227px; white-space: nowrap; font-size: 32px; line-height: 45px; font-weight: 600; color: rgb(240, 211, 85);font-family:Raleway;text-transform_:uppercase;">
-                    
+
                 </div>
                 <!-- LAYER NR. 2 -->
                 <div class="tp-caption   tp-resizeme" id="slide-10-layer-2" data-x="['center','center','center','center']"
@@ -89,7 +89,7 @@
                      data-paddingleft="[10,10,10,10]"
                      style="z-index: 6; white-space: nowrap; font-size: 18px; line-height: 22px; font-weight: 600; color: #555555;font-family:Raleway;background-color:rgba(255, 255, 255, 0.5);">
                      راحت و سریع با پرواز مستقیم<br>
-                     رزرو و پرداخت آسان بصورت آنلاین 
+                     رزرو و پرداخت آسان بصورت آنلاین
                 </div>
             </li>
             <!-- SLIDE  3 -->
@@ -114,7 +114,7 @@
                      data-textAlign="['inherit','inherit','center','center']" data-paddingtop="[0,0,0,0]"
                      data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
                      style="z-index: 5; white-space: nowrap; font-size: 33px; line-height: 43px; font-weight: 400; color: #0071a5;font-family:Raleway;text-transform_:uppercase;">
-                     
+
                 </div>
 
                 <!-- LAYER NR. 2 -->
@@ -140,7 +140,7 @@
                      data-paddingright="[10,10,10,10]" data-paddingbottom="[10,10,10,10]"
                      data-paddingleft="[10,10,10,10]"
                      style="z-index: 7; white-space: nowrap; font-size: 22px; line-height: 22px; font-weight: 600; color: #000000;font-family:Raleway;background-color:rgba(255, 255, 255, 0.5);">
-                     بلیتت رو راحت و آسان رزرو کن 
+                     بلیتت رو راحت و آسان رزرو کن
                 </div>
 
             </li>
@@ -164,7 +164,7 @@
                      data-textAlign="['inherit','inherit','center','center']" data-paddingtop="[0,0,0,0]"
                      data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
                      style="z-index: 5; white-space: wrap; font-size: 32px; line-height: 43px; font-weight: 600; color: #ffffff;font-family:Raleway;text-transform_:uppercase;">
-                     پرواز های بین المللی به سراسر دنیا<br>جستجو و رزرو کن 
+                     پرواز های بین المللی به سراسر دنیا<br>جستجو و رزرو کن
                 </div>
             </li>
 <?php
@@ -203,7 +203,7 @@
                      data-paddingright="[10,10,10,10]" data-paddingbottom="[10,10,10,10]"
                      data-paddingleft="[10,10,10,10]"
                      style="z-index: 6; white-space: nowrap; font-size: 22px; line-height: 22px; font-weight: 600; color: #ffffff;font-family:Raleway;background-color:rgba(0, 0, 0, 0.4);">
-                    بدون صف انتظار برای <br>تحویل بار و کنترل گذرنامه 
+                    بدون صف انتظار برای <br>تحویل بار و کنترل گذرنامه
                 </div>
             <!-- LAYER NR. 3 -->
             <div class="tp-caption   tp-resizeme" id="slide-10-layer-2" data-x="['left','left','center','center']"
@@ -215,7 +215,7 @@
                      data-paddingright="[10,10,10,10]" data-paddingbottom="[10,10,10,10]"
                      data-paddingleft="[10,10,10,10]"
                      style="z-index: 6; white-space: nowrap; font-size: 22px; line-height: 22px; font-weight: 600; color: #00ffff;font-family:Raleway;background-color:rgba(0, 0, 0, 0.4)">
-                     تسریع در سوار شدن به هواپیما<br> و اینترنت پرسرعت رایگان 
+                     تسریع در سوار شدن به هواپیما<br> و اینترنت پرسرعت رایگان
                 </div>
             <!-- LAYER NR. 4 -->
             <div class="tp-caption   tp-resizeme" id="slide-10-layer-2" data-x="['left','left','center','center']"
@@ -227,7 +227,7 @@
                      data-paddingright="[10,10,10,10]" data-paddingbottom="[10,10,10,10]"
                      data-paddingleft="[10,10,10,10]"
                      style="z-index: 7; white-space: nowrap; font-size: 22px; line-height: 22px; font-weight: 600; color: #ffffff;font-family:Raleway;background-color:rgba(0, 0, 0, 0.4)">
-                     غذا و نوشیدنی 
+                     غذا و نوشیدنی
                 </div>
                 <!-- LAYER NR. 5 -->
                 <div class="tp-caption rev-btn " id="slide-10-layer-4" data-x="['left','left','center','center']"
@@ -246,7 +246,7 @@
             </li>
 <?php
 }
-?>			
+?>
         </ul>
         <div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>
     </div>
@@ -289,7 +289,7 @@
                 responsiveLevels: [1240, 1024, 778, 480],
                 visibilityLevels: [1240, 1024, 778, 480],
                 gridwidth: [1170, 1024, 778, 480],
-                gridheight: [555, 555, 500, 500],
+                gridheight: [610, 610, 500, 500],
                 lazyType: "none",
                 shadow: 0,
                 spinner: "spinner4",

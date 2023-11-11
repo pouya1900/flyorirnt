@@ -278,7 +278,7 @@
                 responsiveLevels: [1240, 1024, 778, 480],
                 visibilityLevels: [1240, 1024, 778, 480],
                 gridwidth: [1170, 1024, 778, 480],
-                gridheight: [555, 555, 500, 500],
+                gridheight: [610, 610, 500, 500],
                 lazyType: "none",
                 shadow: 0,
                 spinner: "spinner4",

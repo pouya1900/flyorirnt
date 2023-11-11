@@ -10,7 +10,7 @@
     <div class="mobile_filter_container d-lg-none">
         <div class="mobile_filter_content">
             <span id="mobile_filter_button"><i
-                        class="fas fa-filter"></i> @lang('trs.filter')</span>
+                    class="fas fa-filter"></i> @lang('trs.filter')</span>
         </div>
     </div>
     {{--    <div class="modal fade d-lg-block" id="filter_modal" tabindex="-1" role="dialog" data-backdrop="static"--}}
@@ -84,14 +84,18 @@
     @include('front.partials.search_loader')
 
     <button
-            type="button"
-            id="btn-back-to-top">
+        type="button"
+        id="btn-back-to-top">
         <i class="fas fa-arrow-up"></i>
     </button>
 
     <div id="modal-backdrop-div"></div>
 
     <input type="hidden" id="render_number_counter" value="0">
+
+    <div id="app">
+        <flights></flights>
+    </div>
 
 @endsection
 
@@ -356,7 +360,7 @@
     <script>
         jQuery(document).ready(function ($) {
             @if ($ajax_render)
-            ajax_loader_f({{json_encode($ajax_render)}}, {{$search_data["search_id"]}});
+            ajax_loader_f({{json_encode($ajax_render)}}, {{$search_data["search_id"]}}, 4);
             @endif
             @if ($other_days_loader)
             other_days_f({{$search_data["render"]}}, {{$search_data["search_id"]}});

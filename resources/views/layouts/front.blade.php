@@ -32,6 +32,7 @@
     <!-- Google Fonts -->
     <link href="css/font-loader.css"
           rel="stylesheet">
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
 
     {{--    fav icon--}}

@@ -113,7 +113,7 @@
                                             <div class="col-4 way" data-toggle="O"
                                                  data-id="1">@lang('trs.one_way')</div>
                                             <div class="col-4 way" data-toggle="M"
-                                                 data-id="1">@lang('trs.one_way')</div>
+                                                 data-id="1">@lang('trs.multi_city')</div>
                                         </div>
 
 
@@ -143,30 +143,11 @@
                                                        placeholder="@lang('trs.flying_to')"
                                                        autocomplete="off">
 
-                                                {{--ir airport search commented--}}
-
-                                                {{--<div class="ir_airport_search_result ir_airport_search_result1 display_none">--}}
-
-                                                {{--<div class="search_box" >--}}
-
-                                                {{--@foreach($ir_airport as $item)--}}
-                                                {{--<div class="airport_item" onclick="select_ir_airport(1,this)" >--}}
-                                                {{--<i class="fas fa-plane"></i>--}}
-                                                {{--<span data-code="{{$item["code"]}}" class="airport_option"  >{{$item["name"]}}-({{$item["code"]}})</span>--}}
-
-                                                {{--</div>--}}
-                                                {{--@endforeach--}}
-
-                                                {{--</div>--}}
-
-                                                {{--</div>--}}
-                                                {{--end ir airport search commented--}}
-
                                                 <div class="search_result2 search_result"></div>
 
                                             </div>
                                         </div>
-                                        <div class="row  " style='display: flex;'>
+                                        <div class="row" style='display: flex;'>
                                             <div class="form-group col-6 round_trip1">
                                                 <label>@lang('trs.depart_date') :</label>
                                                 <div class="date-input full-width">
@@ -223,7 +204,8 @@
 
                                                         <div class="count_h">
 
-                                                            <div class="font-weight-600 margin-bottom-5px">@lang('trs.adults')</div>
+                                                            <div
+                                                                class="font-weight-600 margin-bottom-5px">@lang('trs.adults')</div>
                                                             <div class="counter_h">
 
                                                                 <div class="count_h_up count_btn">+</div>
@@ -242,7 +224,8 @@
 
                                                         <div class="count_h">
 
-                                                            <div class="font-weight-600 margin-bottom-5px">@lang('trs.children')</div>
+                                                            <div
+                                                                class="font-weight-600 margin-bottom-5px">@lang('trs.children')</div>
                                                             <div class="counter_h">
 
                                                                 <div class="count_h_up count_btn">+</div>
@@ -261,7 +244,8 @@
 
                                                         <div class="count_h">
 
-                                                            <div class="font-weight-600 margin-bottom-5px">@lang('trs.infants')</div>
+                                                            <div
+                                                                class="font-weight-600 margin-bottom-5px">@lang('trs.infants')</div>
                                                             <div class="counter_h">
 
                                                                 <div class="count_h_up count_btn">+</div>
@@ -300,7 +284,7 @@
                                         <button type="submit"
                                                 class="btn-sm btn-lg btn-block background-main-color text-white text-center text-uppercase font-weight-600  ">
                                             <i
-                                                    class="fa fa-search"></i> @lang('trs.flight_search')</button>
+                                                class="fa fa-search"></i> @lang('trs.flight_search')</button>
                                     </div>
 
                                     <div id="multi" class="custom_nav">
@@ -328,25 +312,6 @@
                                                                placeholder="@lang('trs.flying_to')"
                                                                autocomplete="off">
 
-                                                        {{--ir airport search commented--}}
-
-                                                        {{--<div class="ir_airport_search_result ir_airport_search_result1 display_none">--}}
-
-                                                        {{--<div class="search_box" >--}}
-
-                                                        {{--@foreach($ir_airport as $item)--}}
-                                                        {{--<div class="airport_item" onclick="select_ir_airport(1,this)" >--}}
-                                                        {{--<i class="fas fa-plane"></i>--}}
-                                                        {{--<span data-code="{{$item["code"]}}" class="airport_option"  >{{$item["name"]}}-({{$item["code"]}})</span>--}}
-
-                                                        {{--</div>--}}
-                                                        {{--@endforeach--}}
-
-                                                        {{--</div>--}}
-
-                                                        {{--</div>--}}
-                                                        {{--end ir airport search commented--}}
-
                                                         <div class="search_result4 search_result"></div>
 
                                                     </div>
@@ -355,11 +320,12 @@
                                             <div class="col-4">
                                                 <div class="form-group margin-bottom-5px">
                                                     <label>@lang('trs.depart_date') :</label>
-                                                    <div class="date-input"><input id="date1" type="text" name="date"
+                                                    <div class="date-input"><input id="date_multi1" type="text"
+                                                                                   name="date"
                                                                                    data-validation="0"
                                                                                    autocomplete="off"
                                                                                    disabled="disabled"
-                                                                                   class="input-text full-width date1"
+                                                                                   class="input-text full-width date1 multi_date"
                                                                                    value="">
                                                     </div>
                                                 </div>
@@ -390,25 +356,6 @@
                                                                placeholder="@lang('trs.flying_to')"
                                                                autocomplete="off">
 
-                                                        {{--ir airport search commented--}}
-
-                                                        {{--<div class="ir_airport_search_result ir_airport_search_result1 display_none">--}}
-
-                                                        {{--<div class="search_box" >--}}
-
-                                                        {{--@foreach($ir_airport as $item)--}}
-                                                        {{--<div class="airport_item" onclick="select_ir_airport(1,this)" >--}}
-                                                        {{--<i class="fas fa-plane"></i>--}}
-                                                        {{--<span data-code="{{$item["code"]}}" class="airport_option"  >{{$item["name"]}}-({{$item["code"]}})</span>--}}
-
-                                                        {{--</div>--}}
-                                                        {{--@endforeach--}}
-
-                                                        {{--</div>--}}
-
-                                                        {{--</div>--}}
-                                                        {{--end ir airport search commented--}}
-
                                                         <div class="search_result6 search_result"></div>
 
                                                     </div>
@@ -417,18 +364,18 @@
                                             <div class="col-4">
                                                 <div class="form-group margin-bottom-5px">
                                                     <label>@lang('trs.depart_date') :</label>
-                                                    <div class="date-input"><input id="date1" type="text" name="date"
+                                                    <div class="date-input"><input id="date_multi2" type="text"
+                                                                                   name="date"
                                                                                    data-validation="0"
                                                                                    autocomplete="off"
                                                                                    disabled="disabled"
-                                                                                   class="input-text full-width date1"
+                                                                                   class="input-text full-width date1 multi_date"
                                                                                    value="">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="add_multi" data-count="2"><span>+</span></div>
 
                                         <div class="addition_multi addition_multi3">
                                             <div class="row">
@@ -436,11 +383,11 @@
                                                     <div class="form-group margin-bottom-5px">
                                                         <label>@lang('trs.flying_from'):</label>
                                                         <div class="origin"><input name="origin" type="text"
-                                                                                   class="input-text full-width airport_search airport_search1"
-                                                                                   data-validation="0" data-sec="1"
+                                                                                   class="input-text full-width airport_search airport_search7"
+                                                                                   data-validation="0" data-sec="7"
                                                                                    autocomplete="off"
                                                                                    placeholder="@lang('trs.flying_from')">
-                                                            <div class="search_result1 search_result"></div>
+                                                            <div class="search_result7 search_result"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -451,48 +398,30 @@
 
 
                                                             <input name="destination" type="text"
-                                                                   class="input-text full-width airport_search airport_search2"
-                                                                   data-validation="0" data-sec="2"
+                                                                   class="input-text full-width airport_search airport_search8"
+                                                                   data-validation="0" data-sec="8"
                                                                    placeholder="@lang('trs.flying_to')"
                                                                    autocomplete="off">
 
-                                                            {{--ir airport search commented--}}
-
-                                                            {{--<div class="ir_airport_search_result ir_airport_search_result1 display_none">--}}
-
-                                                            {{--<div class="search_box" >--}}
-
-                                                            {{--@foreach($ir_airport as $item)--}}
-                                                            {{--<div class="airport_item" onclick="select_ir_airport(1,this)" >--}}
-                                                            {{--<i class="fas fa-plane"></i>--}}
-                                                            {{--<span data-code="{{$item["code"]}}" class="airport_option"  >{{$item["name"]}}-({{$item["code"]}})</span>--}}
-
-                                                            {{--</div>--}}
-                                                            {{--@endforeach--}}
-
-                                                            {{--</div>--}}
-
-                                                            {{--</div>--}}
-                                                            {{--end ir airport search commented--}}
-
-                                                            <div class="search_result2 search_result"></div>
+                                                            <div class="search_result8 search_result"></div>
 
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col-3">
                                                     <div class="form-group margin-bottom-5px">
                                                         <label>@lang('trs.depart_date') :</label>
-                                                        <div class="date-input"><input id="date1" type="text"
+                                                        <div class="date-input"><input id="date_multi3" type="text"
                                                                                        name="date"
                                                                                        data-validation="0"
                                                                                        autocomplete="off"
                                                                                        disabled="disabled"
-                                                                                       class="input-text full-width date1"
+                                                                                       class="input-text full-width date1 multi_date"
                                                                                        value="">
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-1"><p class="remove_multi" data-mul="3">x</p></div>
                                             </div>
                                         </div>
                                         <div class="addition_multi addition_multi4">
@@ -501,11 +430,11 @@
                                                     <div class="form-group margin-bottom-5px">
                                                         <label>@lang('trs.flying_from'):</label>
                                                         <div class="origin"><input name="origin" type="text"
-                                                                                   class="input-text full-width airport_search airport_search1"
-                                                                                   data-validation="0" data-sec="1"
+                                                                                   class="input-text full-width airport_search airport_search9"
+                                                                                   data-validation="0" data-sec="9"
                                                                                    autocomplete="off"
                                                                                    placeholder="@lang('trs.flying_from')">
-                                                            <div class="search_result1 search_result"></div>
+                                                            <div class="search_result9 search_result"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -516,50 +445,35 @@
 
 
                                                             <input name="destination" type="text"
-                                                                   class="input-text full-width airport_search airport_search2"
-                                                                   data-validation="0" data-sec="2"
+                                                                   class="input-text full-width airport_search airport_search10"
+                                                                   data-validation="0" data-sec="10"
                                                                    placeholder="@lang('trs.flying_to')"
                                                                    autocomplete="off">
 
-                                                            {{--ir airport search commented--}}
-
-                                                            {{--<div class="ir_airport_search_result ir_airport_search_result1 display_none">--}}
-
-                                                            {{--<div class="search_box" >--}}
-
-                                                            {{--@foreach($ir_airport as $item)--}}
-                                                            {{--<div class="airport_item" onclick="select_ir_airport(1,this)" >--}}
-                                                            {{--<i class="fas fa-plane"></i>--}}
-                                                            {{--<span data-code="{{$item["code"]}}" class="airport_option"  >{{$item["name"]}}-({{$item["code"]}})</span>--}}
-
-                                                            {{--</div>--}}
-                                                            {{--@endforeach--}}
-
-                                                            {{--</div>--}}
-
-                                                            {{--</div>--}}
-                                                            {{--end ir airport search commented--}}
-
-                                                            <div class="search_result2 search_result"></div>
+                                                            <div class="search_result10 search_result"></div>
 
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col-3">
                                                     <div class="form-group margin-bottom-5px">
                                                         <label>@lang('trs.depart_date') :</label>
-                                                        <div class="date-input"><input id="date1" type="text"
+                                                        <div class="date-input"><input id="date_multi4" type="text"
                                                                                        name="date"
                                                                                        data-validation="0"
                                                                                        autocomplete="off"
                                                                                        disabled="disabled"
-                                                                                       class="input-text full-width date1"
+                                                                                       class="input-text full-width date1 multi_date"
                                                                                        value="">
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-1"><p class="remove_multi" data-mul="4">x</p></div>
                                             </div>
                                         </div>
+
+                                        <div class="add_multi" data-count="2"><span>+ Add trip</span></div>
+
 
                                         <div class="form-group margin-bottom-10px">
 
@@ -585,7 +499,8 @@
 
                                                         <div class="count_h">
 
-                                                            <div class="font-weight-600 margin-bottom-5px">@lang('trs.adults')</div>
+                                                            <div
+                                                                class="font-weight-600 margin-bottom-5px">@lang('trs.adults')</div>
                                                             <div class="counter_h">
 
                                                                 <div class="count_h_up count_btn">+</div>
@@ -604,7 +519,8 @@
 
                                                         <div class="count_h">
 
-                                                            <div class="font-weight-600 margin-bottom-5px">@lang('trs.children')</div>
+                                                            <div
+                                                                class="font-weight-600 margin-bottom-5px">@lang('trs.children')</div>
                                                             <div class="counter_h">
 
                                                                 <div class="count_h_up count_btn">+</div>
@@ -623,7 +539,8 @@
 
                                                         <div class="count_h">
 
-                                                            <div class="font-weight-600 margin-bottom-5px">@lang('trs.infants')</div>
+                                                            <div
+                                                                class="font-weight-600 margin-bottom-5px">@lang('trs.infants')</div>
                                                             <div class="counter_h">
 
                                                                 <div class="count_h_up count_btn">+</div>
@@ -662,7 +579,7 @@
                                         <button type="submit"
                                                 class="btn-sm btn-lg btn-block background-main-color text-white text-center text-uppercase font-weight-600  ">
                                             <i
-                                                    class="fa fa-search"></i> @lang('trs.flight_search')</button>
+                                                class="fa fa-search"></i> @lang('trs.flight_search')</button>
                                     </div>
 
                                 </div>

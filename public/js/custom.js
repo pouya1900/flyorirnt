@@ -180,6 +180,7 @@ jQuery(document).ready(function ($) {
             $(o).addClass("display_none");
             $(r_i).removeAttr("disabled").attr("data-validation", "1");
             $(o_i).attr("disabled", "disabled").attr("data-validation", "0");
+            $(".multi_date").attr("disabled", "disabled").attr("data-validation", "0");
             $('#round_trip').addClass("active_nav");
             $('#multi').removeClass("active_nav");
             $('#search_form_main_container').addClass("col-lg-6");
@@ -192,6 +193,7 @@ jQuery(document).ready(function ($) {
             $(r).addClass("display_none");
             $(o).removeClass("display_none");
             $(r_i).attr("disabled", "disabled").attr("data-validation", "0");
+            $(".multi_date").attr("disabled", "disabled").attr("data-validation", "0");
             $(o_i).removeAttr("disabled").attr("data-validation", "1");
             $('#round_trip').addClass("active_nav");
             $('#multi').removeClass("active_nav");
@@ -204,6 +206,7 @@ jQuery(document).ready(function ($) {
         } else {
             $(r_i).attr("disabled", "disabled").attr("data-validation", "0");
             $(o_i).attr("disabled", "disabled").attr("data-validation", "0");
+            $(".multi_date").removeAttr("disabled").attr("data-validation", "1");
             $('#round_trip').removeClass("active_nav");
             $('#multi').addClass("active_nav");
             $('#search_form_main_container').addClass("col-lg-10");
@@ -474,114 +477,8 @@ jQuery(document).ready(function ($) {
     });
 
 
-    jQuery(document).on('click', '.details_link', function (e) {
-
-        var data = $(this).attr('data-tar');
-        var render = $(this).attr('data-render');
-        var collaps = "#price_details" + render + "_" + data;
-
-        var y = ".flight_details_detail_link[data-change=" + data + "][data-render=" + render + "]";
-        var price = ".price_details_detail_link[data-change=" + data + "][data-render=" + render + "]";
-
-        var x = $(y);
-        var z = $(this).parents('.flight-post');
-
-        if (x.hasClass('details_link_active')) {
-            x.removeClass('details_link_active');
-            z.removeClass('f_p_active_bxs');
-        } else {
-            x.addClass('details_link_active');
-            z.addClass('f_p_active_bxs');
-        }
 
 
-        $(collaps).collapse('hide');
-        $(price).removeClass('details_link_active');
-    });
-
-    jQuery(document).on('click', '.price_link', function () {
-
-        var data = $(this).attr('data-tar');
-        var render = $(this).attr('data-render');
-
-        var flight = ".flight_details_detail_link[data-change=" + data + "][data-render=" + render + "]";
-        var y = ".price_details_detail_link[data-change=" + data + "][data-render=" + render + "]";
-
-        var collaps = "#flight_details" + render + "_" + data;
-        var x = $(y);
-        var z = $(this).parents('.flight-post');
-
-        if (x.hasClass('details_link_active')) {
-            x.removeClass('details_link_active');
-            z.removeClass('f_p_active_bxs');
-        } else {
-            x.addClass('details_link_active');
-            z.addClass('f_p_active_bxs');
-        }
-
-
-        $(collaps).collapse('hide');
-        $(flight).removeClass('details_link_active');
-
-    });
-
-    jQuery(document).on('click', '.orderby_item', function () {
-
-
-        var lang = $("input[name='lang']").val();
-        var search_id = $("input[name='sch_id']").val();
-        var is_none_stop = $("input[name='is_none_stop']").val();
-        var order = $(this).attr('data-target');
-        var text = ".orderby_item[data-target=" + order + "]";
-
-
-        // ajax
-        $.ajax({
-            url: "/reorder",
-            type: "POST",
-            cache: true,
-            data: {search_id: search_id, lang: lang, order: order, is_none_stop: is_none_stop},
-            dataType: 'html',
-            beforeSend: function () {
-                ajax_show(1);
-            },
-            success: function (data) {
-
-                $(".flight_main_container").remove();
-                $('#flight_main_container0').html(JSON.parse(data).html);
-                $(".orderby_item").removeClass("active_order");
-                $(text).addClass("active_order");
-
-                var count = $(".flight_container").length;
-                $(".pagination_count_span").html(count);
-
-                if ($(".flight_container").length == JSON.parse(data).count) {
-                    $(".my_pagination").hide();
-                } else {
-                    $(".my_pagination").show();
-
-                }
-
-                $(".pagination_total_span").html(JSON.parse(data).count);
-
-                $('.filter_input').prop('checked', true);
-                $('#airline0').prop('checked', true);
-
-                $(".my_pagination").attr('data-count', 1);
-
-                // nouislidefilter_init();
-
-                ajax_show(0);
-            },
-            error: function () {
-                ajax_show(0);
-            }
-        });
-
-        // end ajax
-
-
-    });
 
 
     // pagination code
@@ -602,70 +499,9 @@ jQuery(document).ready(function ($) {
     // pagination code
 
     // filter code
-    jQuery(document).on('click', '.filter_input', function () {
-
-        var x = parseInt($(".my_pagination").attr('data-count'));
-
-        var is_none_stop = $("input[name='is_none_stop']").val();
-
-        name = $(this).attr('name');
-        fil = "input[name='" + name + "']:checked";
-        fil2 = "input[name='" + name + "']";
-        all = "input[name='" + name + "'][value='ALL']";
-        if ($(fil).length == fil2.length) {
-            $(all).prop('checked', true)
-        } else {
-            $(all).prop('checked', false)
-        }
-
-        if (($("input[name='stops']:checked").length == 1 && $("input[name='stops']:checked").val() == 0) || ($("input[name='return_stops']:checked").length == 1 && $("input[name='return_stops']:checked").val() == 0)) {
-            $("input[name='ValidatingAirlineCode']").prop('checked', true);
-        }
-
-        var length = x * 25;
-        var start = 0;
-        filtering(start, length, 1, is_none_stop);
-
-        $('html,body').animate({
-            scrollTop: $(".flight_post_body").offset().top
-        }, 1000);
-
-    })
     // filter code
 
     // only button filter
-    jQuery(document).on('click', '.only_filter', function (e) {
-
-        e.preventDefault();
-
-        var is_none_stop = $("input[name='is_none_stop']").val();
-
-        var x = $(".my_pagination").attr('data-count');
-        var input = $(this).parent('label').siblings('input');
-
-        if (input.attr('id') == "depart_stop0" || input.attr('id') == "return_stop0") {
-            $("input[name='ValidatingAirlineCode']").prop('checked', true);
-        }
-
-        var target = $(this).attr('data-target');
-
-
-        var text = "input[name=" + target + "]";
-
-        $(text).prop('checked', false);
-        input.prop('checked', true);
-
-
-        var length = x * 25;
-        var start = 0;
-        filtering(start, length, 1, is_none_stop);
-
-        $('html,body').animate({
-            scrollTop: $(".flight_post_body").offset().top
-        }, 1000);
-
-
-    })
     // only button filter
 
     // airline list filter
@@ -728,38 +564,6 @@ jQuery(document).ready(function ($) {
 
 
     // choose all airline
-    jQuery(document).on('click', '.choose_all', function (e) {
-
-        var x = $(".my_pagination").attr('data-count');
-
-        var is_none_stop = $("input[name='is_none_stop']").val();
-
-        var check = $(this).prop('checked');
-
-        var name = this.name;
-
-        var text = 'input:enabled[name=' + name + ']';
-
-        if (check) {
-            $(text).prop('checked', true);
-            $(this).prop('checked', true);
-        } else {
-            $(text).prop('checked', false);
-            $(this).prop('checked', false);
-        }
-
-
-        var length = x * 25;
-        var start = 0;
-        filtering(start, length, 1, is_none_stop);
-
-
-        $('html,body').animate({
-            scrollTop: $(".flight_post_body").offset().top
-        }, 1000);
-
-
-    })
     // choose all
 
 
@@ -1001,15 +805,16 @@ jQuery(document).ready(function ($) {
     }
 
 
-    if ($('input[name="page"]').val() == "flight") {
-        nouislidefilter_init();
-    } else if ($('input[name="page"]').val() == "home") {
-        nouislidefilter_homepage_init();
-    }
+    // if ($('input[name="page"]').val() == "flight") {
+    //     nouislidefilter_init();
+    // } else if ($('input[name="page"]').val() == "home") {
+    //     nouislidefilter_homepage_init();
+    // }
 
 
     var is_none_stop = $("input[name='is_none_stop']").val();
-    filtering(0, 25, 2, is_none_stop);
+
+    // filtering(0, 25, 2, is_none_stop);
 
     function set_filter_array() {
 
@@ -1163,42 +968,6 @@ jQuery(document).ready(function ($) {
     // function for filter and pagination
 
 
-    jQuery(document).on('click', '#ticket_rules', function (e) {
-
-        var flight_token = $(this).attr('data-token');
-
-        var lang = $("input[name='lang']").val();
-
-
-        // ajax
-        $.ajax({
-            url: "/AirRules",
-            type: "POST",
-            cache: true,
-            data: {flight_token: flight_token, lang: lang},
-            dataType: 'html',
-            beforeSend: function () {
-                ajax_show(1);
-
-            },
-            success: function (data) {
-                $('#rules_modal_container').html(JSON.parse(data));
-                $('#rules_modal').modal('show');
-                ajax_show(0);
-
-            },
-            error: function () {
-                ajax_show(0);
-
-            }
-        });
-
-        // end ajax
-
-
-        $('#mymodal').modal('show');
-
-    });
 
     jQuery(document).on('click', '#baggage_rules', function (e) {
 
@@ -1822,7 +1591,7 @@ jQuery(document).ready(function ($) {
     });
 
 
-    ajax_loader_f = function (render, search_id) {
+    ajax_loader_f = function (render, search_id, direction = 1) {
 
         var lang = $("input[name='lang']").val();
 
@@ -1830,11 +1599,17 @@ jQuery(document).ready(function ($) {
 
         var l_render = render.length;
         $('#render_number_counter').val(l_render);
+        let ajax_url;
+        if (direction != 4) {
+            ajax_url = "/ajax_flight";
+        } else {
+            ajax_url = "/ajax_flight_multi";
+        }
 
         render.forEach(function (item) {
 
             $.ajax({
-                url: "/ajax_flight", type: "POST", cache: true, data: {
+                url: ajax_url, type: "POST", cache: true, data: {
                     render: item, search_id: search_id, lang: lang, filter: json_filter
                 }, dataType: 'html', beforeSend: function () {
                 }, success: function (data) {
@@ -1854,7 +1629,7 @@ jQuery(document).ready(function ($) {
                     $('#airline_list_main_container').html(JSON.parse(data).airline_list);
                     nouislidefilter_init();
                     var is_none_stop = $("input[name='is_none_stop']").val();
-                    filtering(0, 25, 1, is_none_stop);
+                    // filtering(0, 25, 1, is_none_stop);
 
                 }, error: function () {
 
@@ -1948,6 +1723,18 @@ jQuery(document).ready(function ($) {
             $(this).data('count', 4);
             $(this).hide();
         }
+
+    });
+    $(".remove_multi").click(function () {
+        let mul = $(this).data('mul');
+
+        let div = ".addition_multi" + mul;
+
+        $(div).hide();
+
+        let add_multi = $(".add_multi");
+        let count = add_multi.data('count');
+        add_multi.show().data('count', count - 1);
 
     });
 

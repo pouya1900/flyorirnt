@@ -271,6 +271,50 @@
             startEmpty: $("#date1").val() === "",
             autoCloseOnSelect: true
         });
+
+        $("#date_multi1").caleran({
+
+            locale: userLanguage1,
+            format:"DD.MM.YYYY",
+            startOnMonday: true,
+            singleDate: true,
+            minDate: moment(),
+            startEmpty: $("#date_multi1").val() === "",
+            autoCloseOnSelect: true
+        });
+
+        $("#date_multi2").caleran({
+
+            locale: userLanguage1,
+            format:"DD.MM.YYYY",
+            startOnMonday: true,
+            singleDate: true,
+            minDate: moment(),
+            startEmpty: $("#date_multi2").val() === "",
+            autoCloseOnSelect: true
+        });
+
+        $("#date_multi3").caleran({
+
+            locale: userLanguage1,
+            format:"DD.MM.YYYY",
+            startOnMonday: true,
+            singleDate: true,
+            minDate: moment(),
+            startEmpty: $("#date_multi3").val() === "",
+            autoCloseOnSelect: true
+        });
+
+        $("#date_multi4").caleran({
+
+            locale: userLanguage1,
+            format:"DD.MM.YYYY",
+            startOnMonday: true,
+            singleDate: true,
+            minDate: moment(),
+            startEmpty: $("#date_multi4").val() === "",
+            autoCloseOnSelect: true
+        });
     </script>
 
 

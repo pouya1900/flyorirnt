@@ -4,10 +4,14 @@
          aria-controls="collapseExample">
         <div class="row margin-right-0px margin-left-0px">
             <div class="col-12 col-lg-7 search_bar_info_div">
-                <span>{{$search_data["origin_city"]."-".$search_data["origin_code_3chr"]}} @lang('trs.to') {{$search_data["destination_city"]."-".$search_data["destination_code_3chr"]}}</span>
-                <span>@lang('trs.depart'): <i
+                @if (!isset($search_data["multi"]))
+
+
+                    <span>{{$search_data["origin_city"]."-".$search_data["origin_code_3chr"]}} @lang('trs.to') {{$search_data["destination_city"]."-".$search_data["destination_code_3chr"]}}</span>
+                    <span>@lang('trs.depart'): <i
                             class="font-weight-600">{{date('d.m.Y',strtotime($search_data["depart"]))}}</i> {!! $search_data["return"] != "-" ? trans('trs.return').": <i class='font-weight-600'>".date('d.m.Y',strtotime($search_data["return"]))."</i>" : "" !!} </span>
-                <span>({{$search_data["adl"]}} adult {{$search_data["chl"] ? ", ".$search_data["chl"]." child" : ""}} {{$search_data["inf"] ? ", ".$search_data["inf"]." infant" : ""}})</span>
+                    <span>({{$search_data["adl"]}} adult {{$search_data["chl"] ? ", ".$search_data["chl"]." child" : ""}} {{$search_data["inf"] ? ", ".$search_data["inf"]." infant" : ""}})</span>
+                @endif
             </div>
             <div class="col-12 col-lg-5 search_bar_button_div">
                 <span><a href="{{$search_data["prev"]}}" class="other_days">@lang('trs.prev_day')</a></span>
@@ -26,13 +30,16 @@
     <div class="container">
         <div class="search_nav">
 
+            @if (isset($search_data["multi"]))
 
-            <div class="way {{$search_data["return"]!="-" ? "active_tab" : ""}}" data-toggle="R"
-                 data-id="1">@lang('trs.round_trip')
-            </div>
-            <div class="way {{$search_data["return"]=="-" ? "active_tab" : ""}}" data-toggle="O"
-                 data-id="1">@lang('trs.one_way')
-            </div>
+            @else
+                <div class="way {{$search_data["return"]!="-" ? "active_tab" : ""}}" data-toggle="R"
+                     data-id="1">@lang('trs.round_trip')
+                </div>
+                <div class="way {{$search_data["return"]=="-" ? "active_tab" : ""}}" data-toggle="O"
+                     data-id="1">@lang('trs.one_way')
+                </div>
+            @endif
             <br class="clearfix">
         </div>
 
@@ -50,73 +57,79 @@
                     <input type="hidden" name="wait0" value="{{$filter['wait0']}}">
                     <input type="hidden" name="wait1" value="{{$filter['wait1']}}">
 
-                    <div class="col-md-3">
-                        <div class="form-group margin-bottom-5px">
-                            <label>@lang('trs.flying_from'):</label>
-                            <div class="origin"><input name="origin" type="text"
-                                                       class="input-text full-width airport_search airport_search1"
-                                                       data-validation="1" data-sec="1" autocomplete="off"
-                                                       value="{{$search_data["origin_code"]}}"
-                                                       data-country="{{$search_data["origin_country"]}}"
-                                                       data-code="{{$search_data["origin_code_3chr"]}}"
-                                                       placeholder="@lang('trs.flying_from')">
-                                <div class="search_result1 search_result"></div>
+                    @if (isset($search_data["multi"]))
+
+                    @else
+                        <div class="col-md-3">
+                            <div class="form-group margin-bottom-5px">
+                                <label>@lang('trs.flying_from'):</label>
+                                <div class="origin"><input name="origin" type="text"
+                                                           class="input-text full-width airport_search airport_search1"
+                                                           data-validation="1" data-sec="1" autocomplete="off"
+                                                           value="{{$search_data["origin_code"]}}"
+                                                           data-country="{{$search_data["origin_country"]}}"
+                                                           data-code="{{$search_data["origin_code_3chr"]}}"
+                                                           placeholder="@lang('trs.flying_from')">
+                                    <div class="search_result1 search_result"></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="col-md-3">
-                        <div class="form-group margin-bottom-5px">
-                            <label>@lang('trs.flying_to'):</label>
-                            <div class="destination"><input name="destination" type="text"
-                                                            class="input-text full-width airport_search airport_search2"
-                                                            data-validation="1" data-sec="2"
-                                                            value="{{$search_data["destination_code"]}}"
-                                                            data-country="{{$search_data["destination_country"]}}"
-                                                            data-code="{{$search_data["destination_code_3chr"]}}"
-                                                            placeholder="@lang('trs.flying_to')" autocomplete="off">
-                                <div class="search_result2 search_result"></div>
+                        <div class="col-md-3">
+                            <div class="form-group margin-bottom-5px">
+                                <label>@lang('trs.flying_to'):</label>
+                                <div class="destination"><input name="destination" type="text"
+                                                                class="input-text full-width airport_search airport_search2"
+                                                                data-validation="1" data-sec="2"
+                                                                value="{{$search_data["destination_code"]}}"
+                                                                data-country="{{$search_data["destination_country"]}}"
+                                                                data-code="{{$search_data["destination_code_3chr"]}}"
+                                                                placeholder="@lang('trs.flying_to')" autocomplete="off">
+                                    <div class="search_result2 search_result"></div>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group round_trip1 col-md-2 {{$search_data["return"]=="-" ? "display_none" : ""}}">
-                        <label>@lang('trs.depart') :</label>
-                        <div class="date-input full-width">
-                            <input id="daterange1" type="text" name="daterange_d"
-                                   data-validation="{{$search_data["return"]!="-" ? 1 : 0}}" autocomplete="off"
-                                   {{$search_data["return"]=="-" ? "disabled" : ""}}
-                                   class="input-text full-width daterange1"
-                                   data-start="{{$search_data["return"]!="-" ? date('m d Y',strtotime($search_data["depart"])) : ""}}"
-                                   value="{{$search_data["return"]!="-" ? $search_data["depart"] : ""}}">
+                        <div
+                            class="form-group round_trip1 col-md-2 {{$search_data["return"]=="-" ? "display_none" : ""}}">
+                            <label>@lang('trs.depart') :</label>
+                            <div class="date-input full-width">
+                                <input id="daterange1" type="text" name="daterange_d"
+                                       data-validation="{{$search_data["return"]!="-" ? 1 : 0}}" autocomplete="off"
+                                       {{$search_data["return"]=="-" ? "disabled" : ""}}
+                                       class="input-text full-width daterange1"
+                                       data-start="{{$search_data["return"]!="-" ? date('m d Y',strtotime($search_data["depart"])) : ""}}"
+                                       value="{{$search_data["return"]!="-" ? $search_data["depart"] : ""}}">
+                            </div>
+
                         </div>
 
-                    </div>
-
-                    <div class="form-group round_trip1 col-md-2 {{$search_data["return"]=="-" ? "display_none" : ""}}">
-                        <label>@lang('trs.return') :</label>
-                        <div class="date-input full-width">
-                            <input id="daterange2" type="text" name="daterange_r"
-                                   data-validation="{{$search_data["return"]!="-" ? 1 : 0}}" autocomplete="off"
-                                   {{$search_data["return"]=="-" ? "disabled" : ""}}
-                                   class="input-text full-width daterange1"
-                                   data-end="{{$search_data["return"]!="-" ? date('m d Y',strtotime($search_data["return"])) : ""}}"
-                                   value="{{$search_data["return"]!="-" ? $search_data["return"] : ""}}">
+                        <div
+                            class="form-group round_trip1 col-md-2 {{$search_data["return"]=="-" ? "display_none" : ""}}">
+                            <label>@lang('trs.return') :</label>
+                            <div class="date-input full-width">
+                                <input id="daterange2" type="text" name="daterange_r"
+                                       data-validation="{{$search_data["return"]!="-" ? 1 : 0}}" autocomplete="off"
+                                       {{$search_data["return"]=="-" ? "disabled" : ""}}
+                                       class="input-text full-width daterange1"
+                                       data-end="{{$search_data["return"]!="-" ? date('m d Y',strtotime($search_data["return"])) : ""}}"
+                                       value="{{$search_data["return"]!="-" ? $search_data["return"] : ""}}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group col-md-4 one_way1 {{$search_data["return"]!="-" ? "display_none" : ""}}">
-                        <label>@lang('trs.depart') :</label>
-                        <div class="date-input"><input id="date1" type="text" name="date"
-                                                       data-validation="{{$search_data["return"]!="-" ? 0 : 1}}"
-                                                       autocomplete="off"
-                                                       {{$search_data["return"]!="-" ? "disabled" : ""}}
-                                                       class="input-text full-width date1"
-                                                       data-start="{{$search_data["return"]=="-" ? date('m d Y',strtotime($search_data["depart"])) : ""}}"
-                                                       value="{{$search_data["return"]=="-" ? $search_data["depart"] : ""}}">
+                        <div class="form-group col-md-4 one_way1 {{$search_data["return"]!="-" ? "display_none" : ""}}">
+                            <label>@lang('trs.depart') :</label>
+                            <div class="date-input"><input id="date1" type="text" name="date"
+                                                           data-validation="{{$search_data["return"]!="-" ? 0 : 1}}"
+                                                           autocomplete="off"
+                                                           {{$search_data["return"]!="-" ? "disabled" : ""}}
+                                                           class="input-text full-width date1"
+                                                           data-start="{{$search_data["return"]=="-" ? date('m d Y',strtotime($search_data["depart"])) : ""}}"
+                                                           value="{{$search_data["return"]=="-" ? $search_data["depart"] : ""}}">
+                            </div>
                         </div>
-                    </div>
+                    @endif
 
                 </div>
 
@@ -222,7 +235,7 @@
                             <button type="submit"
                                     class="btn-sm btn-lg btn-block background-main-color text-white text-center text-uppercase font-weight-600  ">
                                 <i
-                                        class="fa fa-search"></i> @lang('trs.flight_search')
+                                    class="fa fa-search"></i> @lang('trs.flight_search')
                             </button>
                         </div>
                     </div>

@@ -26518,7 +26518,7 @@ button:focus {
     text-align: right;
 }
 
-.flight-post .flight_details .rules > div {
+.flight-post .flight_details .rules div {
     display: inline;
     margin-left: 5px;
 }
@@ -26718,10 +26718,11 @@ button:focus {
 }
 
 .widget .only_filter {
-
     opacity: 0;
-    float: right;
-
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
 }
 
 .widget .only_filter:hover {
@@ -26730,7 +26731,7 @@ button:focus {
 
 }
 
-.custom-control-label:hover > .only_filter {
+.widget_item .custom-control:hover > .only_filter {
 
     opacity: 1;
 
@@ -30177,4 +30178,13 @@ table.full-width_important {
 .wallet_not_payed {
     color: #c00;
     font-size: 14px;
+}
+
+.multi_section {
+    border-bottom: 1px dashed rgb(117, 117, 117);
+    padding-bottom: 10px;
+}
+
+.multi_section:last-child {
+    border-bottom: none;
 }

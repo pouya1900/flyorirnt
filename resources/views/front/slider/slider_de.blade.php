@@ -27,7 +27,7 @@
                      data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
                      data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
                      style="z-index: 7; white-space: nowrap; font-size: 30px; line-height: 52px; font-weight: 600; color: #ffffff;font-family:Raleway;text-transform_:uppercase;">
-                    
+
                 </div>
 
                 <!-- LAYER NR. 2 -->
@@ -73,7 +73,7 @@
                      data-textAlign="['inherit','inherit','center','center']" data-paddingtop="[0,0,0,0]"
                      data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
                      style="z-index: 5; min-width: 227px; max-width: 227px; white-space: nowrap; font-size: 32px; line-height: 45px; font-weight: 600; color: rgb(240, 211, 85);font-family:Raleway;text-transform_:uppercase;">
-                    
+
                 </div>
                 <!-- LAYER NR. 2 -->
                 <div class="tp-caption   tp-resizeme" id="slide-10-layer-2" data-x="['left','left','center','center']"
@@ -85,7 +85,7 @@
                      data-paddingright="[10,10,10,10]" data-paddingbottom="[10,10,10,10]"
                      data-paddingleft="[10,10,10,10]"
                      style="z-index: 6; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 600; color: #555555;font-family:Raleway;background-color:rgba(255, 255, 255, 0.5);">
-                    
+
                 </div>
             </li>
             <!-- SLIDE  3 -->
@@ -109,7 +109,7 @@
                      data-textAlign="['inherit','inherit','center','center']" data-paddingtop="[0,0,0,0]"
                      data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
                      style="z-index: 5; white-space: nowrap; font-size: 33px; line-height: 43px; font-weight: 400; color: #0071a5;font-family:Raleway;text-transform_:uppercase;">
-                    
+
                 </div>
 
                 <!-- LAYER NR. 2 -->
@@ -242,7 +242,7 @@
             </li>
 <?php
 }
-?>			
+?>
         </ul>
         <div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>
     </div>
@@ -285,7 +285,7 @@
                 responsiveLevels: [1240, 1024, 778, 480],
                 visibilityLevels: [1240, 1024, 778, 480],
                 gridwidth: [1170, 1024, 778, 480],
-                gridheight: [555, 555, 500, 500],
+                gridheight: [610, 610, 500, 500],
                 lazyType: "none",
                 shadow: 0,
                 spinner: "spinner4",

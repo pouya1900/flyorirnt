@@ -1,3 +1,27 @@
 .addition_multi {
     display: none;
 }
+
+.remove_multi {
+    margin-top: 100%;
+    margin-bottom: 0;
+    background-color: #f9f9f9;
+    padding: 5px;
+    border: solid 1px #eee;
+    outline: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+.add_multi {
+    background-color: #f9f9f9;
+    padding: 5px;
+    border: solid 1px #1db8c1;
+    outline: none;
+    text-align: center;
+    cursor: pointer;
+    width: max-content;
+    margin: 10px 0;
+    color: #1db8c1;
+    border-radius: 5px;
+}
