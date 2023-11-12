@@ -1093,9 +1093,9 @@ class FlightController extends Controller
 
 //		choose render from database
 
-//        $search_id = $instance_render->lowfaresearchMulti($origin1, $destination1, $depart1, $origin2, $destination2, $depart2, $class, $adl, $chl, $inf, $none_stop, $search_id, $origin3, $destination3, $depart3, $origin4, $destination4, $depart4);
+        $search_id = $instance_render->lowfaresearchMulti($origin1, $destination1, $depart1, $origin2, $destination2, $depart2, $class, $adl, $chl, $inf, $none_stop, $search_id, $origin3, $destination3, $depart3, $origin4, $destination4, $depart4);
 
-        $search_id = 536;
+//        $search_id = 536;
 
         $response = $this->search_flight($search_id, 0, [], 0, 500, 0, $render_number);
 
