@@ -274,6 +274,7 @@ class parto implements render_interface
         $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
 //        $response = array_slice($response["PricedItineraries"], 0, 10);
 
+
         if (!$search_id) {
             $search = Search::create();
             $search_id = $search->id;
@@ -671,12 +672,6 @@ class parto implements render_interface
         ];
 
         $array["OriginDestinationInformations"][] = [
-            "DepartureDateTime"       => "2023-08-08",
-            "DestinationLocationCode" => "IKA",
-            "OriginLocationCode"      => "PAR",
-        ];
-
-        $array["OriginDestinationInformations"][] = [
             "DepartureDateTime"       => $depart2,
             "DestinationLocationCode" => $destination2,
             "OriginLocationCode"      => $origin2,
@@ -716,6 +711,7 @@ class parto implements render_interface
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($array));
 
         $result = curl_exec($ch);
+
         $response = json_decode($result, true);
         curl_close($ch);
 

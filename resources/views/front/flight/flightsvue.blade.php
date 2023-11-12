@@ -36,6 +36,7 @@
             :ajax_render="{{json_encode($ajax_render)}}"
             :csrf="{{json_encode(csrf_token())}}"
             :flight_search_url="{{json_encode(route('ajax_flight'))}}"
+            :multi_search_url="{{json_encode(route('ajax_flight_multi'))}}"
             :air_rules_url="{{json_encode(route('air_rules'))}}"
             :air_bag_url="{{json_encode(route('bagRules'))}}"
             :filter="{{json_encode($filter)}}">

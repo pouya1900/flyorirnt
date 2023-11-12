@@ -1,5 +1,5 @@
 <template>
-    <div class=" flight_page_container ">
+    <div class="flight_page_container ">
         <div class="row margin-right-0px margin-left-0px">
             <div id="side_filter_main_container"
                  class="col-lg-2 d-lg-block d-none flight_side_bar_modal flight_sidebar_container sticky-sidebar padding-right-5px padding-left-5px">
@@ -1183,7 +1183,7 @@
 
 
                                                                         <div
-                                                                            v-for="logo in getDistinctAirline(multi.airlines).filter(i => i.pivot.is_return === 1)"
+                                                                            v-for="logo in getDistinctAirline(multi.airlines)"
                                                                             class="logo_leg">
                                                                             <img :src="'images/'+logo.image"
                                                                                  :alt="logo.name">
@@ -1235,7 +1235,7 @@
                                                                             class="flight_item logo_container col d-md-block d-none">
 
                                                                             <div
-                                                                                v-for="logo in getDistinctAirline(multi.airlines).filter(i => i.pivot.is_return === 1)"
+                                                                                v-for="logo in getDistinctAirline(multi.airlines)"
                                                                                 class="logo_leg">
                                                                                 <img :src="'images/'+logo.image"
                                                                                      :alt="logo.name">
@@ -1285,7 +1285,7 @@
 
                                                                             <div class="top_item f_t_time">
                                                                     <span>
-                                                                        new Date(multi.depart_time).toLocaleString('de-DE', this.time_option)
+                                                                        {{new Date(multi.depart_time).toLocaleString('de-DE', this.time_option)}}
                                                                     </span>
 
                                                                             </div>
@@ -2269,7 +2269,7 @@
 
 
                                             <div v-if="item.DirectionInd==4"
-                                                 v-for="(key,multi) in item.multi_flights"
+                                                 v-for="(multi,key) in item.multi_flights"
                                                  class="details_content">
 
                                                 <div class="details_header">
@@ -2689,9 +2689,6 @@
             </div>
 
             <!--// row -->
-
-            <div id="rules_modal_container"></div>
-
         </div>
     </div>
 
@@ -2892,6 +2889,9 @@ import 'nouislider/dist/nouislider.css';
 export default {
 
     mounted() {
+        if (this.search_data.none_stop) {
+            alert("aa");
+        }
         this.searchFlight();
         if (!this.filter.stops0) {
             this.stops.push('0')
@@ -2909,9 +2909,14 @@ export default {
         if (!this.filter.bar1) {
             this.bar_exist.push('1')
         }
+
+
+    },
+    created() {
+        window.addEventListener('scroll', this.scroll);
     },
     directives: {},
-    props: ['lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'filter', 'air_rules_url', 'air_bag_url'],
+    props: ['lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'multi_search_url', 'filter', 'air_rules_url', 'air_bag_url'],
     name: 'flights',
     methods: {
         getDistinctAirline(array) {
@@ -3007,7 +3012,10 @@ export default {
                     'lang': this.lang,
                     'filter': this.filter,
                 };
-                axios.post(this.flight_search_url, data, {headers})
+
+                let url = this.search_data.multi ? this.multi_search_url : this.flight_search_url
+
+                axios.post(url, data, {headers})
                     .then(response => {
                         if (response.data.status === 0) {
                             this.flights = response.data.flights;
@@ -3148,6 +3156,16 @@ export default {
         },
         only(widget, target) {
             this[widget] = [target];
+        },
+        scroll: function (e) {
+            if ($(".flight_page_container").height() - 280 < $(window).scrollTop()) {
+                var t = new Date().getTime();
+                if ((t - this.lastScrollUpdate) > 3000) {
+                    this.lastScrollUpdate = t;
+                    this.page++;
+                } else {
+                }
+            }
         }
     },
     data() {
@@ -3188,19 +3206,38 @@ export default {
             },
             'rangeSlider': null,
             'order': ['TotalFare', 'depart_time', 'depart_return_time', 'total', 'return_total'],
-            'order_active': 0
+            'order_active': 0,
+            'page': 1,
+            'lastScrollUpdate': 0
         }
     },
     computed: {
         resultQuery() {
             return this.flights.filter(item => {
-                return this.stops.includes(String(item.stops))
+                let x = this.stops.includes(String(item.stops))
+                    && (item.DirectionInd != 2 || this.stops.includes(String(item.return_stops)))
                     && this.bar_exist.includes(String(item.bar_exist))
+                    && (item.DirectionInd != 2 || this.bar_exist.includes(String(item.return_bar_exist)))
                     && this.depart_time_range.includes(String(item.depart_time_range))
-                    && this.return_depart_time_range.includes(String(item.return_depart_time_range))
+                    && (item.DirectionInd != 2 || this.return_depart_time_range.includes(String(item.return_depart_time_range)))
                     && this.ValidatingAirlineCode.includes(item.ValidatingAirlineCode)
                     && this.slider.start[0] <= item.total_waiting
                     && this.slider.start[1] >= item.total_waiting;
+
+                if (item.DirectionInd == 4) {
+                    let vm = this;
+                    item.multi_flights.forEach(function (multi) {
+                        x &= vm.stops.includes(String(multi.stops))
+                            && vm.bar_exist.includes(String(multi.bar_exist))
+                            && vm.depart_time_range.includes(String(multi.depart_time_range))
+                            && vm.ValidatingAirlineCode.includes(multi.ValidatingAirlineCode)
+                            && vm.slider.start[0] <= multi.total_waiting
+                            && vm.slider.start[1] >= multi.total_waiting;
+                    });
+                }
+
+                return x;
+
             }).sort((a, b) => {
                 if (a.ValidatingAirlineCode == 'IR') {
                     return -1;
@@ -3220,7 +3257,6 @@ export default {
                         x = a[item];
                         y = b[item];
                     }
-                    console.log(item);
 
 
                     if (x > y) {
@@ -3229,7 +3265,7 @@ export default {
                         return -1;
                     }
                 }
-            })
+            }).slice(0, this.page * 25)
         },
     },
 }
