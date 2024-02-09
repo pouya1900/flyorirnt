@@ -71,13 +71,14 @@ class SetPriceFunction
         $mwst = 0;
         if ($airline == "IR") {
 			if ($vendorPrice>900)      $margin = ($type == 0) ? 20 : 15;
-			else if ($vendorPrice>700) $margin = ($type == 0) ? 16 : 13;
-			else if ($vendorPrice>600) $margin = ($type == 0) ? 18 : 13;
-			else if ($vendorPrice>500) $margin = ($type == 0) ? 20 : 14;
-			else $margin = ($type == 0) ? 20 : 15;
+			else if ($vendorPrice>700) $margin = ($type == 0) ? 20 : 15;
+			else if ($vendorPrice>600) $margin = ($type == 0) ? 20 : 15;
+			else if ($vendorPrice>500) $margin = ($type == 0) ? 22 : 15;
+			else $margin = ($type == 0) ? 23 : 17;
             //$margin = ($type == 0) ? 20 : 15; //IranAir: 22:16
-        } else {
-            $margin = ($type == 0) ? 20 : 15; //sonst: 25:18
+			if ($vendor=="parto") $margin +=10;
+        } else { 
+            $margin = ($type == 0) ? 25 : 18;
         }
         //--------------------------------------- 
         if ($type > 0) $payPal_fix = 0; // no fix paypal fee for children
@@ -94,11 +95,8 @@ class SetPriceFunction
             $EndPrice += $price_addition_infant;
         }
 
-
         if ($config["no_change"] == 1 || ($setting->pure_price && Auth::user() && Auth::user()->role == 3)) $EndPrice = $price;
-
         $this->setPrice($EndPrice, $type);
-
         return $EndPrice;
     }
 

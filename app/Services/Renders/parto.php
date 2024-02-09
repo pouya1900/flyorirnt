@@ -249,6 +249,7 @@ class parto implements render_interface
         $response = json_decode($result, true);
         curl_close($ch);
 
+//        $this->log->save(json_encode($array)."\n\n----\n\n".$result);
 
 //		test for timing
         //$this->time2     = Carbon::now();
@@ -311,13 +312,16 @@ class parto implements render_interface
 
                 $leg_insert_equal[] = $leg_insert_equal_text;
 
-                if ($item["ValidatingAirlineCode"] == "IR" && ($setting->flight_render == Setting::iranAir || ($setting->flight_render_ajax && in_array(Setting::iranAir, json_decode($setting->flight_render_ajax, true))))) {
+                if ($item["ValidatingAirlineCode"] == "IR" && $destination == "IKA" && ($setting->flight_render == Setting::iranAir || ($setting->flight_render_ajax && in_array(Setting::iranAir, json_decode($setting->flight_render_ajax, true))))) {
                     continue;
                 }
                 if ($item["ValidatingAirlineCode"] == "W5") {
                     continue;
                 }
 
+                if ($class == "Y" && $item["OriginDestinationOptions"][0]["FlightSegments"][0]["CabinClassCode"] != 1) {
+                    continue;
+                }
 
                 $help_var2 = sizeof($item["OriginDestinationOptions"][0]["FlightSegments"]) - 1;
 

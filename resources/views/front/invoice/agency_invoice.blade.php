@@ -33,7 +33,7 @@
                     <tr>
                         <td>
                             <p>An:</p>
-                            <p>{{$book->users->first_name}}</p>
+                            <p>{{$book->users->f_name}}</p>
                             <p>{{$book->users->address}}</p>
                         </td>
                         <td class="text-grey-3">
@@ -158,6 +158,7 @@
                             <tr>
                                 <td class="ticket_bold_section">@lang('trs.passenger_name')</td>
                                 <td class="ticket_bold_section">@lang('trs.date_of_birth')</td>
+                                <td class="ticket_bold_section">@lang('trs.E-ticket_number')</td>
                                 <td class="ticket_bold_section">@lang('trs.price')</td>
                             </tr>
                             @foreach($book->passengers as $passenger)
@@ -165,7 +166,7 @@
                                 <tr>
                                     <td>{{\App\Services\MyHelperFunction::turn_title($passenger->gender,$passenger->type)." ".$passenger->first_name." ".$passenger->middle_name."".$passenger->last_name}}</td>
                                     <td class="date_latin_font">{{$passenger["birthday"] ? date('d-m-Y',strtotime($passenger["birthday"])) : ""}}</td>
-
+                                    <td>{{$passenger->ticket_number ? : $book->ticket_number}}</td>
                                     @if($passenger->type==1)
                                         <td>{{round($book->flights->costs->FarePerAdult - $book->flights->costs->AgencyCommissionAdult)}}
                                             €

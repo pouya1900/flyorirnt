@@ -416,38 +416,39 @@ WhatsApp: <b>+49-176-618 75 479</b></span>",
 
 //    after 26 june baggage update
 
-    "no_baggage_depart"               => "No baggage by Departure!",
-    "no_baggage_return"               => "No baggage by return!",
-    "no_baggage"                      => "No baggage!",
+    "no_baggage_depart"                            => "No baggage by Departure!",
+    "no_baggage_return"                            => "No baggage by return!",
+    "no_baggage"                                   => "No baggage!",
 
 
 //    after 8 july , adding agency
-    "credit"                          => "Credit",
-    "pay_with_balance"                => "Pay with balance",
+    "credit"                                       => "Credit",
+    "pay_with_balance"                             => "Pay with balance",
 
 //    after 18 Jun agency profile
-    "amount"                          => "Amount",
-    "payment_status"                  => "Payment status",
-    "before_balance"                  => "Before balance",
-    "after_balance"                   => "After balance",
-    "book_status"                     => "Book status",
-    "wallet"                          => "Wallet",
+    "amount"                                       => "Amount",
+    "payment_status"                               => "Payment status",
+    "before_balance"                               => "Before balance",
+    "after_balance"                                => "After balance",
+    "book_status"                                  => "Book status",
+    "wallet"                                       => "Wallet",
 
     // after 18 Feb agency invoice
-    "electronic_invoice"              => "INVOICE",
-    "account_holder"                  => "Account holder",
-    "purpose"                         => "Purpose",
-    "invoice_payment_text"            => "Payment of € :amount is requested by bank transfer to our bank account.",
-    "your_invoice_issued"             => "Your invoice issued",
-    "invoice_attached"                => "Invoice attached",
-    "invoice_number"                  => "Invoice number",
-    "issued_date"                     => "Issued date",
-    "amount_sale"                     => "Amount sale",
-    "amount_buy"                      => "Amount buy",
-    "download_invoice"                => "Download invoice",
+    "electronic_invoice"                           => "INVOICE",
+    "account_holder"                               => "Account holder",
+    "purpose"                                      => "Purpose",
+    "invoice_payment_text"                         => "Payment of € :amount is requested by bank transfer to our bank account.",
+    "your_invoice_issued"                          => "Your invoice issued",
+    "invoice_attached"                             => "Invoice attached",
+    "invoice_number"                               => "Invoice number",
+    "issued_date"                                  => "Issued date",
+    "amount_sale"                                  => "Amount sale",
+    "amount_buy"                                   => "Amount buy",
+    "download_invoice"                             => "Download invoice",
 
 //    1 march final agency update
-    "agency_not_active_you_cant_book" => "Sorry! your agency account isn't active, you cant book any ticket",
+    "agency_not_active_you_cant_book"              => "Sorry! your agency account isn't active, you cant book any ticket",
+    "iran_air_not_support_one_way_for_non_iranian" => "iran air does not issue one way ticket to Tehran for non iranian",
 
 
 ];

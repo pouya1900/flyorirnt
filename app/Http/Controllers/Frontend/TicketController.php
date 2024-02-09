@@ -218,6 +218,10 @@ class TicketController extends Controller
             }
 
 
+            if ($request['country' . $i] != "IR" && $flight['DirectionInd'] == 1 && $flight["ValidatingAirlineCode"] == "IR" && $flight["arrival_airport"] == "IKA") {
+                return response()->json(['errors' => ["country$i" => trans('trs.iran_air_not_support_one_way_for_non_iranian')]]);
+            }
+
             $passenger_insert[$i]["first_name"] = $request['f_name' . $i];
             $passenger_insert[$i]["last_name"] = $request['l_name' . $i];
             $passenger_insert[$i]["gender"] = $request['gender' . $i];
@@ -665,17 +669,22 @@ class TicketController extends Controller
         } elseif ($method == "agency") {
             $user = Auth::user();
 
-            if ($user->balance->amount < $flight["TotalFare"] - $flight["TotalAgencyCommission"]) {
-                $payment->update([
-                    "status" => "FAILED",
-                ]);
+            if ($payment->status == "CREATED") {
 
-                $book->update([
-                    "status" => "payment_failed",
-                ]);
+                if ($user->balance->amount < $flight["TotalFare"] - $flight["TotalAgencyCommission"]) {
+                    $payment->update([
+                        "status" => "FAILED",
+                    ]);
+
+                    $book->update([
+                        "status" => "payment_failed",
+                    ]);
+                    return view('front.payment_result.failed', compact('lang', 'research_data'));
+                }
+            } elseif ($payment->status != "APPROVED" && $payment->status != "COMPLETED") {
                 return view('front.payment_result.failed', compact('lang', 'research_data'));
-            }
 
+            }
         } else {
 //			other method
 
@@ -780,6 +789,8 @@ class TicketController extends Controller
                 $this_year = Carbon::now()->year;
                 $this_year = $this_year % 100;
                 $invoice_number = $book->users->code . '-' . $this_year . $number_string;
+
+                $book = $book->fresh();
 
                 $invoice_view = view('front.invoice.agency_invoice', compact('book', 'lang', 'invoice_number'))->render();
 

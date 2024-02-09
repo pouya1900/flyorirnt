@@ -43,7 +43,7 @@
                     {{--                        </tr>--}}
                     <tr>
                         <td>@lang('trs.airline_PNR'):</td>
-                        <td class="ticket_bold_section">{{$book->airline_pnr}}</td>
+                        <td class="ticket_bold_section">{{$book->airline_pnr ?: $book->UniqueId}}</td>
                     </tr>
                     <tr>
                         <td>@lang('trs.date'):</td>

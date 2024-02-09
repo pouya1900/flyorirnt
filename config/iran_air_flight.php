@@ -10,31 +10,26 @@
 
 $array = [
     [
-        "airport" => "FRA",
-        "day"     => [2, 5],
+        "airport" => "FRA",  //Frankfurt
+        "depart"  => [2, 5],
+        "return"  => [2, 5],
     ],
     [
-        "airport" => "HAM",
-        "day"     => [0, 3],
+        "airport" => "HAM",  //Hamburg
+        "depart"  => [0, 3],
+        "return"  => [0, 3],
     ],
     [
-        "airport" => "CGN",
-        "day"     => [4],
+        "airport" => "CGN",  //Köln
+        "depart"  => [1,4],
+        "return"  => [1,4],
     ],
     [
-        "airport" => "VIE",
-        "day"     => [5],
+        "airport" => "VIE",  //Wien
+        "depart"  => [5],
+        "return"  => [5],
     ],
-    [
-        "airport" => "CDG",
-        "day"     => [1],
-    ],
-	//[
-    //    "airport" => "MUC",
-    //    "day"     => [6],
-    //]
 ];
-
 
 return $array;
 

@@ -62,3 +62,51 @@ response :
 --------------------------------------
 --------------------------------------
 --------------------------------------
+23:05 2023-07-04 : 
+service : authorize
+payment : 440
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"INSTRUMENT_DECLINED","description":"The instrument presented  was either declined by the processor or bank, or it can't be used for this payment."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"6c33f13b50f80","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-INSTRUMENT_DECLINED","rel":"information_link","method":"GET"},{"href":"https:\/\/www.paypal.com\/checkoutnow?token=7G1066372R241001K","rel":"redirect","method":"GET"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+14:28 2023-10-14 : 
+service : authorize
+payment : 483
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"INSTRUMENT_DECLINED","description":"The instrument presented  was either declined by the processor or bank, or it can't be used for this payment."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"fc97f0b72d99e","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-INSTRUMENT_DECLINED","rel":"information_link","method":"GET"},{"href":"https:\/\/www.paypal.com\/checkoutnow?token=7TG484335X537524R","rel":"redirect","method":"GET"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+14:34 2023-10-14 : 
+service : authorize
+payment : 484
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"INSTRUMENT_DECLINED","description":"The instrument presented  was either declined by the processor or bank, or it can't be used for this payment."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"92e3dc9a9eae5","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-INSTRUMENT_DECLINED","rel":"information_link","method":"GET"},{"href":"https:\/\/www.paypal.com\/checkoutnow?token=42562972X1674734Y","rel":"redirect","method":"GET"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+22:22 2023-10-14 : 
+service : authorize
+payment : 485
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"INSTRUMENT_DECLINED","description":"The instrument presented  was either declined by the processor or bank, or it can't be used for this payment."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"5ff1b8f8df90a","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-INSTRUMENT_DECLINED","rel":"information_link","method":"GET"},{"href":"https:\/\/www.paypal.com\/checkoutnow?token=3S811793MJ372744S","rel":"redirect","method":"GET"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+00:33 2023-10-15 : 
+service : authorize
+payment : 494
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"INSTRUMENT_DECLINED","description":"The instrument presented  was either declined by the processor or bank, or it can't be used for this payment."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"3362b3646471d","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-INSTRUMENT_DECLINED","rel":"information_link","method":"GET"},{"href":"https:\/\/www.paypal.com\/checkoutnow?token=2Y006349193333338","rel":"redirect","method":"GET"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+23:31 2024-01-22 : 
+service : authorize
+payment : 622
+response : 
+{"name":"UNPROCESSABLE_ENTITY","details":[{"issue":"INSTRUMENT_DECLINED","description":"The instrument presented  was either declined by the processor or bank, or it can't be used for this payment."}],"message":"The requested action could not be performed, semantically incorrect, or failed business validation.","debug_id":"a36868ae9d118","links":[{"href":"https:\/\/developer.paypal.com\/docs\/api\/orders\/v2\/#error-INSTRUMENT_DECLINED","rel":"information_link","method":"GET"},{"href":"https:\/\/www.paypal.com\/checkoutnow?token=13T63396HK602852C","rel":"redirect","method":"GET"}]}
+--------------------------------------
+--------------------------------------
+--------------------------------------

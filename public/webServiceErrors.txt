@@ -878,3 +878,1897 @@ response :
 --------------------------------------
 --------------------------------------
 --------------------------------------
+14:13 2023-06-10 : 
+service : AirBook
+flight : IR722.....HAM->IKA......2023-06-22 13:15:00->2023-06-22 20:05:00
+return :IKA->HAM......2023-07-24 07:45:00->2023-07-24 11:45:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2023-06-10T14:13:11.000000+02:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR722" ResBookDesigCode="N" DepartureDateTime="2023-06-22T13:15:00.000000+02:00" ArrivalDateTime="2023-06-22T20:05:00.000000+02:00" Duration="05:20:00" StopQuantity="0" RPH="121520">
+           <DepartureAirport LocationCode="HAM"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus A330-200"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="N" ResBookDesigQuantity="2"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR723" ResBookDesigCode="M" DepartureDateTime="2023-07-24T07:45:00.000000+02:00" ArrivalDateTime="2023-07-24T11:45:00.000000+02:00" Duration="05:30" StopQuantity="0" RPH="120491">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="HAM"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus A330-200"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="M" ResBookDesigQuantity="3"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="888.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="1023.70"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1994-12-22" PassengerTypeCode="ADT" AccompaniedByInfantInd="true" Gender="F" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Mrs</NamePrefix>
+				<GivenName>AHMADI</GivenName>
+				<Surname>MOHADESSE</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="C1TLG2NTY" DocType="2" ExpireDate="2033-03-22" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler>
+		<AirTraveler BirthDate="2020-03-28" PassengerTypeCode="CHD" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Master</NamePrefix>
+				<GivenName>AHMADI</GivenName>
+				<Surname>ELYAS</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="2"/><Document  DocID="G6368873" DocType="2" ExpireDate="2026-09-22" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler>
+		<AirTraveler BirthDate="2022-12-25" PassengerTypeCode="INF" AccompaniedByInfantInd="false" Gender="F" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Miss</NamePrefix>
+				<GivenName>AHMADI</GivenName>
+				<Surname>ELNAZ</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="3"/><Document  DocID="G9177288" DocType="2" ExpireDate="2024-06-08" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>AHMADI</GivenName>
+                <Surname>MOHADESSE</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)1738010505"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>info@hypertise.de</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="1023.70"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Error Occurred- please report","Code":"197"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+17:22 2023-09-21 : 
+service : AirBook
+flight : TK7771.....CGN->IKA......2023-10-07 12:00:00->2023-10-08 01:30:00
+return :IKA->CGN......2023-10-30 09:35:00->2023-10-30 17:00:00
+request : 
+{"FareSourceCode":"616232666665613237663663346332396238643163353435303334393734363526333826373133393437313137","ClientUniqueId":"213Z490L15612951","TravelerInfo":{"PhoneNumber":"+4917648721377","Email":"sanaz.firouzi@yahoo.com","AirTravelers":[{"DateOfBirth":"1984-04-11","Gender":1,"PassengerType":1,"PassengerName":{"PassengerFirstName":"Sanaz","PassengerMiddleName":null,"PassengerLastName":"Firouz Firouzkohi ","PassengerTitle":"Mrs"},"Passport":{"Country":"IR","ExpiryDate":"2033-07-16","IssueDate":null,"PassportNumber":"C2WJ5KYYK"},"NationalId":null,"Nationality":"IR","SeatPreference":0,"MealPreference":0}]}}
+response : 
+{"Success":false,"TktTimeLimit":null,"Category":null,"Status":null,"UniqueId":null,"Error":{"Id":"Err0212011","Message":"Passenger's passport number is not valid."},"PriceChange":false}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+09:47 2023-10-18 : 
+service : AirBook
+flight : IR722.....HAM->IKA......2023-10-26 13:15:00->2023-10-26 20:05:00
+return :IKA->HAM......2023-11-13 08:30:00->2023-11-13 11:45:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2023-10-18T09:47:53.000000+02:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR722" ResBookDesigCode="L" DepartureDateTime="2023-10-26T13:15:00.000000+02:00" ArrivalDateTime="2023-10-26T20:05:00.000000+02:00" Duration="05:20:00" StopQuantity="0" RPH="121578">
+           <DepartureAirport LocationCode="HAM"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="L" ResBookDesigQuantity="1"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR723" ResBookDesigCode="M" DepartureDateTime="2023-11-13T08:30:00.000000+01:00" ArrivalDateTime="2023-11-13T11:45:00.000000+01:00" Duration="05:45" StopQuantity="0" RPH="135981">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="HAM"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="M" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="406.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="482.60"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1988-04-02" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="IR">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Javad</GivenName>
+				<Surname>Kolouri kolour</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="N97166232" DocType="2" ExpireDate="2027-09-30" DocIssueCountry="IR" DocHolderNationality="IR"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Javad</GivenName>
+                <Surname>Kolouri kolour</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)17656568417"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>javad.kolouri@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="482.60"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"No Availability on requested date","Code":"532"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+13:47 2023-10-25 : 
+service : AirBook
+flight : IR722.....HAM->IKA......2023-12-21 13:15:00->2023-12-21 21:00:00
+return :IKA->HAM......2024-01-15 08:30:00->2024-01-15 11:45:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2023-10-25T13:47:07.000000+02:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR722" ResBookDesigCode="M" DepartureDateTime="2023-12-21T13:15:00.000000+01:00" ArrivalDateTime="2023-12-21T21:00:00.000000+01:00" Duration="05:15:00" StopQuantity="0" RPH="136056">
+           <DepartureAirport LocationCode="HAM"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="M" ResBookDesigQuantity="7"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR723" ResBookDesigCode="L" DepartureDateTime="2024-01-15T08:30:00.000000+01:00" ArrivalDateTime="2024-01-15T11:45:00.000000+01:00" Duration="05:45" StopQuantity="0" RPH="136007">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="HAM"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="L" ResBookDesigQuantity="6"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="1018.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="1247.80"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1992-11-21" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="F" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mrs</NamePrefix>
+				<GivenName>Taiyeba</GivenName>
+				<Surname>Mirzad</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="01581380" DocType="2" ExpireDate="2026-09-05" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler>
+		<AirTraveler BirthDate="2019-08-27" PassengerTypeCode="CHD" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Master</NamePrefix>
+				<GivenName>Sadra</GivenName>
+				<Surname>Ahmadi</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="2"/><Document  DocID="G9010063" DocType="2" ExpireDate="2024-03-29" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler>
+		<AirTraveler BirthDate="2021-04-28" PassengerTypeCode="CHD" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Master</NamePrefix>
+				<GivenName>Yasser</GivenName>
+				<Surname>Ahmadi</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="3"/><Document  DocID="G9010064" DocType="2" ExpireDate="2024-03-29" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Taiyeba</GivenName>
+                <Surname>Mirzad</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)17663449202"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>info@hypertise.de</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="1247.80"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Duplicate Bookings are not allowed","Code":"96"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+13:10 2023-10-26 : 
+service : AirBook
+flight : IR720.....FRA->IKA......2023-11-04 14:15:00->2023-11-04 22:05:00
+return :IKA->FRA......2023-11-25 09:30:00->2023-11-25 12:45:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2023-10-26T13:10:54.000000+02:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR720" ResBookDesigCode="N" DepartureDateTime="2023-11-04T14:15:00.000000+01:00" ArrivalDateTime="2023-11-04T22:05:00.000000+01:00" Duration="05:20:00" StopQuantity="0" RPH="135987">
+           <DepartureAirport LocationCode="FRA"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="N" ResBookDesigQuantity="3"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR721" ResBookDesigCode="N" DepartureDateTime="2023-11-25T09:30:00.000000+01:00" ArrivalDateTime="2023-11-25T12:45:00.000000+01:00" Duration="05:45" StopQuantity="0" RPH="135831">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="FRA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="N" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="444.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="547.90"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1984-03-27" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>HOSSEIN REZA </GivenName>
+				<Surname>ESMAILI</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="ZZ7X23MHL" DocType="2" ExpireDate="2025-09-07" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>HOSSEIN REZA </GivenName>
+                <Surname>ESMAILI</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)1734076955"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>gisou@gmx.de</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="547.90"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"No Availability on requested date","Code":"532"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+23:44 2023-12-30 : 
+service : AirBook
+flight : IR728.....CGN->IKA......2024-04-23 22:40:00->2024-04-24 05:20:00
+return :IKA->CGN......2024-07-23 17:00:00->2024-07-23 21:10:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2023-12-30T23:42:49.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR728" ResBookDesigCode="U" DepartureDateTime="2024-04-23T22:40:00.000000+02:00" ArrivalDateTime="2024-04-24T05:20:00.000000+02:00" Duration="05:10:00" StopQuantity="0" RPH="144972">
+           <DepartureAirport LocationCode="CGN"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="8"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR729" ResBookDesigCode="K" DepartureDateTime="2024-07-23T17:00:00.000000+02:00" ArrivalDateTime="2024-07-23T21:10:00.000000+02:00" Duration="05:40" StopQuantity="0" RPH="144940">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="CGN"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="K" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="460.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="538.20"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1987-09-21" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="F" TravelerNationality="IR">
+			<PersonName>
+				<NamePrefix>Mrs</NamePrefix>
+				<GivenName>Hedieh</GivenName>
+				<Surname>Shafieian</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="M53148286" DocType="2" ExpireDate="2025-09-15" DocIssueCountry="IR" DocHolderNationality="IR"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Hedieh</GivenName>
+                <Surname>Shafieian</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)1789739960"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>hshafiean.66@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="538.20"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+false
+--------------------------------------
+--------------------------------------
+--------------------------------------
+00:28 2023-12-31 : 
+service : AirBook
+flight : IR720.....FRA->IKA......2024-01-24 14:15:00->2024-01-24 22:05:00
+return :IKA->FRA......2024-02-07 09:30:00->2024-02-07 12:45:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2023-12-31T00:26:52.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR720" ResBookDesigCode="U" DepartureDateTime="2024-01-24T14:15:00.000000+01:00" ArrivalDateTime="2024-01-24T22:05:00.000000+01:00" Duration="05:20:00" StopQuantity="0" RPH="135861">
+           <DepartureAirport LocationCode="FRA"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR721" ResBookDesigCode="U" DepartureDateTime="2024-02-07T09:30:00.000000+01:00" ArrivalDateTime="2024-02-07T12:45:00.000000+01:00" Duration="05:45" StopQuantity="0" RPH="135791">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="FRA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="276.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="382.00"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1986-11-26" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="IR">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Mohammad Javad</GivenName>
+				<Surname>Shabannia Mansour</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="V56597582" DocType="2" ExpireDate="2027-04-26" DocIssueCountry="IR" DocHolderNationality="IR"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Mohammad Javad</GivenName>
+                <Surname>Shabannia Mansour</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)17622874490"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>mjshabannia@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="382.00"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+false
+--------------------------------------
+--------------------------------------
+--------------------------------------
+00:30 2023-12-31 : 
+service : AirBook
+flight : IR720.....FRA->IKA......2024-01-24 14:15:00->2024-01-24 22:05:00
+return :IKA->FRA......2024-02-07 09:30:00->2024-02-07 12:45:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2023-12-31T00:28:00.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR720" ResBookDesigCode="U" DepartureDateTime="2024-01-24T14:15:00.000000+01:00" ArrivalDateTime="2024-01-24T22:05:00.000000+01:00" Duration="05:20:00" StopQuantity="0" RPH="135861">
+           <DepartureAirport LocationCode="FRA"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR721" ResBookDesigCode="U" DepartureDateTime="2024-02-07T09:30:00.000000+01:00" ArrivalDateTime="2024-02-07T12:45:00.000000+01:00" Duration="05:45" StopQuantity="0" RPH="135791">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="FRA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="276.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="382.00"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1986-11-26" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="IR">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Mohammad Javad</GivenName>
+				<Surname>Shabannia Mansour</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="V56597582" DocType="2" ExpireDate="2027-04-26" DocIssueCountry="IR" DocHolderNationality="IR"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Mohammad Javad</GivenName>
+                <Surname>Shabannia Mansour</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)17622874490"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>mjshabannia@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="382.00"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+false
+--------------------------------------
+--------------------------------------
+--------------------------------------
+14:45 2024-01-06 : 
+service : AirBook
+flight : IR728.....CGN->IKA......2024-01-30 22:55:00->2024-01-31 06:40:00
+return :IKA->CGN......2024-02-13 18:05:00->2024-02-13 21:25:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-01-06T14:45:54.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR728" ResBookDesigCode="U" DepartureDateTime="2024-01-30T22:55:00.000000+01:00" ArrivalDateTime="2024-01-31T06:40:00.000000+01:00" Duration="05:15:00" StopQuantity="0" RPH="135932">
+           <DepartureAirport LocationCode="CGN"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="8"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR729" ResBookDesigCode="L" DepartureDateTime="2024-02-13T18:05:00.000000+01:00" ArrivalDateTime="2024-02-13T21:25:00.000000+01:00" Duration="05:50" StopQuantity="0" RPH="135891">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="CGN"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="L" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="313.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="391.20"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1998-01-01" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="F" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mrs</NamePrefix>
+				<GivenName>Shila</GivenName>
+				<Surname>Sharifi</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="ZZ4C8CG32" DocType="2" ExpireDate="2026-04-26" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Shila</GivenName>
+                <Surname>Sharifi</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)17622753059"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>Khorassan049@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="391.20"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Duplicate Bookings are not allowed","Code":"96"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+12:09 2024-01-09 : 
+service : AirBook
+flight : IR728.....CGN->IKA......2024-04-16 22:40:00->2024-04-17 05:20:00
+return :IKA->CGN......2024-05-21 17:00:00->2024-05-21 21:10:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-01-09T12:09:47.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR728" ResBookDesigCode="U" DepartureDateTime="2024-04-16T22:40:00.000000+02:00" ArrivalDateTime="2024-04-17T05:20:00.000000+02:00" Duration="05:10:00" StopQuantity="0" RPH="144901">
+           <DepartureAirport LocationCode="CGN"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="4"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR729" ResBookDesigCode="U" DepartureDateTime="2024-05-21T17:00:00.000000+02:00" ArrivalDateTime="2024-05-21T21:10:00.000000+02:00" Duration="05:40" StopQuantity="0" RPH="144925">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="CGN"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="552.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="707.20"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1992-10-10" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>FIROOZ</GivenName>
+				<Surname>KHALEQI</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="Z0MTT9PP5" DocType="2" ExpireDate="2024-02-20" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler>
+		<AirTraveler BirthDate="1991-05-24" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="F" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mrs</NamePrefix>
+				<GivenName>HOMAIRA</GivenName>
+				<Surname>EDAYATI</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="2"/><Document  DocID="P03607870" DocType="2" ExpireDate="2026-01-25" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>FIROOZ</GivenName>
+                <Surname>KHALEQI</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)15217197235"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>reisbkhorassan2@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="707.20"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Invalid passport expiry date","Code":"320"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+12:11 2024-01-09 : 
+service : AirBook
+flight : IR728.....CGN->IKA......2024-04-16 22:40:00->2024-04-17 05:20:00
+return :IKA->CGN......2024-05-21 17:00:00->2024-05-21 21:10:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-01-09T12:11:54.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR728" ResBookDesigCode="U" DepartureDateTime="2024-04-16T22:40:00.000000+02:00" ArrivalDateTime="2024-04-17T05:20:00.000000+02:00" Duration="05:10:00" StopQuantity="0" RPH="144901">
+           <DepartureAirport LocationCode="CGN"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="4"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR729" ResBookDesigCode="U" DepartureDateTime="2024-05-21T17:00:00.000000+02:00" ArrivalDateTime="2024-05-21T21:10:00.000000+02:00" Duration="05:40" StopQuantity="0" RPH="144925">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="CGN"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="552.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="707.20"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1992-10-10" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>FIROOZ</GivenName>
+				<Surname>KHALEQI</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="Z0MTT9PP5" DocType="2" ExpireDate="2024-02-20" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler>
+		<AirTraveler BirthDate="1991-05-24" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="F" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mrs</NamePrefix>
+				<GivenName>HOMAIRA</GivenName>
+				<Surname>EDAYATI</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="2"/><Document  DocID="P03607870" DocType="2" ExpireDate="2026-01-25" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>FIROOZ</GivenName>
+                <Surname>KHALEQI</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)15217197235"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>reisbkhorassan2@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="707.20"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Invalid passport expiry date","Code":"320"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+12:14 2024-01-09 : 
+service : AirBook
+flight : IR728.....CGN->IKA......2024-04-16 22:40:00->2024-04-17 05:20:00
+return :IKA->CGN......2024-05-21 17:00:00->2024-05-21 21:10:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-01-09T12:14:00.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR728" ResBookDesigCode="U" DepartureDateTime="2024-04-16T22:40:00.000000+02:00" ArrivalDateTime="2024-04-17T05:20:00.000000+02:00" Duration="05:10:00" StopQuantity="0" RPH="144901">
+           <DepartureAirport LocationCode="CGN"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="4"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR729" ResBookDesigCode="U" DepartureDateTime="2024-05-21T17:00:00.000000+02:00" ArrivalDateTime="2024-05-21T21:10:00.000000+02:00" Duration="05:40" StopQuantity="0" RPH="144925">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="CGN"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="552.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="707.20"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1992-10-10" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>FIROOZ</GivenName>
+				<Surname>KHALEQI</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="Z0MTT9PP5" DocType="2" ExpireDate="2024-02-20" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler>
+		<AirTraveler BirthDate="1991-05-24" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="F" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mrs</NamePrefix>
+				<GivenName>HOMAIRA</GivenName>
+				<Surname>EDAYATI</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="2"/><Document  DocID="P03607870" DocType="2" ExpireDate="2026-01-25" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>FIROOZ</GivenName>
+                <Surname>KHALEQI</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)15217197235"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>reisbkhorassan2@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="707.20"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Invalid passport expiry date","Code":"320"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+17:52 2024-01-15 : 
+service : AirBook
+flight : IR728.....CGN->IKA......2024-01-19 15:30:00->2024-01-19 23:15:00
+return :IKA->CGN......2024-04-12 09:50:00->2024-04-12 14:00:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-01-15T17:52:25.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR728" ResBookDesigCode="L" DepartureDateTime="2024-01-19T15:30:00.000000+01:00" ArrivalDateTime="2024-01-19T23:15:00.000000+01:00" Duration="05:15:00" StopQuantity="0" RPH="135953">
+           <DepartureAirport LocationCode="CGN"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="L" ResBookDesigQuantity="6"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR729" ResBookDesigCode="X" DepartureDateTime="2024-04-12T09:50:00.000000+02:00" ArrivalDateTime="2024-04-12T14:00:00.000000+02:00" Duration="05:40" StopQuantity="0" RPH="144997">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="CGN"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="X" ResBookDesigQuantity="1"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="402.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="480.20"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1951-03-22" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Gholam Rasool</GivenName>
+				<Surname>Osman</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="P02448721" DocType="2" ExpireDate="2028-10-17" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Gholam Rasool</GivenName>
+                <Surname>Osman</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)15783063381"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>Khorassan049@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="480.20"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Duplicate Bookings are not allowed","Code":"96"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+17:56 2024-01-15 : 
+service : AirBook
+flight : IR728.....CGN->IKA......2024-01-19 15:30:00->2024-01-19 23:15:00
+return :IKA->CGN......2024-04-16 17:00:00->2024-04-16 21:10:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-01-15T17:56:00.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR728" ResBookDesigCode="L" DepartureDateTime="2024-01-19T15:30:00.000000+01:00" ArrivalDateTime="2024-01-19T23:15:00.000000+01:00" Duration="05:15:00" StopQuantity="0" RPH="135953">
+           <DepartureAirport LocationCode="CGN"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="L" ResBookDesigQuantity="6"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR729" ResBookDesigCode="X" DepartureDateTime="2024-04-16T17:00:00.000000+02:00" ArrivalDateTime="2024-04-16T21:10:00.000000+02:00" Duration="05:40" StopQuantity="0" RPH="144950">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="CGN"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="X" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="402.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="480.20"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1951-03-22" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Gholam Rasool</GivenName>
+				<Surname>Osman</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="P02448721" DocType="2" ExpireDate="2028-10-17" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Gholam Rasool</GivenName>
+                <Surname>Osman</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)15783063381"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>Khorassan049@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="480.20"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Duplicate Bookings are not allowed","Code":"96"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+18:10 2024-01-15 : 
+service : AirBook
+flight : IR728.....CGN->IKA......2024-01-19 15:30:00->2024-01-19 23:15:00
+return :IKA->CGN......2024-04-12 09:50:00->2024-04-12 14:00:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-01-15T18:10:55.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR728" ResBookDesigCode="L" DepartureDateTime="2024-01-19T15:30:00.000000+01:00" ArrivalDateTime="2024-01-19T23:15:00.000000+01:00" Duration="05:15:00" StopQuantity="0" RPH="135953">
+           <DepartureAirport LocationCode="CGN"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="L" ResBookDesigQuantity="6"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR729" ResBookDesigCode="X" DepartureDateTime="2024-04-12T09:50:00.000000+02:00" ArrivalDateTime="2024-04-12T14:00:00.000000+02:00" Duration="05:40" StopQuantity="0" RPH="144997">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="CGN"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="X" ResBookDesigQuantity="1"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="402.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="480.20"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1951-03-22" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Gholam Rasool</GivenName>
+				<Surname>Osman</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="P02448721" DocType="2" ExpireDate="2028-10-17" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Gholam Rasool</GivenName>
+                <Surname>Osman</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)15783063381"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>Khorassan049@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="480.20"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Duplicate Bookings are not allowed","Code":"96"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+12:13 2024-01-23 : 
+service : AirBook
+flight : IR728.....CGN->IKA......2024-01-26 15:30:00->2024-01-26 23:15:00
+return :IKA->CGN......2024-02-09 10:40:00->2024-02-09 14:00:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-01-23T12:13:32.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR728" ResBookDesigCode="U" DepartureDateTime="2024-01-26T15:30:00.000000+01:00" ArrivalDateTime="2024-01-26T23:15:00.000000+01:00" Duration="05:15:00" StopQuantity="0" RPH="135964">
+           <DepartureAirport LocationCode="CGN"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="1"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR729" ResBookDesigCode="U" DepartureDateTime="2024-02-09T10:40:00.000000+01:00" ArrivalDateTime="2024-02-09T14:00:00.000000+01:00" Duration="05:50" StopQuantity="0" RPH="135916">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="CGN"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="286.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="364.20"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1989-01-01" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="AF">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Shamsuddin</GivenName>
+				<Surname>Amiri</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="ZZ4PFWJ4M" DocType="2" ExpireDate="2026-11-02" DocIssueCountry="AF" DocHolderNationality="AF"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Shamsuddin</GivenName>
+                <Surname>Amiri</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)15773760495"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>Khorassan049@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="364.20"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"No Availability on requested date","Code":"532"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+12:18 2024-01-23 : 
+service : AirBook
+flight : IR728.....CGN->IKA......2024-05-17 15:30:00->2024-05-17 22:10:00
+return :IKA->CGN......2024-05-31 09:50:00->2024-05-31 14:00:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-01-23T12:18:39.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR728" ResBookDesigCode="U" DepartureDateTime="2024-05-17T15:30:00.000000+02:00" ArrivalDateTime="2024-05-17T22:10:00.000000+02:00" Duration="05:10:00" StopQuantity="0" RPH="145052">
+           <DepartureAirport LocationCode="CGN"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="8"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR729" ResBookDesigCode="L" DepartureDateTime="2024-05-31T09:50:00.000000+02:00" ArrivalDateTime="2024-05-31T14:00:00.000000+02:00" Duration="05:40" StopQuantity="0" RPH="144993">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="CGN"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="L" ResBookDesigQuantity="7"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="325.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="403.20"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1979-09-19" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="F" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Mrs</NamePrefix>
+				<GivenName>Akram </GivenName>
+				<Surname>Jafarizad </Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="C175YPK4N" DocType="2" ExpireDate="2031-11-10" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Akram </GivenName>
+                <Surname>Jafarizad </Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)17666991208"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>sadafjafarizad@yahoo.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="403.20"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Price(s) cannot be validated","Code":"58"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+12:06 2024-01-27 : 
+service : AirBook
+flight : IR720.....FRA->IKA......2024-03-02 14:15:00->2024-03-02 22:05:00
+return :IKA->FRA......2024-03-23 09:30:00->2024-03-23 12:45:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-01-27T12:06:39.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR720" ResBookDesigCode="U" DepartureDateTime="2024-03-02T14:15:00.000000+01:00" ArrivalDateTime="2024-03-02T22:05:00.000000+01:00" Duration="05:20:00" StopQuantity="0" RPH="135834">
+           <DepartureAirport LocationCode="FRA"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="6"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR721" ResBookDesigCode="L" DepartureDateTime="2024-03-23T09:30:00.000000+01:00" ArrivalDateTime="2024-03-23T12:45:00.000000+01:00" Duration="05:45" StopQuantity="0" RPH="135825">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="FRA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="L" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="975.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="1298.40"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1963-12-31" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="F" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Mrs</NamePrefix>
+				<GivenName>Zahrah</GivenName>
+				<Surname>Jalalzadeh Gourabi</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="C5H707GF5" DocType="2" ExpireDate="2029-10-31" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler>
+		<AirTraveler BirthDate="1959-12-21" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Seyed Jalal</GivenName>
+				<Surname>Jalalzadeh Gourabi</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="2"/><Document  DocID="C5H7P76GZ" DocType="2" ExpireDate="2029-10-31" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler>
+		<AirTraveler BirthDate="1993-02-16" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Kamyar</GivenName>
+				<Surname>Jalalzadeh Gourabi</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="3"/><Document  DocID="C5H7X542K" DocType="2" ExpireDate="2033-11-20" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Seyed Jalal</GivenName>
+                <Surname>Jalalzadeh Gourabi</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)1631916606"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>lilipot6@yahoo.de</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="1298.40"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"head":{"title":"Error"},"body":"404 - Not Found"}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+12:18 2024-01-27 : 
+service : AirBook
+flight : IR720.....FRA->IKA......2024-03-02 14:15:00->2024-03-02 22:05:00
+return :IKA->FRA......2024-03-23 09:30:00->2024-03-23 12:45:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-01-27T12:18:45.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR720" ResBookDesigCode="U" DepartureDateTime="2024-03-02T14:15:00.000000+01:00" ArrivalDateTime="2024-03-02T22:05:00.000000+01:00" Duration="05:20:00" StopQuantity="0" RPH="135834">
+           <DepartureAirport LocationCode="FRA"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="6"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR721" ResBookDesigCode="L" DepartureDateTime="2024-03-23T09:30:00.000000+01:00" ArrivalDateTime="2024-03-23T12:45:00.000000+01:00" Duration="05:45" StopQuantity="0" RPH="135825">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="FRA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="L" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="975.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="1298.40"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1959-12-21" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Seyed Jalal</GivenName>
+				<Surname>Jalalzadeh Gourabi</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="C5H7P76GZ" DocType="2" ExpireDate="2029-10-31" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler>
+		<AirTraveler BirthDate="1963-12-31" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="F" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Mrs</NamePrefix>
+				<GivenName>Zahrah</GivenName>
+				<Surname>Jalalzadeh Gourabi</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="2"/><Document  DocID="C5H707GF5" DocType="2" ExpireDate="2029-10-31" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler>
+		<AirTraveler BirthDate="1993-02-16" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Kamyar</GivenName>
+				<Surname>Jalalzadeh Gourabi</Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="3"/><Document  DocID="C5H7X542K" DocType="2" ExpireDate="2033-11-20" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Seyed Jalal</GivenName>
+                <Surname>Jalalzadeh Gourabi</Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49)1631916606"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>lilipo6@yahoo.de</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="1298.40"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"head":{"title":"Error"},"body":"404 - Not Found"}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+17:39 2024-02-05 : 
+service : AirBook
+flight : IR728.....CGN->IKA......2024-02-20 22:55:00->2024-02-21 06:40:00
+return :IKA->CGN......2024-04-23 17:00:00->2024-04-23 21:10:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-02-05T17:39:36.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR728" ResBookDesigCode="U" DepartureDateTime="2024-02-20T22:55:00.000000+01:00" ArrivalDateTime="2024-02-21T06:40:00.000000+01:00" Duration="05:15:00" StopQuantity="0" RPH="135924">
+           <DepartureAirport LocationCode="CGN"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR729" ResBookDesigCode="U" DepartureDateTime="2024-04-23T17:00:00.000000+02:00" ArrivalDateTime="2024-04-23T21:10:00.000000+02:00" Duration="05:40" StopQuantity="0" RPH="144924">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="CGN"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="2"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="286.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="366.00"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1959-09-06" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Rheza</GivenName>
+				<Surname>Ahmad </Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="c7njj71fl" DocType="2" ExpireDate="2025-01-06" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Rheza</GivenName>
+                <Surname>Ahmad </Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49) 15147852823"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>Khorassan049@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="366.00"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+{"Errors":{"Error":{"@attributes":{"ShortText":"Invalid telephone number","Code":"317"}}}}
+--------------------------------------
+--------------------------------------
+--------------------------------------
+17:41 2024-02-05 : 
+service : AirBook
+flight : IR728.....CGN->IKA......2024-02-20 22:55:00->2024-02-21 06:40:00
+return :IKA->CGN......2024-04-23 17:00:00->2024-04-23 21:10:00
+request : 
+<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="2024-02-05T17:39:35.000000+01:00"
+  Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
+    <POS>
+        <Source AirlineVendorID="IR" ISOCountry="IR" ISOCurrency="EUR">
+            <RequestorID Type="5" ID="DUS09419"/>
+        </Source>
+    </POS>
+    <AirItinerary DirectionInd="Return">
+	<OriginDestinationOptions>
+      <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR728" ResBookDesigCode="U" DepartureDateTime="2024-02-20T22:55:00.000000+01:00" ArrivalDateTime="2024-02-21T06:40:00.000000+01:00" Duration="05:15:00" StopQuantity="0" RPH="135924">
+           <DepartureAirport LocationCode="CGN"/>
+           <ArrivalAirport LocationCode="IKA"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="9"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption>
+       <OriginDestinationOption>
+        <FlightSegment FlightNumber="IR729" ResBookDesigCode="U" DepartureDateTime="2024-04-23T17:00:00.000000+02:00" ArrivalDateTime="2024-04-23T21:10:00.000000+02:00" Duration="05:40" StopQuantity="0" RPH="144924">
+           <DepartureAirport LocationCode="IKA"/>
+           <ArrivalAirport LocationCode="CGN"/>
+           <OperatingAirline Code="IR"/>
+           <Equipment AirEquipType="Airbus  A332"/>
+           <BookingClassAvails>
+              <BookingClassAvail ResBookDesigCode="U" ResBookDesigQuantity="2"/>
+           </BookingClassAvails>
+        </FlightSegment>
+      </OriginDestinationOption></OriginDestinationOptions>
+	</AirItinerary>
+	<PriceInfo>
+        <ItinTotalFare>
+             <BaseFare CurrencyCode="EUR" DecimalPlaces="2" Amount="286.00"/>
+             <TotalFare CurrencyCode="EUR" DecimalPlaces="2" Amount="366.00"/>
+        </ItinTotalFare>
+	</PriceInfo>
+	<TravelerInfo>
+		<AirTraveler BirthDate="1959-09-06" PassengerTypeCode="ADT" AccompaniedByInfantInd="false" Gender="M" TravelerNationality="DE">
+			<PersonName>
+				<NamePrefix>Mr</NamePrefix>
+				<GivenName>Rheza</GivenName>
+				<Surname>Ahmad </Surname>
+			</PersonName>
+			<TravelerRefNumber RPH="1"/><Document  DocID="c7njj71fl" DocType="2" ExpireDate="2025-01-06" DocIssueCountry="DE" DocHolderNationality="DE"/><Address Type="4">
+<AddressLine>Grafen-Berg-Platz 2</AddressLine>
+<CityName>Dusseldorf</CityName>
+<CountryName Code="DE"/>
+</Address>
+
+		</AirTraveler></TravelerInfo>
+	<ContactPerson>
+            <PersonName>
+                <GivenName>Rheza</GivenName>
+                <Surname>Ahmad </Surname>
+            </PersonName>
+		  <Telephone PhoneNumber="(49) 15147852823"/>
+		  <HomeTelephone PhoneNumber="(98)21236541"/>
+        <Email>Khorassan049@gmail.com</Email>
+  
+    </ContactPerson>
+    <Fulfillment>
+        <PaymentDetails>
+            <PaymentDetail PaymentType="2">
+                <DirectBill DirectBill_ID="DUS09419">
+                    <CompanyName CompanyShortName="FLY ORIENT" Code="DUS09419"/>
+                </DirectBill>
+                <PaymentAmount CurrencyCode="EUR" DecimalPlaces="2" Amount="366.00"/>
+            </PaymentDetail>
+        </PaymentDetails>
+    </Fulfillment>
+</OTA_AirBookRQ>
+
+response : 
+false
+--------------------------------------
+--------------------------------------
+--------------------------------------

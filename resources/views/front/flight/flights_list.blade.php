@@ -372,7 +372,7 @@ if (!isset($start)) $start=0;
                                                 <div class="flight_item logo_container col-4 ">
 
                                                     @foreach($item["airlines"] as $logo)
-                                                        @if($logo["pivot"]["is_return"]==0)
+                                                        @if($logo["pivot"]["is_return"]==1)
                                                             <div class="logo_leg">
                                                                 <img src="images/{{$logo["image"]}}"
                                                                      alt="{{$logo["name"]}}">
@@ -396,7 +396,7 @@ if (!isset($start)) $start=0;
                                                     </div>
                                                     <div class="bot_item">
                         <span>
-                         {{\App\Services\MyHelperFunction::turn_class($item["class"])}}/{{$item["class_code"]}}
+                         {{\App\Services\MyHelperFunction::turn_class($item["return_class"])}}/{{$item["return_class_code"]}}
                         </span>
                                                     </div>
                                                     @if ($depart_aircraft_type)

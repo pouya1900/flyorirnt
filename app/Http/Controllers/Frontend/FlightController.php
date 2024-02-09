@@ -233,7 +233,7 @@ class FlightController extends Controller
             return redirect()->back();
         }
 
-            if ($origin_airport->country != "IR" && $destination_airport->country != "IR" && $ajax_render) {
+            if ($destination_airport->country != "IR" && $ajax_render) {
 
             foreach ($ajax_render as $key => $value) {
                 if ($value == Setting::iranAir) {
@@ -871,7 +871,7 @@ class FlightController extends Controller
             for ($i = 0; $i < 5; $i++) {
                 $search_id = 0;
 
-                foreach ($row["day"] as $row2) {
+                foreach ($row["depart"] as $row2) {
 
 
                     $depart = $this->get_date($row2);
@@ -902,7 +902,7 @@ class FlightController extends Controller
                     while (true) {
                         if ($j > 0) $depart->addDays(7);
                         if ($depart->month != $month) break;
-                        foreach ($row["day"] as $row3) {
+                        foreach ($row["return"] as $row3) {
                             $return = $this->get_date($row3)->addDays($counter * 7 + $j * 7 + 14);
                             if ($depart >= Carbon::now()) {
                                 ProcessFlight::dispatch($airport, $depart, $return)->onQueue('search');
