@@ -39,6 +39,7 @@
             :multi_search_url="{{json_encode(route('ajax_flight_multi'))}}"
             :air_rules_url="{{json_encode(route('air_rules'))}}"
             :air_bag_url="{{json_encode(route('bagRules'))}}"
+            :select_url="{{json_encode(route("passengers_info"))}}"
             :filter="{{json_encode($filter)}}">
 
         </flights>

@@ -5,9 +5,7 @@
     @if ($data)
 
         <div class="ads_flight_title">
-            <p>
-                @lang('trs.ads_flight_iframe_header')
-            </p>
+            @lang('trs.ads_flight_iframe_header')
         </div>
 
         <table class="table table-striped table-bordered ads_search_table">

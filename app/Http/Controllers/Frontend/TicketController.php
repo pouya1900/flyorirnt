@@ -66,34 +66,21 @@ class TicketController extends Controller
         return $title;
     }
 
-    public function passengers(Request $request, $flight_token)
+    public function passengers(Request $request, $id)
     {
         $lang = App::getLocale();
         $setting = Setting::find(1);
+
 
         if ($setting->offline_ticket && (!Auth::check() || Auth::user()->role != User::admin)) {
             return view('front.errors.offline_ticketing', compact('lang'));
         }
 
 
-        $flight = Flight::with([
-            'legs.airports1',
-            'legs.airports2',
-            'legs.airlines',
-            'airports1',
-            'airports2',
-            'airports3',
-            'airports4',
-            'searches',
-            'taxes',
-            'airlines' => function ($query) {
-                $query->distinct();
-            },
-        ])->where('token', 'like', $flight_token)->join('costs', 'costs.flight_id', '=', 'flights.id')->get();
+        $flight = Flight::where('id', $id)
+            ->with('searches', 'airlines', 'legs', 'legs.airlines', 'legs.airports1', 'legs.airports2', 'multi_flights', 'multi_flights.airlines', 'multi_flights.legs', 'multi_flights.legs.airlines', 'multi_flights.legs.airports1', 'multi_flights.legs.airports2')->join('costs', 'costs.flight_id', '=', 'flights.id')
+            ->first();
 
-        $flight = json_decode(json_encode($flight), true);
-
-        $flight = $flight[0];
 
         if (empty($flight)) {
             return redirect()->back();
@@ -102,15 +89,15 @@ class TicketController extends Controller
 
         $research_data =
             [
-                "link"             => $flight["searches"]["link"],
-                'origin'           => $flight["searches"]["origin_code"],
-                "destination"      => $flight["searches"]["destination_code"],
-                "origin_name"      => $flight["searches"]["origin_name"],
-                "destination_name" => $flight["searches"]["destination_name"],
-                "adl"              => $flight["searches"]["adult"],
-                "chl"              => $flight["searches"]["child"],
-                "inf"              => $flight["searches"]["infant"],
-                "depart_date"      => date('d.m.Y', strtotime($flight["depart_time"])),
+                "link"             => $flight->searches->link,
+                'origin'           => $flight->searches->origin_code,
+                "destination"      => $flight->searches->destination_code,
+                "origin_name"      => $flight->searches->origin_name,
+                "destination_name" => $flight->searches->destination_name,
+                "adl"              => $flight->searches->adult,
+                "chl"              => $flight->searches->child,
+                "inf"              => $flight->searches->infant,
+                "depart_date"      => date('d.m.Y', strtotime($flight->depart_time)),
                 "return_date"      => "",
             ];
 
@@ -132,7 +119,7 @@ class TicketController extends Controller
         $country = json_decode(json_encode($country), true);
 
         $domestic = 0;
-        if ($flight["airports1"]["country"] == "IR" && $flight["airports2"]["country"] == "IR") {
+        if ($flight->airports1->country == "IR" && $flight->airports2->country == "IR") {
             $domestic = 1;
         }
 
@@ -181,7 +168,6 @@ class TicketController extends Controller
 
 //		count is passengers nimber
         $count = $request["count"];
-
 //		for , for set rule and passenger_insert
         for ($i = 1; $i <= $count; $i++) {
 
@@ -217,6 +203,10 @@ class TicketController extends Controller
                 $rule['pass_number' . $i] = 'required|alpha_num';
             }
 
+            if ($request['country' . $i] != "IR" && $flight['DirectionInd'] == 1 && $flight["ValidatingAirlineCode"] == "IR" && $flight["arrival_airport"] == "IR") {
+                return response()->json(['errors' => ["country . $i" => trans('trs.iran_air_not_support_one_way_for_non_iranian')]]);
+            }
+
 
             $passenger_insert[$i]["first_name"] = $request['f_name' . $i];
             $passenger_insert[$i]["last_name"] = $request['l_name' . $i];
@@ -228,8 +218,6 @@ class TicketController extends Controller
             $passenger_insert[$i]["passport_number"] = isset($request['pass_number' . $i]) ? $request['pass_number' . $i] : null;
             $passenger_insert[$i]["national_id"] = isset($request['nid' . $i]) ? $request['nid' . $i] : null;
             $passenger_insert[$i]["issue_date"] = isset($request['iss' . $i]) ? date('Y-m-d', strtotime($request['iss' . $i])) : null;
-
-
         }
 
         $rule['contact'] = 'required';
@@ -250,10 +238,10 @@ class TicketController extends Controller
             $arranger_last_name = $request['l_name' . $contact_person];
         }
 
-
         $user_insert["email"] = $request["email"];
         $phone = $this->make_mobile_without_zero($request["phone"]);
         $dial_code = $request["country_dial_code"];
+
         //		request validator
         $validator = Validator::make($request, $rule);
 
@@ -315,7 +303,7 @@ class TicketController extends Controller
 
 
 //				generate next page url for redirect from js with token for book (use book token from this step)
-        $x = route('payment', ['book_token' => $book_id_hash]) . ($lang != "de" ? "?lang=" . $lang : "");
+        $x = route('payment', ['book_token' => $book_id_hash]) . ($lang != "de" ? " ? lang = " . $lang : "");
 
 
         return response()->json(['url' => $x]);
@@ -330,36 +318,20 @@ class TicketController extends Controller
 
         $lang = App::getLocale();
         $setting = Setting::get()->first();
-
-
         $book = Book::with([
             'passengers.countries',
             'users',
         ])->where('token', 'like', $book_token)->get();
         $book_object = $book->first();
         $book = json_decode(json_encode($book), true);
-        $book = $book[0];
 
+        $book = $book[0];
 
         $flight_id = $book["flight_id"];
 
-        $flight = Flight::with([
-            'legs.airports1',
-            'legs.airports2',
-            'legs.airlines',
-            'airports1',
-            'airports2',
-            'airports3',
-            'airports4',
-            'taxes',
-            'airlines' => function ($query) {
-                $query->distinct();
-            },
-        ])->where('id', '=', $flight_id)->join('costs', 'costs.flight_id', '=', 'flights.id')->get();
-
-        $flight = json_decode(json_encode($flight), true);
-
-        $flight = $flight[0];
+        $flight = Flight::where('id', $flight_id)
+            ->with('searches', 'airlines', 'legs', 'legs.airlines', 'legs.airports1', 'legs.airports2', 'multi_flights', 'multi_flights.airlines', 'multi_flights.legs', 'multi_flights.legs.airlines', 'multi_flights.legs.airports1', 'multi_flights.legs.airports2')->join('costs', 'costs.flight_id', '=', 'flights.id')
+            ->first();
 
         if (empty($flight)) {
             //error handling
@@ -413,7 +385,21 @@ class TicketController extends Controller
             ];
         }
 
-        return view('front.payment.payment', compact('flight', 'book', 'lang', 'agency'));
+        $research_data =
+            [
+                "link"             => $flight->searches->link,
+                'origin'           => $flight->searches->origin_code,
+                "destination"      => $flight->searches->destination_code,
+                "origin_name"      => $flight->searches->origin_name,
+                "destination_name" => $flight->searches->destination_name,
+                "adl"              => $flight->searches->adult,
+                "chl"              => $flight->searches->child,
+                "inf"              => $flight->searches->infant,
+                "depart_date"      => date('d.m.Y', strtotime($flight->depart_time)),
+                "return_date"      => "",
+            ];
+
+        return view('front.payment.payment', compact('flight', 'book', 'lang', 'agency', 'research_data'));
 
     }
 
@@ -435,7 +421,7 @@ class TicketController extends Controller
         if (!$flight) {
             //error handling
             $data["error"] = 1;
-            $data["url"] = route('home') . ($lang != "de" ? "?lang=" . $lang : "");
+            $data["url"] = route('home') . ($lang != "de" ? " ? lang = " . $lang : "");
 
             return $data;
         }
@@ -487,7 +473,7 @@ class TicketController extends Controller
 
             $data["error"] = 1;
 
-            $data["url"] = route('passengers_info', ["flight_token" => $flight["token"]]) . ($lang != "de" ? "?lang=" . $lang : "");
+            $data["url"] = route('passengers_info', ["flight_token" => $flight["token"]]) . ($lang != "de" ? " ? lang = " . $lang : "");
 
             return $data;
         }
@@ -656,7 +642,6 @@ class TicketController extends Controller
 
             } elseif ($payment->status != "APPROVED" && $payment->status != "COMPLETED") {
                 return view('front.payment_result.failed', compact('lang', 'research_data'));
-
             }
 
 
@@ -664,22 +649,28 @@ class TicketController extends Controller
 
         } elseif ($method == "agency") {
             $user = Auth::user();
+            if ($payment->status == "CREATED") {
 
-            if ($user->balance->amount < $flight["TotalFare"] - $flight["TotalAgencyCommission"]) {
-                $payment->update([
-                    "status" => "FAILED",
-                ]);
+                if ($user->balance->amount < $flight["TotalFare"] - $flight["TotalAgencyCommission"]) {
+                    $payment->update([
+                        "status" => "FAILED",
+                    ]);
 
-                $book->update([
-                    "status" => "payment_failed",
-                ]);
+                    $book->update([
+                        "status" => "payment_failed",
+                    ]);
+
+                    return view('front.payment_result.failed', compact('lang', 'research_data'));
+                }
+            } elseif ($payment->status != "APPROVED" && $payment->status != "COMPLETED") {
+
                 return view('front.payment_result.failed', compact('lang', 'research_data'));
             }
 
         } else {
 //			other method
 
-            redirect(route('home') . ($lang != "de" ? "?lang=" . $lang : ""));
+            redirect(route('home') . ($lang != "de" ? " ? lang = " . $lang : ""));
         }
 
 
@@ -739,7 +730,7 @@ class TicketController extends Controller
 
                 $result = $paypal->capture_payment($payment->auth_id);
                 if (!isset($result["status"]) || $result["status"] != "COMPLETED") {
-//                    $payment_scheduler = Payment_scheduler::create(["payment_id" => $payment_id]);
+                    $payment_scheduler = Payment_scheduler::create(["payment_id" => $payment_id]);
                     $this->log->payment_error(json_encode($result), 'capture', $payment);
 
                 } else {
@@ -770,7 +761,7 @@ class TicketController extends Controller
                     "invoice_number" => $new_invoice_n,
                 ]);
 
-                require_once "script/xinvoice.php";
+                require_once "script / xinvoice . php";
 
                 $xinvoice2 = new \Xinvoice();
 
@@ -781,16 +772,18 @@ class TicketController extends Controller
                 $this_year = $this_year % 100;
                 $invoice_number = $book->users->code . '-' . $this_year . $number_string;
 
+                $book = $book->fresh();
+
                 $invoice_view = view('front.invoice.agency_invoice', compact('book', 'lang', 'invoice_number'))->render();
 
 
                 $file_name = $invoice_number . '.pdf';
-                $xinvoice2->setSettings("filename", "../../../../../../public/invoices/$file_name");
+                $xinvoice2->setSettings("filename", " ../../../../../../public/invoices / $file_name");
                 $xinvoice2->setSettings("output", "F");
                 $xinvoice2->setSettings("format", "A4");
                 $xinvoice2->htmlToPDF($invoice_view);
 
-                $file_path = realpath("invoices/" . $file_name);
+                $file_path = realpath("invoices / " . $file_name);
 
                 Event::dispatch(new SendEmailEvent($user_email, new invoice($lang, $file_path)));
 
@@ -819,35 +812,42 @@ class TicketController extends Controller
 
         $book = Book::where('token', 'like', $book_token)->first();
 
-        $research_data =
-            [
-                "link"             => $book->flights->searches->link,
-                'origin'           => $book->flights->searches->origin_code,
-                "destination"      => $book->flights->searches->destination_code,
-                "origin_name"      => $book->flights->searches->origin_name,
-                "destination_name" => $book->flights->searches->destination_name,
-                "adl"              => $book->flights->searches->adult,
-                "chl"              => $book->flights->searches->child,
-                "inf"              => $book->flights->searches->infant,
-                "depart_date"      => date('d.m.Y', strtotime($book->flights->depart_time)),
-                "return_date"      => "",
-            ];
-        if ($book->flights->depart_time) {
-            $research_data["return_date"] = date('d.m.Y', strtotime($book->flights->depart_time));
+        $payment = Payment::where('book_id', '=', $book->id)->first();
+        $research_data = [
+            "link"             => $book->flights->searches->link,
+            'origin'           => $book->flights->searches->origin_code,
+            "destination"      => $book->flights->searches->destination_code,
+            "origin_name"      => $book->flights->searches->origin_name,
+            "destination_name" => $book->flights->searches->destination_name,
+            "adl"              => $book->flights->searches->adult,
+            "chl"              => $book->flights->searches->child,
+            "inf"              => $book->flights->searches->infant,
+            "depart_date"      => date('d.m.Y', strtotime($book->flights->depart_time)),
+            "return_date"      => "",
+        ];
+
+        if (($book->status == "booking" || $book->status == "payment_cancelled") && ($payment->status == "CREATED" || $payment->status == "CANCELLED")) {
+            if ($book->flights->depart_time) {
+                $research_data["return_date"] = date('d.m.Y', strtotime($book->flights->depart_time));
+            }
+
+
+            $payment->update(["status" => "CANCELLED"]);
+
+            $book->update([
+                "status" => "payment_cancelled",
+            ]);
+
+            return view('front.payment_result.cancel', compact('lang', 'research_data'));
         }
 
-
-        Payment::where('book_id', '=', $book->id)->update(["status" => "CANCELLED"]);
-
-        $book->update([
-            "status" => "payment_cancelled",
-        ]);
-
         return view('front.payment_result.cancel', compact('lang', 'research_data'));
+
     }
 
 
-    public function ticket_issue_scheduler()
+    public
+    function ticket_issue_scheduler()
     {
 
         $schedulers = Scheduler::where('status', 'active')->get();
@@ -874,7 +874,8 @@ class TicketController extends Controller
 
     }
 
-    public function check_booking_status($instance_render, $book, $lang, $book_first_status)
+    public
+    function check_booking_status($instance_render, $book, $lang, $book_first_status)
     {
         $book_unique_id = $book->UniqueId;
         $book_id = $book->id;
@@ -894,7 +895,7 @@ class TicketController extends Controller
             return ["error" => 1];
         }
 
-        $file_name = $book->token . ".pdf";
+        $file_name = $book->token . " . pdf";
 
         $pdf_download = 1;
 
@@ -907,11 +908,11 @@ class TicketController extends Controller
         $confirm_view = view('front.payment_result.confirm', compact('book', 'lang', 'file_name', 'booked', 'pdf_download', 'condition'))->render();
         $ticket_view = view('front.payment_result.confirm', compact('book', 'lang', 'file_name', 'booked', 'condition'))->render();
 
-        require_once "script/xinvoice.php";
+        require_once "script / xinvoice . php";
 
         $xinvoice = new \Xinvoice();
 
-        $xinvoice->setSettings("filename", "../../../../../../public/tickets/$file_name");
+        $xinvoice->setSettings("filename", " ../../../../../../public/tickets / $file_name");
         $xinvoice->setSettings("output", "F");
         $xinvoice->setSettings("format", "A4");
         $xinvoice->htmlToPDF($ticket_view);
@@ -919,7 +920,7 @@ class TicketController extends Controller
         if ($book_first_status == "booking" || ($book_first_status == "wait_for_ticket" && $book->status == "booked")) {
             //send email to user and admin
 
-            $file_path = realpath("tickets/" . $file_name);
+            $file_path = realpath("tickets / " . $file_name);
 
 
             Event::dispatch(new SendEmailEvent($user_email, new ticket($lang, $file_path)));
@@ -938,7 +939,8 @@ class TicketController extends Controller
 
     }
 
-    public function capture_payment_scheduler()
+    public
+    function capture_payment_scheduler()
     {
         $schedulers = Payment_scheduler::where('status', 'active')->get();
 
@@ -973,7 +975,8 @@ class TicketController extends Controller
 
     }
 
-    public function void_payment($method, $payment)
+    public
+    function void_payment($method, $payment)
     {
         $paypal = new paypal();
 

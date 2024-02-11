@@ -32,7 +32,7 @@ class Flight extends Model
 
             $id = $return[0]["LAST_INSERT_ID()"];
 
-            DB::update("UPDATE flights set token=md5(id) where id >= $id");
+//            DB::update("UPDATE flights set token=md5(id) where id >= $id");
 
             return $id;
 

@@ -14,9 +14,9 @@ class Render
         $this->render = $render;
     }
 
-    public function lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop = 0, $search_id = 0, $origin2 = null, $destination2 = null, $depart2 = null, $origin3 = null, $destination3 = null, $depart3 = null, $origin4 = null, $destination4 = null, $depart4 = null)
+    public function lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop = 0, $search_id = 0)
     {
-        return $this->render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id, $origin2, $destination2, $depart2, $origin3, $destination3, $depart3, $origin4, $destination4, $depart4);
+        return $this->render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
     }
 
     public function lowfaresearchMulti($origin, $destination, $depart, $origin2, $destination2, $depart2, $class, $adl, $chl, $inf, $none_stop, $search_id, $origin3, $destination3, $depart3, $origin4, $destination4, $depart4)

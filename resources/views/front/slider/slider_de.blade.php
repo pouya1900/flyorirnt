@@ -75,18 +75,6 @@
                      style="z-index: 5; min-width: 227px; max-width: 227px; white-space: nowrap; font-size: 32px; line-height: 45px; font-weight: 600; color: rgb(240, 211, 85);font-family:Raleway;text-transform_:uppercase;">
 
                 </div>
-                <!-- LAYER NR. 2 -->
-                <div class="tp-caption   tp-resizeme" id="slide-10-layer-2" data-x="['left','left','center','center']"
-                     data-hoffset="['700','500','150','0']" data-y="['top','top','top','top']"
-                     data-voffset="['158','170','179','150']" data-width="none" data-height="none"
-                     data-whitespace="nowrap" data-type="text" data-responsive_offset="on"
-                     data-frames='[{"delay":360,"speed":940,"frame":"0","from":"y:50px;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"+6880","speed":650,"frame":"999","to":"x:50px;opacity:0;","ease":"Power3.easeInOut"}]'
-                     data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[10,10,10,10]"
-                     data-paddingright="[10,10,10,10]" data-paddingbottom="[10,10,10,10]"
-                     data-paddingleft="[10,10,10,10]"
-                     style="z-index: 6; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 600; color: #555555;font-family:Raleway;background-color:rgba(255, 255, 255, 0.5);">
-
-                </div>
             </li>
             <!-- SLIDE  3 -->
             <li data-index="rs-3" data-transition="fade" data-slotamount="default" data-hideafterloop="0"

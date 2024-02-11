@@ -489,6 +489,7 @@
 @section('script')
 
     <script src="https://cloud.tinymce.com/dev/tinymce.min.js?apiKey=m4x14c2uixh5g3lrm05vkez3vsxk00hpwr8soldild193nf5"></script>
+
     <script>
         tinymce.init({
             selector: 'textarea',

@@ -36,9 +36,9 @@
                 <div class="row">
 
                     <div class="col-4 payment_cell payment_price">
-<span>
-{{$flight["TotalFare"]}} {{$flight["Currency"]}}
-</span>
+                        <span>
+                            {{$flight["TotalFare"]}} {{$flight["Currency"]}}
+                        </span>
                     </div>
 
                     <div class="col-8 payment_cell">
@@ -75,7 +75,8 @@
 </form>
 
 
-<script src="https://www.paypal.com/sdk/js?client-id={{$setting->payment ? env('PAYPAL_CLIENT_ID') : env('PAYPAL_TEST_CLIENT_ID')}}&currency=EUR&intent=authorize"></script>
+<script
+    src="https://www.paypal.com/sdk/js?client-id={{$setting->payment ? env('PAYPAL_CLIENT_ID') : env('PAYPAL_TEST_CLIENT_ID')}}&currency=EUR&intent=authorize"></script>
 
 
 <script>

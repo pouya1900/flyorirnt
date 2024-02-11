@@ -6,6 +6,7 @@
             <form method="post" action="{{route('search'). ($lang!="de"? "?lang=".$lang : "")}}" class="search_form"
                   data-toggle="1">
                 {{ csrf_field()  }}
+                <input type="hidden" name="search_type" value="r">
                 <div id="search-filter-in"
                      class="full-width  flight_search_bar_container z-index-5">
                     <div class="search-filter row no-gutters box-shadow md-tb-40px">
@@ -15,19 +16,6 @@
                                     <a class="nav-link active" data-toggle="tab" href="#home" role="tab">
                                         <i class="fas fa-plane"></i>@lang('trs.flight')</a>
                                 </li>
-
-                                {{--flight to/from iran commented --}}
-                                {{--<li class="nav-item">--}}
-                                {{--<a class="nav-link" data-toggle="tab" href="#profile" role="tab"><i--}}
-                                {{--class="fa fa-plane"></i> Flight From Iran</a>--}}
-                                {{--</li>--}}
-                                {{--end flight to/from iran commented --}}
-
-                                {{--cip tab --}}
-                                {{--                            <li class="nav-item">--}}
-                                {{--                                <a class="nav-link" data-toggle="tab" href="#messages" role="tab"><i--}}
-                                {{--                                            class="fa fa-cab"></i>@lang('trs.airport_cip')</a>--}}
-                                {{--                            </li>--}}
                             </ul>
                             <div class="clearfix">
                                 <div class="home_page_filter">
@@ -99,10 +87,8 @@
                             </div>
                         </div>
                         <div class="filter-output booking-form-box col-lg-8">
-                            <!-- Tab panes -->
                             <div class="tab-content  padding-15px background-white">
 
-                                {{--tab pan for flight to --}}
                                 <div class="tab-pane active" id="home" role="tabpanel">
 
 
@@ -293,7 +279,7 @@
                                             <div class="col-4">
                                                 <div class="form-group margin-bottom-5px">
                                                     <label>@lang('trs.flying_from'):</label>
-                                                    <div class="origin"><input name="origin" type="text"
+                                                    <div class="origin"><input name="origin1" type="text"
                                                                                class="input-text full-width airport_search airport_search3"
                                                                                data-validation="0" data-sec="3"
                                                                                autocomplete="off"
@@ -306,7 +292,7 @@
                                                 <div class="form-group margin-bottom-5px">
                                                     <label>@lang('trs.flying_to'):</label>
                                                     <div class="destination">
-                                                        <input name="destination" type="text"
+                                                        <input name="destination1" type="text"
                                                                class="input-text full-width airport_search airport_search4"
                                                                data-validation="0" data-sec="4"
                                                                placeholder="@lang('trs.flying_to')"
@@ -321,7 +307,7 @@
                                                 <div class="form-group margin-bottom-5px">
                                                     <label>@lang('trs.depart_date') :</label>
                                                     <div class="date-input"><input id="date_multi1" type="text"
-                                                                                   name="date"
+                                                                                   name="date1"
                                                                                    data-validation="0"
                                                                                    autocomplete="off"
                                                                                    disabled="disabled"
@@ -335,7 +321,7 @@
                                             <div class="col-4">
                                                 <div class="form-group margin-bottom-5px">
                                                     <label>@lang('trs.flying_from'):</label>
-                                                    <div class="origin"><input name="origin" type="text"
+                                                    <div class="origin"><input name="origin2" type="text"
                                                                                class="input-text full-width airport_search airport_search5"
                                                                                data-validation="0" data-sec="5"
                                                                                autocomplete="off"
@@ -350,7 +336,7 @@
                                                     <div class="destination">
 
 
-                                                        <input name="destination" type="text"
+                                                        <input name="destination2" type="text"
                                                                class="input-text full-width airport_search airport_search6"
                                                                data-validation="0" data-sec="6"
                                                                placeholder="@lang('trs.flying_to')"
@@ -365,7 +351,7 @@
                                                 <div class="form-group margin-bottom-5px">
                                                     <label>@lang('trs.depart_date') :</label>
                                                     <div class="date-input"><input id="date_multi2" type="text"
-                                                                                   name="date"
+                                                                                   name="date2"
                                                                                    data-validation="0"
                                                                                    autocomplete="off"
                                                                                    disabled="disabled"
@@ -382,7 +368,7 @@
                                                 <div class="col-4">
                                                     <div class="form-group margin-bottom-5px">
                                                         <label>@lang('trs.flying_from'):</label>
-                                                        <div class="origin"><input name="origin" type="text"
+                                                        <div class="origin"><input name="origin3" type="text"
                                                                                    class="input-text full-width airport_search airport_search7"
                                                                                    data-validation="0" data-sec="7"
                                                                                    autocomplete="off"
@@ -397,7 +383,7 @@
                                                         <div class="destination">
 
 
-                                                            <input name="destination" type="text"
+                                                            <input name="destination3" type="text"
                                                                    class="input-text full-width airport_search airport_search8"
                                                                    data-validation="0" data-sec="8"
                                                                    placeholder="@lang('trs.flying_to')"
@@ -412,7 +398,7 @@
                                                     <div class="form-group margin-bottom-5px">
                                                         <label>@lang('trs.depart_date') :</label>
                                                         <div class="date-input"><input id="date_multi3" type="text"
-                                                                                       name="date"
+                                                                                       name="date3"
                                                                                        data-validation="0"
                                                                                        autocomplete="off"
                                                                                        disabled="disabled"
@@ -429,7 +415,7 @@
                                                 <div class="col-4">
                                                     <div class="form-group margin-bottom-5px">
                                                         <label>@lang('trs.flying_from'):</label>
-                                                        <div class="origin"><input name="origin" type="text"
+                                                        <div class="origin"><input name="origin4" type="text"
                                                                                    class="input-text full-width airport_search airport_search9"
                                                                                    data-validation="0" data-sec="9"
                                                                                    autocomplete="off"
@@ -444,7 +430,7 @@
                                                         <div class="destination">
 
 
-                                                            <input name="destination" type="text"
+                                                            <input name="destination4" type="text"
                                                                    class="input-text full-width airport_search airport_search10"
                                                                    data-validation="0" data-sec="10"
                                                                    placeholder="@lang('trs.flying_to')"
@@ -459,7 +445,7 @@
                                                     <div class="form-group margin-bottom-5px">
                                                         <label>@lang('trs.depart_date') :</label>
                                                         <div class="date-input"><input id="date_multi4" type="text"
-                                                                                       name="date"
+                                                                                       name="date4"
                                                                                        data-validation="0"
                                                                                        autocomplete="off"
                                                                                        disabled="disabled"
@@ -584,317 +570,7 @@
 
                                 </div>
 
-                                {{--tab pan for flight from--}}
-                                {{--<div class="tab-pane" id="profile" role="tabpanel">--}}
-                                {{--<!-- ====== Flights ====== -->--}}
-
-                                {{--<div class="air_trip_type">--}}
-                                {{--<div class="row margin-right-0px margin-left-0px">--}}
-                                {{--<div class="col-md-6 way active_tab" data-toggle="R" data-id="2">Round Trip</div>--}}
-                                {{--<div class="col-md-6 way" data-toggle="O" data-id="2">One Way</div>--}}
-                                {{--</div>--}}
-
-
-                                {{--</div>--}}
-
-
-                                {{--<div id="round_trip" class="custom_nav active_nav">--}}
-                                {{--<form  method="post" action="" class="search_form" data-toggle="2">--}}
-                                {{--{{ csrf_field()  }}--}}
-                                {{--<div class="form-group margin-bottom-5px">--}}
-                                {{--<label>Flying from:</label>--}}
-                                {{--<div class="origin"><input name="origin" type="text" class="input-text full-width ir_airport ir_airport2" readonly="readonly" data-validation="0" data-sec="2" autocomplete="off"--}}
-                                {{--placeholder="Flying from">--}}
-                                {{--<div class="ir_airport_search_result ir_airport_search_result2 display_none">--}}
-
-                                {{--<div class="search_box" >--}}
-
-                                {{--@foreach($ir_airport as $item)--}}
-                                {{--<div class="airport_item" onclick="select_ir_airport(2,this)" >--}}
-                                {{--<i class="fas fa-plane"></i>--}}
-                                {{--<span data-code="{{$item["code"]}}" class="airport_option"  >{{$item["name"]}}-({{$item["code"]}})</span>--}}
-
-                                {{--</div>--}}
-                                {{--@endforeach--}}
-
-                                {{--</div>--}}
-
-                                {{--</div>--}}
-                                {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="form-group margin-bottom-5px">--}}
-                                {{--<label>Flying to:</label>--}}
-                                {{--<div class="destination"><input name="destination" type="text" class="input-text full-width airport_search airport_search2" data-validation="0" data-sec="2" autocomplete="off"--}}
-                                {{--placeholder="Flying to"></div>--}}
-                                {{--<div class="search_result search_result2"></div>--}}
-
-                                {{--</div>--}}
-                                {{--<div class="row ">--}}
-                                {{--<div class="form-group col-6 round_trip2" >--}}
-                                {{--<label>Depart :</label>--}}
-                                {{--<div class="date-input"><input id="daterange3" type="text" name="daterange_d" autocomplete="off"--}}
-                                {{--class="input-text full-width daterange2"--}}
-                                {{--value=""></div>--}}
-                                {{--</div>--}}
-                                {{--<div class="form-group col-6 round_trip2" >--}}
-                                {{--<label>Return :</label>--}}
-                                {{--<div class="date-input"><input id="daterange4" type="text" name="daterange_r" autocomplete="off"--}}
-                                {{--class="input-text full-width daterange2"--}}
-                                {{--value=""></div>--}}
-                                {{--</div>--}}
-                                {{--<div class="form-group col-12 display_none one_way2">--}}
-                                {{--<label>Depart :</label>--}}
-                                {{--<div class="date-input"><input id="date2" type="text" name="date" disabled="disabled"  autocomplete="off"--}}
-                                {{--class="input-text full-width date2"--}}
-                                {{--value=""></div>--}}
-                                {{--</div>--}}
-
-                                {{--</div>--}}
-                                {{--<div class="form-group margin-bottom-10px">--}}
-
-                                {{--<div class="flight_type">--}}
-                                {{--<select class="select_type" name="flight_class">--}}
-
-                                {{--<option>Economy</option>--}}
-                                {{--<option>Premium</option>--}}
-                                {{--<option>Business</option>--}}
-                                {{--<option>First</option>--}}
-
-                                {{--</select>--}}
-                                {{--</div>--}}
-
-                                {{--</div>--}}
-                                {{--<div class="form-group margin-bottom-10px">--}}
-
-                                {{--<div class="flight_type">--}}
-
-                                {{--<div class="row margin-0px">--}}
-
-                                {{--<div class="col-4 padding-right-5px padding-left-5px">--}}
-
-                                {{--<div class="count_h">--}}
-
-                                {{--<div class="font-weight-600 margin-bottom-5px">adults</div>--}}
-                                {{--<div class="counter_h">--}}
-
-                                {{--<div class="count_h_up count_btn">+</div>--}}
-                                {{--<input type="text" class="count_number" readonly value="1"--}}
-                                {{--data-min="1" data-max="9" id="adl" name="adl">--}}
-                                {{--<div class="count_h_down count_btn">-</div>--}}
-
-                                {{--</div>--}}
-                                {{--<div class="age_range">(+12 years)</div>--}}
-
-                                {{--</div>--}}
-
-                                {{--</div>--}}
-                                {{--<div class="col-4 padding-right-5px padding-left-5px">--}}
-
-                                {{--<div class="count_h">--}}
-
-                                {{--<div class="font-weight-600 margin-bottom-5px">Children</div>--}}
-                                {{--<div class="counter_h">--}}
-
-                                {{--<div class="count_h_up count_btn">+</div>--}}
-                                {{--<input type="text" class="count_number" readonly value="0"--}}
-                                {{--data-min="0" data-max="8" id="chl" name="chl">--}}
-                                {{--<div class="count_h_down count_btn">-</div>--}}
-
-                                {{--</div>--}}
-                                {{--<div class="age_range">(2-12 years)</div>--}}
-
-                                {{--</div>--}}
-
-                                {{--</div>--}}
-                                {{--<div class="col-4 padding-right-5px padding-left-5px">--}}
-
-                                {{--<div class="count_h">--}}
-
-                                {{--<div class="font-weight-600 margin-bottom-5px">Infants</div>--}}
-                                {{--<div class="counter_h">--}}
-
-                                {{--<div class="count_h_up count_btn">+</div>--}}
-                                {{--<input type="text" class="count_number" readonly value="0"--}}
-                                {{--data-min="0" data-max="8" id="inf" name="inf">--}}
-                                {{--<div class="count_h_down count_btn">-</div>--}}
-
-                                {{--</div>--}}
-                                {{--<div class="age_range">(-2 years)</div>--}}
-
-                                {{--</div>--}}
-
-                                {{--</div>--}}
-
-
-                                {{--</div>--}}
-
-
-                                {{--</div>--}}
-
-                                {{--</div>--}}
-                                {{--<div class="form-group margin-bottom-15px">--}}
-
-                                {{--<label class="display-inline">None Stop:</label>--}}
-                                {{--<input name="stop_q" type="checkbox" class="check_stop">--}}
-
-                                {{--</div>--}}
-
-                                {{--<button type="submit"--}}
-                                {{--class="btn-sm btn-lg btn-block background-main-color text-white text-center text-uppercase font-weight-600"><i--}}
-                                {{--class="fa fa-search"></i> Flights Search</button>--}}
-                                {{--</form>--}}
-                                {{--</div>--}}
-
-                                {{--<!-- ====== //  Flights ====== -->--}}
-                                {{--</div>--}}
-
-                                {{--tab pan for cip--}}
-                                {{--                            <div class="tab-pane" id="messages" role="tabpanel">--}}
-                                {{--                                <!-- ====== Cars ====== -->--}}
-
-                                {{--                                <form method="post" action="{{route('cip_search'). ($lang!="de"? "?lang=".$lang : "")}}"--}}
-                                {{--                                      class="cip_search_form" data-toggle="1">--}}
-                                {{--                                    {{ csrf_field()  }}--}}
-                                {{--                                    <div class="form-group margin-bottom-10px">--}}
-
-                                {{--                                        <div class="flight_type">--}}
-                                {{--                                            <select class="select_type" name="cip_dir" id="cip_dir">--}}
-
-                                {{--                                                <option value="1">@lang('trs.Flying_from_the_following_airport')</option>--}}
-                                {{--                                                <option value="2">@lang('trs.Flying_to_the_following_airport')</option>--}}
-
-                                {{--                                            </select>--}}
-                                {{--                                        </div>--}}
-
-                                {{--                                    </div>--}}
-                                {{--                                    <div class="form-group margin-bottom-5px">--}}
-                                {{--                                        <label>@lang('trs.airport'):</label>--}}
-                                {{--                                        <div class="origin cip_airport_div"><input name="cip_airport" type="text"--}}
-                                {{--                                                                   class="input-text full-width cip_search"--}}
-                                {{--                                                                   data-validation="0" data-sec="1" autocomplete="off"--}}
-                                {{--                                                                   placeholder="@lang('trs.flying_from')">--}}
-                                {{--                                            <div class="search_result_cip display_none">--}}
-
-                                {{--                                                <div class="search_box">--}}
-
-                                {{--                                                    @foreach($cip_airports as $cip_item)--}}
-                                {{--                                                        <div class="airport_item"--}}
-                                {{--                                                             onclick="select_airport_cip(this,'{{$cip_item["country"]["name_en"]}}')">--}}
-
-                                {{--                                                            <div class="row margin-right-0px margin-left-0px">--}}
-                                {{--                                                                <div class="col-1 padding-top-10px padding-right-0px padding-left-0px">--}}
-                                {{--                                                                    <i class="fas fa-plane"></i>--}}
-
-                                {{--                                                                </div>--}}
-                                {{--                                                                <div class="col-10 airport_name_container padding-right-0px">--}}
-                                {{--                                                                    <span data-code="{{$cip_item["code"]}}"--}}
-                                {{--                                                                          class="airport_option airport_name">{{$cip_item["name"]["name_en"]}}</span>--}}
-                                {{--                                                                    <span class="airport_city_name">{{$cip_item["name"]["name_en"]}}-{{$cip_item["country"]["name_en"]}}</span>--}}
-
-                                {{--                                                                </div>--}}
-                                {{--                                                                <div class="col-1 airport_code_container padding-right-0px padding-left-0px">--}}
-                                {{--                                                                    <span class="airport_code">{{$cip_item["code"]}}</span>--}}
-
-                                {{--                                                                </div>--}}
-                                {{--                                                            </div>--}}
-
-                                {{--                                                        </div>--}}
-                                {{--                                                    @endforeach--}}
-
-                                {{--                                                </div>--}}
-                                {{--                                            </div>--}}
-                                {{--                                        </div>--}}
-                                {{--                                    </div>--}}
-                                {{--                                    <div class="form-group  margin-bottom-15px ">--}}
-                                {{--                                        <label class="cip_date_label1">@lang('trs.depart_date') :</label>--}}
-                                {{--                                        <label class="cip_date_label2 display_none">@lang('trs.arrival_date') :</label>--}}
-                                {{--                                        <div class="date-input"><input id="cip_date" type="text" name="cip_date"--}}
-                                {{--                                                                       data-validation="1" autocomplete="off"--}}
-                                {{--                                                                       class="input-text full-width date1"--}}
-                                {{--                                                                       value="">--}}
-                                {{--                                        </div>--}}
-                                {{--                                    </div>--}}
-
-                                {{--                                    <div class="form-group margin-bottom-10px">--}}
-
-                                {{--                                        <div class="flight_type">--}}
-
-                                {{--                                            <div class="row margin-0px">--}}
-
-                                {{--                                                <div class="col-4 padding-right-5px padding-left-5px">--}}
-
-                                {{--                                                    <div class="count_h">--}}
-
-                                {{--                                                        <div class="font-weight-600 margin-bottom-5px">@lang('trs.adults')</div>--}}
-                                {{--                                                        <div class="counter_h">--}}
-
-                                {{--                                                            <div class="count_h_up count_btn">+</div>--}}
-                                {{--                                                            <input type="text" class="count_number" readonly value="1"--}}
-                                {{--                                                                   data-min="1" data-max="9" id="adl" name="adl">--}}
-                                {{--                                                            <div class="count_h_down count_btn">-</div>--}}
-
-                                {{--                                                        </div>--}}
-                                {{--                                                        <div class="age_range">(+12 @lang('trs.years'))</div>--}}
-
-                                {{--                                                    </div>--}}
-
-                                {{--                                                </div>--}}
-                                {{--                                                <div class="col-4 padding-right-5px padding-left-5px">--}}
-
-                                {{--                                                    <div class="count_h">--}}
-
-                                {{--                                                        <div class="font-weight-600 margin-bottom-5px">@lang('trs.children')</div>--}}
-                                {{--                                                        <div class="counter_h">--}}
-
-                                {{--                                                            <div class="count_h_up count_btn">+</div>--}}
-                                {{--                                                            <input type="text" class="count_number" readonly value="0"--}}
-                                {{--                                                                   data-min="0" data-max="8" id="chl" name="chl">--}}
-                                {{--                                                            <div class="count_h_down count_btn">-</div>--}}
-
-                                {{--                                                        </div>--}}
-                                {{--                                                        <div class="age_range">(2-12 @lang('trs.years'))</div>--}}
-
-                                {{--                                                    </div>--}}
-
-                                {{--                                                </div>--}}
-                                {{--                                                <div class="col-4 padding-right-5px padding-left-5px">--}}
-
-                                {{--                                                    <div class="count_h">--}}
-
-                                {{--                                                        <div class="font-weight-600 margin-bottom-5px">@lang('trs.infants')</div>--}}
-                                {{--                                                        <div class="counter_h">--}}
-
-                                {{--                                                            <div class="count_h_up count_btn">+</div>--}}
-                                {{--                                                            <input type="text" class="count_number" readonly value="0"--}}
-                                {{--                                                                   data-min="0" data-max="8" id="inf" name="inf">--}}
-                                {{--                                                            <div class="count_h_down count_btn">-</div>--}}
-
-                                {{--                                                        </div>--}}
-                                {{--                                                        <div class="age_range">(-2 @lang('trs.years'))</div>--}}
-
-                                {{--                                                    </div>--}}
-
-                                {{--                                                </div>--}}
-
-
-                                {{--                                            </div>--}}
-
-
-                                {{--                                        </div>--}}
-
-                                {{--                                    </div>--}}
-
-
-                                {{--                                    <button type="submit"--}}
-                                {{--                                            class="btn-sm btn-lg btn-block background-main-color text-white text-center text-uppercase font-weight-600  ">--}}
-                                {{--                                        <i--}}
-                                {{--                                                class="fa fa-search"></i> @lang('trs.cip_search')</button>--}}
-                                {{--                                    <!-- ====== //  Cars ====== -->--}}
-                                {{--                                </form>--}}
-                                {{--                            </div>--}}
-
                             </div>
-                            <!-- Tab panes -->
                             <div class="clearfix"></div>
                         </div>
                         <div class="clearfix"></div>
@@ -905,7 +581,12 @@
         </div>
     </div>
 </div>
-<!-- ======= end Search Filter  ======= -->
+
+{{--<div id="app">--}}
+{{--    <search :trs="{{json_encode(trans('trs'))}}"--}}
+{{--            :submit_url="{{json_encode(route('search'). ($lang!="de"? "?lang=".$lang : ""))}}"--}}
+{{--            :csrf="{{json_encode(csrf_token())}}"></search>--}}
+{{--</div>--}}
 
 {{--lang for js--}}
 

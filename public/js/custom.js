@@ -169,6 +169,8 @@ jQuery(document).ready(function ($) {
         var i = $(this).data("toggle");
         var x = $(this).data("id");
 
+        $("input[name='search_type']").val(i);
+
         var r = ".round_trip" + x;
         var r_i = ".daterange" + x;
         var o = ".one_way" + x;
@@ -260,8 +262,12 @@ jQuery(document).ready(function ($) {
         if (l > 2) {
             // ajax
             $.ajax({
-                url: "/AutoComplete", type: "POST", data: {data: data, sec: sec, lang: lang}, beforeSend: function () {
-                }, success: function (data) {
+                url: "/flymul2/public/AutoComplete",
+                type: "POST",
+                data: {data: data, sec: sec, lang: lang},
+                beforeSend: function () {
+                },
+                success: function (data) {
 
                     $(search_result).html(data);
                     if (window.matchMedia("(max-width: 767px)").matches) {
@@ -270,7 +276,8 @@ jQuery(document).ready(function ($) {
                         }, 1000);
                     }
 
-                }, error: function () {
+                },
+                error: function () {
 
                 }
             });
@@ -317,6 +324,26 @@ jQuery(document).ready(function ($) {
         var origin_country = country["origin"];
         var destination_country = country["destination"];
 
+        let search_type = $("input[name='search_type']").val();
+        let multi_validation = 1;
+        let multi_date_validation = 1;
+        let multi_date_order_validation = 1;
+
+        if (search_type == "M") {
+            let count = $(".add_multi").data('count');
+            if (!parseInt(validation["origin1"]) || !parseInt(validation["destination1"]) || !parseInt(validation["origin2"]) || !parseInt(validation["destination2"]) || (count >= 3 && (!parseInt(validation["origin3"]) || !parseInt(validation["destination3"]))) || (count >= 4 && (!parseInt(validation["origin4"]) || !parseInt(validation["destination4"])))) {
+                multi_validation = 0;
+            }
+
+            if (!parseInt(validation["date1"]) || value["date1"] == "" || !parseInt(validation["date2"]) || value["date2"] == "" || (count >= 3 && (!parseInt(validation["date3"]) || value["date3"] == "")) || (count >= 4 && (!parseInt(validation["date4"]) || value["date4"] == ""))) {
+                multi_date_validation = 0;
+            }
+            if (moment(value["date1"], "DD.MM.YYYY") >= moment(value["date2"], "DD.MM.YYYY") || (count >= 3 && moment(value["date2"], "DD.MM.YYYY") >= moment(value["date3"], "DD.MM.YYYY")) || (count >= 4 && moment(value["date3"], "DD.MM.YYYY") >= moment(value["date4"], "DD.MM.YYYY"))) {
+                multi_date_order_validation = 0;
+            }
+
+        }
+
         var d_time = value["daterange_d"];
         var r_time = value["daterange_r"];
         var o_time = value["date"];
@@ -340,26 +367,39 @@ jQuery(document).ready(function ($) {
         var o_year = o_time.substring(6, 10);
         var o_day_week = new Date(o_year, o_month, o_day);
         o_day_week = o_day_week.getDay();
-        if (origin_valid == 0) {
+        if (origin_valid == 0 && search_type != "M") {
 
             alert($("input[name='u_f_a']").val());
             event.preventDefault();
 
-        } else if (destination_valid == 0) {
+        } else if (destination_valid == 0 && search_type != "M") {
 
             alert($("input[name='u_t_a']").val());
             event.preventDefault();
 
-        } else if (origin == destination) {
+        } else if (search_type == "M" && !multi_validation) {
+
+            alert($("input[name='u_t_a']").val());
+            event.preventDefault();
+
+        } else if (origin == destination && search_type != "M") {
 
             alert($("input[name='same_error']").val());
+            event.preventDefault();
+        } else if (search_type == "M" && !multi_date_validation) {
+
+            alert($("input[name='u_d']").val());
+            event.preventDefault();
+        } else if (search_type == "M" && !multi_date_order_validation) {
+
+            alert($("input[name='u_d_o']").val());
             event.preventDefault();
         }
             // else if (origin_country == destination_country && origin_country == "IR") {
             //     alert($("input[name='local_error']").val());
             //     event.preventDefault();
         // }
-        else if ((d_time == "" || r_time == "" || d_time_v == 0) && (o_time == "" || o_time_v == 0)) {
+        else if ((d_time == "" || r_time == "" || d_time_v == 0) && (o_time == "" || o_time_v == 0) && search_type != "M") {
 
             alert($("input[name='u_d']").val());
             event.preventDefault();
@@ -477,25 +517,21 @@ jQuery(document).ready(function ($) {
     });
 
 
-
-
-
-
     // pagination code
-    jQuery(document).on('click', '.my_pagination', function (e) {
-        e.preventDefault();
-
-        var is_none_stop = $("input[name='is_none_stop']").val();
-
-        var x = parseInt($(this).attr('data-count'));
-        var y = parseInt($(this).attr('data-target'));
-        x = x + 1;
-
-        var start = x * 25 - 25;
-
-        filtering(start, 25, 0, is_none_stop, y);
-
-    });
+    // jQuery(document).on('click', '.my_pagination', function (e) {
+    //     e.preventDefault();
+    //
+    //     var is_none_stop = $("input[name='is_none_stop']").val();
+    //
+    //     var x = parseInt($(this).attr('data-count'));
+    //     var y = parseInt($(this).attr('data-target'));
+    //     x = x + 1;
+    //
+    //     var start = x * 25 - 25;
+    //
+    //     filtering(start, 25, 0, is_none_stop, y);
+    //
+    // });
     // pagination code
 
     // filter code
@@ -505,61 +541,61 @@ jQuery(document).ready(function ($) {
     // only button filter
 
     // airline list filter
-    jQuery(document).on('click', '.airline_list_filter', function () {
-
-        var id = $(this).data("id")
-
-        var lang = $("input[name='lang']").val();
-        var search_id = $("input[name='sch_id']").val();
-        var order = $(".active_order").attr('data-target');
-
-        $('.flight_sidebar_container input:enabled').prop('checked', true);
-
-        var is_none_stop = $("input[name='is_none_stop']").val();
-
-        var x = $(".my_pagination").attr('data-count');
-
-
-        // ajax
-        $.ajax({
-            url: "/select_flight", type: "POST", cache: true, data: {
-                search_id: search_id, lang: lang, order: order, id: id, is_none_stop: is_none_stop
-            }, dataType: 'html', beforeSend: function () {
-                ajax_show(1);
-            }, success: function (data) {
-
-                $(".flight_main_container").remove();
-                $(".ajax_flight_loader_container").remove();
-                $('#flight_main_container0').html(JSON.parse(data).html);
-
-                var count = $(".flight_container").length;
-                $(".pagination_count_span").html(count);
-
-                if ($(".flight_container").length == JSON.parse(data).count) {
-                    $(".my_pagination").hide();
-                } else {
-                    $(".my_pagination").show();
-
-                }
-
-                $(".pagination_total_span").html(JSON.parse(data).count);
-
-                ajax_show(0);
-
-                var te = "#fl" + id;
-                $('html,body').animate({
-                    scrollTop: $(te).offset().top
-                }, 1000);
-
-            }, error: function () {
-                ajax_show(0);
-            }
-        });
-
-        // end ajax
-
-
-    })
+    // jQuery(document).on('click', '.airline_list_filter', function () {
+    //
+    //     var id = $(this).data("id")
+    //
+    //     var lang = $("input[name='lang']").val();
+    //     var search_id = $("input[name='sch_id']").val();
+    //     var order = $(".active_order").attr('data-target');
+    //
+    //     $('.flight_sidebar_container input:enabled').prop('checked', true);
+    //
+    //     var is_none_stop = $("input[name='is_none_stop']").val();
+    //
+    //     var x = $(".my_pagination").attr('data-count');
+    //
+    //
+    //     // ajax
+    //     $.ajax({
+    //         url: "/select_flight", type: "POST", cache: true, data: {
+    //             search_id: search_id, lang: lang, order: order, id: id, is_none_stop: is_none_stop
+    //         }, dataType: 'html', beforeSend: function () {
+    //             ajax_show(1);
+    //         }, success: function (data) {
+    //
+    //             $(".flight_main_container").remove();
+    //             $(".ajax_flight_loader_container").remove();
+    //             $('#flight_main_container0').html(JSON.parse(data).html);
+    //
+    //             var count = $(".flight_container").length;
+    //             $(".pagination_count_span").html(count);
+    //
+    //             if ($(".flight_container").length == JSON.parse(data).count) {
+    //                 $(".my_pagination").hide();
+    //             } else {
+    //                 $(".my_pagination").show();
+    //
+    //             }
+    //
+    //             $(".pagination_total_span").html(JSON.parse(data).count);
+    //
+    //             ajax_show(0);
+    //
+    //             var te = "#fl" + id;
+    //             $('html,body').animate({
+    //                 scrollTop: $(te).offset().top
+    //             }, 1000);
+    //
+    //         }, error: function () {
+    //             ajax_show(0);
+    //         }
+    //     });
+    //
+    //     // end ajax
+    //
+    //
+    // })
     // airline list filter
 
 
@@ -903,7 +939,7 @@ jQuery(document).ready(function ($) {
 
         // ajax
         $.ajax({
-            url: "/filter", type: "POST", cache: true, data: {
+            url: "/flymul2/public/filter", type: "POST", cache: true, data: {
                 search_id: search_id,
                 lang: lang,
                 order: order,
@@ -968,7 +1004,6 @@ jQuery(document).ready(function ($) {
     // function for filter and pagination
 
 
-
     jQuery(document).on('click', '#baggage_rules', function (e) {
 
         var flight_token = $(this).attr('data-token');
@@ -976,7 +1011,7 @@ jQuery(document).ready(function ($) {
 
         // ajax
         $.ajax({
-            url: "/bagRules",
+            url: "/flymul2/public/bagRules",
             type: "POST",
             cache: true,
             data: {flight_token: flight_token, lang: lang},
@@ -1045,7 +1080,7 @@ jQuery(document).ready(function ($) {
 
 
         $.ajax({
-            url: "/passengers/check", type: "POST", data: {
+            url: "/flymul2/public/passengers/check", type: "POST", data: {
                 request: req
             }, beforeSend: function () {
                 ajax_show(1);
@@ -1103,7 +1138,7 @@ jQuery(document).ready(function ($) {
         });
 
         $.ajax({
-            url: "/profile/log", type: "POST", data: {
+            url: "/flymul2/public/profile/log", type: "POST", data: {
                 request: req
             }, beforeSend: function () {
                 ajax_show(1);
@@ -1340,7 +1375,7 @@ jQuery(document).ready(function ($) {
 
 
         $.ajax({
-            url: "/CipPassengers/check", type: "POST", data: {
+            url: "/flymul2/public/CipPassengers/check", type: "POST", data: {
                 request: req
             }, beforeSend: function () {
                 ajax_show(1);
@@ -1389,7 +1424,7 @@ jQuery(document).ready(function ($) {
 
     function ajax_show(act) {
 
-        if (act == 1) $('.ajax_loader').show(); else $('.ajax_loader').hide();
+        // if (act == 1) $('.ajax_loader').show(); else $('.ajax_loader').hide();
 
     }
 
@@ -1466,7 +1501,7 @@ jQuery(document).ready(function ($) {
         if (l > 1) {
             // ajax
             $.ajax({
-                url: "/AutoCompleteAirline",
+                url: "/flymul2/public/AutoCompleteAirline",
                 type: "POST",
                 data: {data: data, sec: sec, lang: lang},
                 beforeSend: function () {
@@ -1531,7 +1566,7 @@ jQuery(document).ready(function ($) {
         var div = ".transfer_form_data_container" + target;
 
         $.ajax({
-            url: "/transfer_data", type: "POST", data: {
+            url: "/flymul2/public/transfer_data", type: "POST", data: {
                 request: req, lang: lang
             }, beforeSend: function () {
 
@@ -1601,9 +1636,9 @@ jQuery(document).ready(function ($) {
         $('#render_number_counter').val(l_render);
         let ajax_url;
         if (direction != 4) {
-            ajax_url = "/ajax_flight";
+            ajax_url = "/flymul2/public/ajax_flight";
         } else {
-            ajax_url = "/ajax_flight_multi";
+            ajax_url = "/flymul2/public/ajax_flight_multi";
         }
 
         render.forEach(function (item) {

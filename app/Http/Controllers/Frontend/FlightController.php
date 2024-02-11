@@ -35,7 +35,7 @@ class FlightController extends Controller
     public $diff_time;
     public $time2;
 
-    private $request;
+    private Request $request;
 
     public function __construct(Request $request)
     {
@@ -126,7 +126,7 @@ class FlightController extends Controller
                     });
                 }
                 return $q;
-            })->with('airlines', 'legs', 'legs.airlines', 'multi_flights', 'multi_flights.airlines', 'multi_flights.legs', 'multi_flights.legs.airlines')->join('costs', 'costs.flight_id', '=', 'flights.id')->orderByRaw("$order1 ASC , $order2 ASC , $order3 ASC , $order4 ASC , $order5 ASC
+            })->with('airlines', 'legs', 'legs.airlines', 'legs.airports1', 'legs.airports2', 'multi_flights', 'multi_flights.airlines', 'multi_flights.legs', 'multi_flights.legs.airlines', 'multi_flights.legs.airports1', 'multi_flights.legs.airports2')->join('costs', 'costs.flight_id', '=', 'flights.id')->orderByRaw("$order1 ASC , $order2 ASC , $order3 ASC , $order4 ASC , $order5 ASC
 			")->get();
 
             $flight_grouped = Flight::select('stops', DB::raw('count(*) as total'))->where('search_id', '=', $search_id)->groupBy('stops')->orderBy('stops')->get();
@@ -215,7 +215,7 @@ class FlightController extends Controller
             return redirect()->back();
         }
 
-        if ($origin_airport->country != "IR" && $destination_airport->country != "IR" && $ajax_render) {
+        if ($destination_airport->country != "IR" && $ajax_render) {
 
             foreach ($ajax_render as $key => $value) {
                 if ($value == Setting::iranAir) {
@@ -554,7 +554,7 @@ class FlightController extends Controller
 //		choose render from database
 
         $search_id = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
-//        $search_id = 454;
+//        $search_id = 620;
         $response = $this->search_flight($search_id, 0, [], 0, 500, 0, $render_number);
 
 
@@ -780,7 +780,7 @@ class FlightController extends Controller
             for ($i = 0; $i < 5; $i++) {
                 $search_id = 0;
 
-                foreach ($row["day"] as $row2) {
+                foreach ($row["depart"] as $row2) {
 
 
                     $depart = $this->get_date($row2);
@@ -811,7 +811,7 @@ class FlightController extends Controller
                     while (true) {
                         if ($j > 0) $depart->addDays(7);
                         if ($depart->month != $month) break;
-                        foreach ($row["day"] as $row3) {
+                        foreach ($row["return"] as $row3) {
                             $return = $this->get_date($row3)->addDays($counter * 7 + $j * 7 + 14);
                             if ($depart >= Carbon::now()) {
                                 ProcessFlight::dispatch($airport, $depart, $return)->onQueue('search');

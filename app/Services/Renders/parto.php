@@ -147,7 +147,7 @@ class parto implements render_interface
 
     }
 
-    public function lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id, $origin2, $destination2, $depart2, $origin3, $destination3, $depart3, $origin4, $destination4, $depart4)
+    public function lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id)
     {
 
         switch (strtolower($class)) {
@@ -223,28 +223,6 @@ class parto implements render_interface
             $array["TravelPreference"]["AirTripType"] = 2;
         }
 
-        if ($origin2 != null) {
-            $array["OriginDestinationInformations"][] = [
-                "DepartureDateTime"       => $depart2,
-                "DestinationLocationCode" => $destination2,
-                "OriginLocationCode"      => $origin2,
-            ];
-            $array["TravelPreference"]["AirTripType"] = 4;
-            if ($origin3 != null) {
-                $array["OriginDestinationInformations"][] = [
-                    "DepartureDateTime"       => $depart3,
-                    "DestinationLocationCode" => $destination3,
-                    "OriginLocationCode"      => $origin3,
-                ];
-            }
-            if ($origin4 != null) {
-                $array["OriginDestinationInformations"][] = [
-                    "DepartureDateTime"       => $depart4,
-                    "DestinationLocationCode" => $destination4,
-                    "OriginLocationCode"      => $origin4,
-                ];
-            }
-        }
 
         if (isset($none_stop) and $none_stop == 1) {
             $array["TravelPreference"]["MaxStopsQuantity"] = 2;
@@ -270,7 +248,6 @@ class parto implements render_interface
         //$this->time2     = Carbon::now();
         //$this->diff_time = Carbon::now()->diffInSeconds( $test_time1 );
 //		test for timing
-
         $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
 //        $response = array_slice($response["PricedItineraries"], 0, 10);
 
@@ -336,6 +313,9 @@ class parto implements render_interface
                     continue;
                 }
 
+                if ($class == "Y" && $item["OriginDestinationOptions"][0]["FlightSegments"][0]["CabinClassCode"] != 1) {
+                    continue;
+                }
 
                 $help_var2 = sizeof($item["OriginDestinationOptions"][0]["FlightSegments"]) - 1;
 
@@ -958,8 +938,7 @@ class parto implements render_interface
         $result = curl_exec($ch);
         $response = json_decode($result, true);
         curl_close($ch);
-
-        if ($response["Success"]) {
+        if ($response && $response["Success"]) {
             $response = $response["PricedItinerary"];
 
             if ($response["AirItineraryPricingInfo"]["ItinTotalFare"]["TotalFare"] == $total_fare) {

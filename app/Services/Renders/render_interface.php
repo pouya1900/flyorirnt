@@ -12,7 +12,7 @@ interface render_interface
 
     public function redirect_lowfaresearch($flight_id);
 
-    public function lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id, $origin2, $destination2, $depart2, $origin3, $destination3, $depart3, $origin4, $destination4, $depart4);
+    public function lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
 
     public function lowfaresearchMulti($origin, $destination, $depart, $origin2, $destination2, $depart2, $class, $adl, $chl, $inf, $none_stop, $search_id, $origin3, $destination3, $depart3, $origin4, $destination4, $depart4);
 

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,7 +35,8 @@ Route::group(['namespace' => 'Frontend'], function () {
     Route::post('/ajax_flight_multi', 'FlightController@ajax_flight_multi')->name('ajax_flight_multi');
     Route::post('/ajax_flight_other_days', 'FlightController@ajax_flight_other_days')->name('ajax_flight_other_days');
 
-    Route::get('/passengers/{flight_token}', 'TicketController@passengers')->name('passengers_info');
+    Route::get('/passengers')->name('passengers_info');
+    Route::get('/passengers/{id}', 'TicketController@passengers');
     Route::post('/passengers/check', 'TicketController@passengers_check')->name('passengers_check');
     Route::get('/payment/{book_token}', 'TicketController@payment')->name('payment');
     Route::get('/PaymentProcess/{book_token}', 'TicketController@process_payment')->name('process_payment');

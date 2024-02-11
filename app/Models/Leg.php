@@ -12,7 +12,7 @@ class Leg extends Model
 
 	public function flights() {
 
-		return $this->belongsTo(Flight::class,"flight_id","leg_id");
+		return $this->belongsTo(Flight::class,"flight_id","id");
 
 	}
 

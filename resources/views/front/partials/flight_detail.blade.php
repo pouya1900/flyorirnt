@@ -659,7 +659,7 @@
 
 
     @if($item["DirectionInd"]==4)
-        @foreach($item->multi_flights as $key=>$multi)
+        @foreach($item["multi_flights"] as $key=>$multi)
             <div class="details_content">
 
                 <div class="details_header">

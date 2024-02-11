@@ -10,7 +10,7 @@
                     <span>{{$search_data["origin_city"]."-".$search_data["origin_code_3chr"]}} @lang('trs.to') {{$search_data["destination_city"]."-".$search_data["destination_code_3chr"]}}</span>
                     <span>@lang('trs.depart'): <i
                             class="font-weight-600">{{date('d.m.Y',strtotime($search_data["depart"]))}}</i> {!! $search_data["return"] != "-" ? trans('trs.return').": <i class='font-weight-600'>".date('d.m.Y',strtotime($search_data["return"]))."</i>" : "" !!} </span>
-                    <span>({{$search_data["adl"]}} adult {{$search_data["chl"] ? ", ".$search_data["chl"]." child" : ""}} {{$search_data["inf"] ? ", ".$search_data["inf"]." infant" : ""}})</span>
+                    <span>({{$search_data["adl"]}} @lang('trs.adult')  {{$search_data["chl"] ? ", ".$search_data["chl"]." ".trans('trs.child') : ""}} {{$search_data["inf"] ? ", ".$search_data["inf"]." ".trans('trs.infant') : ""}})</span>
                 @endif
             </div>
             <div class="col-12 col-lg-5 search_bar_button_div">

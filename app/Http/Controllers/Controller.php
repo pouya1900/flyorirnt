@@ -60,7 +60,7 @@ class Controller extends BaseController
     {
         while (true) {
             $first = substr($mobile, 0, 1);
-            if ($first) break;
+            if ($first || $mobile == "") break;
             $mobile = substr($mobile, 1);
         }
         return $mobile;

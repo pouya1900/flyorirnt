@@ -8,17 +8,15 @@
                 <div class="flights_container">
                     @include('front.partials.flight')
                 </div>
-            </div>            @include('front.payment.passengers_list')
-            @if ($flight['airports1']['country']=="IR" || $flight['airports2']['country']=="IR")
+            </div> @include('front.payment.passengers_list')
+            @if ($flight->airports1->country=="IR" || $flight->airports2->country=="IR")
                 @include('front.payment.payment_method')
             @else
-                <div >
+                <div>
                     <p>@lang('trs.online_ticket_not_active')</p>
                 </div>
             @endif
         </div>
-
-
 
 
     </div>

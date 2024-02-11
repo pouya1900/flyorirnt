@@ -5,7 +5,7 @@
  */
 
 import './bootstrap';
-import { createApp } from 'vue';
+import {createApp} from 'vue';
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -16,7 +16,12 @@ import { createApp } from 'vue';
 const app = createApp({});
 
 import flights from './components/flights.vue';
+import singleFlight from './components/singleFlight.vue';
+import search from './components/search.vue';
+
 app.component('flights', flights);
+app.component('single-flight', singleFlight);
+app.component('search', search);
 
 /**
  * The following block of code may be used to automatically register your

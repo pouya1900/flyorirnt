@@ -141,6 +141,7 @@ $country_lang="country_".$lang;
                                             data-user="{{$user_check && $i==1 ? $user->country : ""}}">
                                         <option value="">@lang('trs.nationality')...</option>
                                         <option value="DE">@lang('trs.germany')</option>
+                                        <option value="IR">@lang('trs.iran')</option>
                                         @foreach($country as $item)
 
                                             <option value="{{$item["code"]}}">{{$item[$country_lang]!="" ? $item[$country_lang] : $item["country_en"]}}</option>

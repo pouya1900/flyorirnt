@@ -1,581 +1,9 @@
 <template>
     <div class="flight_page_container ">
         <div class="row margin-right-0px margin-left-0px">
-            <div id="side_filter_main_container"
-                 class="col-lg-2 d-lg-block d-none flight_side_bar_modal flight_sidebar_container sticky-sidebar padding-right-5px padding-left-5px">
-                <div id="modal-div">
-                    <div id="modal-dialog-div">
-                        <div id="modal-content-div">
-                            <div id="modal-body-div">
-                                <div class="side_filter_content">
 
-
-                                    <div class="widget">
-
-                                        <div class="widget_content">
-                                            <button @click="resetAllFilter()" class="reset_all_filter">
-                                                {{ trs.reset_all_filter }}
-                                            </button>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="widget">
-
-                                        <div class="widget_content">
-
-                                            <div class="widget-sub-title">
-                                                <span>{{ this.trs.stops }}</span>
-
-                                            </div>
-
-                                            <div class="widget_item">
-
-                                                <div class="custom-control custom-checkbox font-weight-600 ">
-
-                                                    <input type="checkbox" class="custom-control-input choose_all"
-                                                           v-model="this.stops" @change="handleAll('stops')"
-                                                           value="ALL" id="stops_all" checked>
-
-                                                    <label class="custom-control-label"
-                                                           for="stops_all">{{ trs.choose_all }} </label>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="widget_item">
-
-                                                <div class="custom-control custom-checkbox ">
-                                                    <input type="checkbox" class="custom-control-input filter_input"
-                                                           @change="removeAll('stops')"
-                                                           id="stop0" v-model="this.stops"
-                                                           value="0"
-                                                           :disabled="this.search_data.none_stop">
-                                                    <label class="custom-control-label" for="stop0">
-                                                        {{ trs.none_stop }}
-                                                    </label>
-                                                    <span class="only_filter"
-                                                          @click="only('stops','0')">{{ this.trs.only }}</span>
-                                                </div>
-
-                                            </div>
-
-                                            <div v-if="!search_data.none_stop" class="widget_item">
-
-                                                <div class="custom-control custom-checkbox ">
-                                                    <input type="checkbox" class="custom-control-input filter_input"
-                                                           @change="removeAll('stops')"
-                                                           id="stop1" v-model="this.stops" value="1">
-                                                    <label class="custom-control-label" for="stop1"> 1
-                                                        {{ this.trs.stop }}
-                                                    </label>
-                                                    <span class="only_filter"
-                                                          @click="only('stops','1')">{{ this.trs.only }}</span>
-                                                </div>
-
-                                            </div>
-                                            <div v-if="!search_data.none_stop" class="widget_item">
-
-                                                <div class="custom-control custom-checkbox ">
-                                                    <input type="checkbox" class="custom-control-input filter_input"
-                                                           @change="removeAll('stops')"
-                                                           id="stop2" v-model="this.stops" value="2">
-
-                                                    <label class="custom-control-label" for="stop2">
-                                                        2+ {{ trs.stops_in_Counting }}
-                                                    </label>
-                                                    <span class="only_filter"
-                                                          @click="only('stops','2')">{{ this.trs.only }}</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--// stop Search -->
-
-
-                                    <!-- bar search -->
-                                    <div class="widget">
-
-                                        <div class="widget_content">
-
-
-                                            <div class="widget_item">
-
-                                                <div class="custom-control custom-checkbox ">
-                                                    <input type="checkbox"
-                                                           class="custom-control-input filter_input"
-                                                           id="bar0"
-                                                           v-model="this.bar_exist" value="0"
-                                                           :checked="!filter || !filter.bar0 ? 'checked' : ''">
-                                                    <label class="custom-control-label" for="bar0">
-                                                        {{ this.trs.without_bar }}
-                                                        <i class="bar_filter_icon"><img
-                                                            src="images/icon/suitcase-solid.png"></i>
-                                                    </label>
-                                                    <span class="only_filter"
-                                                          @click="only('bar_exist','0')">{{ this.trs.only }}</span>
-                                                </div>
-
-                                            </div>
-                                            <div class="widget_item">
-
-                                                <div class="custom-control custom-checkbox ">
-                                                    <input type="checkbox"
-                                                           class="custom-control-input filter_input"
-                                                           id="bar1" v-model="this.bar_exist" value="1"
-                                                           :checked="!filter || !filter.bar1 ? 'checked' : ''">
-                                                    <label class="custom-control-label" for="bar1">
-                                                        {{ this.trs.with_bar }}
-                                                        <i class="bar_filter_icon fas fa-suitcase"></i>
-                                                    </label>
-                                                    <span class="only_filter"
-                                                          @click="only('bar_exist','1')">{{ this.trs.only }}</span>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <!--// bar Search -->
-
-                                    <!-- time search -->
-                                    <div class="widget">
-
-                                        <div class="widget_content">
-                                            <div class="widget-sub-title">
-                                                <span>{{ this.trs.depart }}</span>
-                                            </div>
-                                            <div class="widget_item">
-
-                                                <div class="custom-control custom-checkbox font-weight-600 ">
-                                                    <input type="checkbox" @change="handleAll('depart_time_range')"
-                                                           class="custom-control-input choose_all "
-                                                           id="depart_time_all"
-                                                           v-model="this.depart_time_range"
-                                                           value="ALL" checked>
-                                                    <label class="custom-control-label"
-                                                           for="depart_time_all">{{ trs.choose_all }} </label>
-                                                </div>
-
-                                            </div>
-                                            <div class="widget_item">
-
-                                                <div class="custom-control custom-checkbox ">
-                                                    <input type="checkbox" @change="removeAll('depart_time_range')"
-                                                           class="custom-control-input filter_input"
-                                                           id="depart_time0"
-                                                           v-model="this.depart_time_range" value="0" checked>
-                                                    <label class="custom-control-label"
-                                                           for="depart_time0">{{ this.trs.midnight }}
-                                                    </label>
-                                                    <span class="only_filter"
-                                                          @click="only('depart_time_range','0')">{{
-                                                            this.trs.only
-                                                        }}</span>
-                                                </div>
-
-                                            </div>
-                                            <div class="widget_item">
-
-                                                <div class="custom-control custom-checkbox ">
-                                                    <input type="checkbox" @change="removeAll('depart_time_range')"
-                                                           class="custom-control-input filter_input"
-                                                           id="depart_time1"
-                                                           v-model="this.depart_time_range" value="1" checked>
-                                                    <label class="custom-control-label"
-                                                           for="depart_time1">{{ this.trs.morning }}
-                                                    </label>
-                                                    <span class="only_filter"
-                                                          @click="only('depart_time_range','1')">{{
-                                                            this.trs.only
-                                                        }}</span>
-                                                </div>
-
-                                            </div>
-                                            <div class="widget_item">
-
-                                                <div class="custom-control custom-checkbox ">
-                                                    <input type="checkbox" @change="removeAll('depart_time_range')"
-                                                           class="custom-control-input filter_input"
-                                                           id="depart_time2"
-                                                           v-model="this.depart_time_range" value="2" checked>
-                                                    <label class="custom-control-label"
-                                                           for="depart_time2">{{ this.trs.afternoon }}
-                                                    </label>
-                                                    <span class="only_filter"
-                                                          @click="only('depart_time_range','2')">{{
-                                                            this.trs.only
-                                                        }}</span>
-                                                </div>
-
-                                            </div>
-                                            <div class="widget_item">
-
-                                                <div class="custom-control custom-checkbox ">
-                                                    <input type="checkbox" @change="removeAll('depart_time_range')"
-                                                           class="custom-control-input filter_input"
-                                                           id="depart_time3"
-                                                           v-model="this.depart_time_range" value="3" checked>
-                                                    <label class="custom-control-label"
-                                                           for="depart_time3">{{ this.trs.night }}
-                                                    </label>
-                                                    <span class="only_filter"
-                                                          @click="only('depart_time_range','3')">{{
-                                                            this.trs.only
-                                                        }}</span>
-                                                </div>
-
-                                            </div>
-
-                                            <!--                                return-->
-                                            <div v-if="this.flights.length && this.flights[0].DirectionInd==2"
-                                                 class="margin-top-15px">
-                                                <div class="widget-sub-title">
-                                                    <span>{{ trs.return }}</span>
-                                                </div>
-                                                <div class="widget_item">
-
-                                                    <div
-                                                        class="custom-control custom-checkbox font-weight-600 ">
-                                                        <input type="checkbox"
-                                                               @change="handleAll('return_depart_time_range')"
-                                                               class="custom-control-input choose_all"
-                                                               id="return_time_all"
-                                                               v-model="return_depart_time_range"
-                                                               value="ALL" checked>
-                                                        <label class="custom-control-label"
-                                                               for="return_time_all">{{ trs.choose_all }}</label>
-                                                    </div>
-
-                                                </div>
-                                                <div class="widget_item">
-
-                                                    <div class="custom-control custom-checkbox ">
-                                                        <input type="checkbox"
-                                                               @change="removeAll('return_depart_time_range')"
-                                                               class="custom-control-input filter_input"
-                                                               id="return_time0"
-                                                               v-model="return_depart_time_range" value="0"
-                                                               checked>
-                                                        <label class="custom-control-label"
-                                                               for="return_time0">{{ trs.midnight }}
-                                                        </label>
-                                                        <span class="only_filter"
-                                                              @click="only('return_depart_time_range','0')">{{
-                                                                this.trs.only
-                                                            }}</span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="widget_item">
-
-                                                    <div class="custom-control custom-checkbox ">
-                                                        <input type="checkbox"
-                                                               @change="removeAll('return_depart_time_range')"
-                                                               class="custom-control-input filter_input"
-                                                               id="return_time1"
-                                                               v-model="return_depart_time_range" value="1"
-                                                               checked>
-                                                        <label class="custom-control-label"
-                                                               for="return_time1">{{ trs.morning }}
-                                                        </label>
-                                                        <span class="only_filter"
-                                                              @click="only('return_depart_time_range','1')">{{
-                                                                this.trs.only
-                                                            }}</span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="widget_item">
-
-                                                    <div class="custom-control custom-checkbox ">
-                                                        <input type="checkbox"
-                                                               @change="removeAll('return_depart_time_range')"
-                                                               class="custom-control-input filter_input"
-                                                               id="return_time2"
-                                                               v-model="return_depart_time_range" value="2"
-                                                               checked>
-                                                        <label class="custom-control-label"
-                                                               for="return_time2">{{ trs.afternoon }}
-                                                        </label>
-                                                        <span class="only_filter"
-                                                              @click="only('return_depart_time_range','2')">{{
-                                                                this.trs.only
-                                                            }}</span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="widget_item">
-
-                                                    <div class="custom-control custom-checkbox ">
-                                                        <input type="checkbox"
-                                                               @change="removeAll('return_depart_time_range')"
-                                                               class="custom-control-input filter_input"
-                                                               id="return_time3"
-                                                               v-model="return_depart_time_range" value="3"
-                                                               checked>
-                                                        <label class="custom-control-label"
-                                                               for="return_time3">{{ trs.night }}
-                                                        </label>
-                                                        <span class="only_filter"
-                                                              @click="only('return_depart_time_range','3')">{{
-                                                                this.trs.only
-                                                            }}</span>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--// time Search -->
-
-
-                                    <!-- waiting time search -->
-                                    <div v-if="!search_data.none_stop" class="widget">
-                                        <div class="widget_content">
-                                            <div class="widget-sub-title">
-                                                <span>{{ trs.waiting_time }}</span>
-                                            </div>
-                                            <div class="widget_item">
-
-                                                <div class="">
-                                                    <input type="text" class="slide_input" id="total_waiting"
-                                                           name="depart_wait"
-                                                           v-model="this.slider.text"
-                                                           readonly>
-                                                </div>
-                                                <div id="slide_filter1" class="slide_filter slider-styled">
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--// waiting time Search -->
-
-
-                                    <!-- airline search -->
-                                    <div class="widget">
-
-                                        <div class="widget_content">
-                                            <div class="airlines_widget">
-
-                                                <div class="widget_item">
-
-                                                    <div class="custom-control custom-checkbox font-weight-600 ">
-                                                        <input type="checkbox"
-                                                               @change="handleAll('ValidatingAirlineCode')"
-                                                               class="custom-control-input choose_all"
-                                                               id="airline0"
-                                                               v-model="ValidatingAirlineCode"
-                                                               value="ALL" checked>
-                                                        <label class="custom-control-label"
-                                                               for="airline0">{{ trs.choose_all }}</label>
-                                                    </div>
-
-                                                </div>
-
-                                                <div v-for="airline in this.airlines" class="widget_item">
-
-                                                    <div class="custom-control custom-checkbox ">
-                                                        <input type="checkbox"
-                                                               @change="removeAll('ValidatingAirlineCode')"
-                                                               class="custom-control-input filter_input"
-                                                               :id="'airline'+airline.id"
-                                                               v-model="ValidatingAirlineCode" :value="airline.code"
-                                                               checked>
-                                                        <label class="custom-control-label"
-                                                               :for="'airline'+airline.id">
-
-                                                            {{ airline.name }}
-                                                            <img class="airline_filter_logo"
-                                                                 :src="'images/AirlineLogo_k/'+airline.image">
-
-                                                            <span
-                                                                class="filter_min_fare">{{ trs.from }} {{
-                                                                    airline.TotalFare
-                                                                }}€
-                                                            </span>
-                                                        </label>
-                                                        <span class="only_filter"
-                                                              @click="only('ValidatingAirlineCode',airline.code)">{{
-                                                                this.trs.only
-                                                            }}</span>
-                                                    </div>
-
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!--// airline Search -->
-                                </div>
-                                <div class="d-lg-none">
-                                    <div class="filter_modal_close_container">
-                                        <span class="filter_modal_close"><i
-                                            class="fas fa-sort-amount-down"></i> {{ trs.show_filter_result }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-10 col-12 flight_post_body">
+            <div class="col-12">
                 <div class="flights_container">
-
-                    <div id="airline_list_main_container">
-                        <div class="airline_list_container d-none d-lg-block">
-
-                            <div class="row">
-
-                                <div class="col-12">
-
-                                    <table class="table table-bordered">
-                                        <thead>
-                                        <tr class="thead_airline_logo">
-                                            <th class="first_row" rowspan="2" scope="col">{{
-                                                    this.trs.airlines
-                                                }}
-                                            </th>
-
-
-                                            <th v-for="item in airlines_list" scope="col">
-                                                <div><img :src="'images/'+item[0].image"></div>
-                                            </th>
-
-                                        </tr>
-                                        <tr class="thead_airline_name">
-
-                                            <th v-for="item in airlines_list" scope="col">
-                                                <div>{{
-                                                        item[0].name
-                                                    }}
-                                                </div>
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr v-if="this.flight_grouped[0] && this.flight_grouped[0].stops==0">
-                                            <th class="first_row" scope="row">{{ this.trs.none_stop }}</th>
-
-                                            <td v-for="airline in this.airlines_list">
-                                                <span @click="selectFlight(0,airline[0].code)"
-                                                      class="airline_list_filter"
-                                                      v-if="airline[0].stops == 0">{{
-                                                        (airline[0].FarePerAdult * airline[0].adult + airline[0].FarePerChild * airline[0].child + airline[0].FarePerInf * airline[0].infant)
-                                                    }}</span>
-                                                <span v-else>-</span>
-                                            </td>
-                                            {{ this.airline_counter1Add() }}
-                                        </tr>
-
-                                        <tr v-if="this.flight_grouped[this.airline_counter1] && this.flight_grouped[this.airline_counter1].stops==1">
-
-                                            <th class="first_row" scope="row">1 {{ this.trs.stop }}</th>
-
-                                            <td v-for="airline in this.airlines_list">
-
-                                                <span @click="selectFlight(1,airline[0].code)"
-                                                      class="airline_list_filter"
-                                                      v-if="airline[0].stops == 1">{{
-                                                        (airline[0].FarePerAdult * airline[0].adult + airline[0].FarePerChild * airline[0].child + airline[0].FarePerInf * airline[0].infant)
-                                                    }}</span>
-                                                <span @click="selectFlight(1,airline[1].code)"
-                                                      class="airline_list_filter"
-                                                      v-else-if="airline[1] && airline[1].stops == 1">{{
-                                                        (airline[1].FarePerAdult * airline[1].adult + airline[1].FarePerChild * airline[1].child + airline[1].FarePerInf * airline[1].infant)
-                                                    }}</span>
-                                                <span v-else>-</span>
-                                            </td>
-
-                                            {{ this.airline_counter2Add() }}
-                                        </tr>
-
-                                        <tr v-if="this.flight_grouped[this.airline_counter2] && this.flight_grouped[this.airline_counter2].stops==2">
-                                            <th class="first_row" scope="row">+2 {{
-                                                    this.trs.stops_in_Counting
-                                                }}
-                                            </th>
-
-                                            <td v-for="airline in this.airlines_list">
-
-                                                <span @click="selectFlight(2,airline[0].code)"
-                                                      class="airline_list_filter"
-                                                      v-if="airline[0].stops == 2">{{
-                                                        (airline[0].FarePerAdult * airline[0].adult + airline[0].FarePerChild * airline[0].child + airline[0].FarePerInf * airline[0].infant)
-                                                    }}</span>
-                                                <span @click="selectFlight(2,airline[1].code)"
-                                                      class="airline_list_filter"
-                                                      v-else-if="airline[1] && airline[1].stops == 2">{{
-                                                        (airline[1].FarePerAdult * airline[1].adult + airline[1].FarePerChild * airline[1].child + airline[1].FarePerInf * airline[1].infant)
-                                                    }}</span>
-                                                <span @click="selectFlight(2,airline[2].code)"
-                                                      class="airline_list_filter"
-                                                      v-else-if="airline[2]">{{
-                                                        (airline[2].FarePerAdult * airline[2].adult + airline[2].FarePerChild * airline[2].child + airline[2].FarePerInf * airline[2].infant)
-                                                    }}</span>
-                                                <span v-else>-</span>
-                                            </td>
-                                        </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="orderby_container">
-
-                        <div class="row margin-left-0px margin-right-0px">
-
-                            <div class="col first_div reorder_div ">
-                                <div class="orderby_item" :class="this.order_active==0 ? 'active_order' : ''"
-                                     @click="changeOrder(0)">
-                                <span><i class="fas fa-money-bill"></i>
-                                    {{ this.trs.cheapest }}
-                                </span>
-                                </div>
-                            </div>
-
-                            <div v-if="this.flights.length && this.flights[0].DirectionInd==2"
-                                 class="col reorder_div">
-                                <div class="orderby_item" :class="this.order_active==1 ? 'active_order' : ''"
-                                     @click="changeOrder(1)">
-                                <span><i class="fas fa-clock"></i>
-                                    {{ this.trs.depart_and_return + ": " + this.trs.Shortest }}
-                                </span>
-                                </div>
-                            </div>
-
-
-                            <div class="col reorder_div">
-                                <div class="orderby_item" :class="this.order_active==2 ? 'active_order' : ''"
-                                     @click="changeOrder(2)">
-                                <span><i class="fas fa-clock"></i>
-                                    {{ this.trs.depart + ": " + this.trs.Shortest }}
-                                </span>
-                                </div>
-                            </div>
-
-                            <div v-if="this.flights.length && this.flights[0].DirectionInd==2"
-                                 class="col last_div reorder_div">
-                                <div class="orderby_item" :class="this.order_active==3 ? 'active_order' : ''"
-                                     @click="changeOrder(3)">
-                                <span><i class="fas fa-clock"></i>
-                                    {{ this.trs.return + ": " + this.trs.Shortest }}
-                                </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="flight_header">
 
@@ -622,17 +50,10 @@
 
                     <div class="flight_main_container">
                         <div id="flight_posts_content">
-                            <div v-for="(item,index) in this.resultQuery[0]"
-                                 :class="item.ValidatingAirlineCode=='IR' ? 'our_recommend_container' : ''">
-
-                                <div v-if="item.ValidatingAirlineCode=='IR'" class="our_recommend">
-                                    {{ this.trs.our_recommend }}
-                                </div>
-
-
+                            <div>
                                 <div class="flight_container filter_class padding-0px margin-bottom-0px">
                                     <div class="flight-post with-hover box-shadow-hover"
-                                         :class="this.collapse_array.includes(index) || this.collapse_price_array.includes(index) ? 'f_p_active_bxs' : ''">
+                                         :class="this.collapse_array.includes(0) || this.collapse_price_array.includes(0) ? 'f_p_active_bxs' : ''">
 
                                         <div class="flight_post_container">
                                             <div class="row">
@@ -641,20 +62,20 @@
 
                                                     <div class="details_link" data-toggle="collapse"
                                                          role="button"
-                                                         @click="this.collapse(index)"
+                                                         @click="this.collapse(0)"
                                                          aria-expanded="false">
                                                         <div class="row d-md-none">
                                                             <div class="flight_item logo_container col-4 ">
 
                                                                 <div
-                                                                    v-for="logo in getDistinctAirline(item.airlines).filter(i => i.pivot.is_return === 0)"
+                                                                    v-for="logo in getDistinctAirline(flight.airlines).filter(i => i.pivot.is_return === 0)"
                                                                     class="logo_leg">
                                                                     <img :src="'images/'+logo.image"
                                                                          :alt="logo.name">
                                                                 </div>
 
 
-                                                                <div v-if="!item.airlines" class="logo_leg">
+                                                                <div v-if="!flight.airlines" class="logo_leg">
                                                                     <img src="images/AirlineLogo/default.png">
                                                                 </div>
 
@@ -662,37 +83,35 @@
                                                             <div class="col-4 flight_item ">
                                                                 <div class="top_item f_t_time">
                                                             <span>
-                                                                {{ item.flight_number }}
+                                                                {{ flight.flight_number }}
                                                             </span>
                                                                 </div>
                                                                 <div class="bot_item">
                                                             <span>
-                                                                {{ turn_class(item.class) }}/{{ item.class_code }}
+                                                                {{ turn_class(flight.class) }}/{{ flight.class_code }}
                                                             </span>
                                                                 </div>
 
-                                                                <div v-if="!item.stops" class="text-black">
+                                                                <div v-if="!flight.stops" class="text-black">
                                                             <span class="aircraft_name">
-                                                                {{ item.legs[0].aircraft_type }}
+                                                                {{ flight.legs[0].aircraft_type }}
                                                                 <i class="fas fa-info-circle"></i>
                                                                 <span class="aircraft_description">
-                                                                    {{ item.legs[0].aircraft_type_description }}
+                                                                    {{ flight.legs[0].aircraft_type_description }}
                                                                 </span>
                                                             </span>
                                                                 </div>
 
                                                             </div>
                                                             <div class="flight_item col-4 deal_button_md_d">
-                                                                <a :href="this.select_url+'/'+item.id">
-                                                                    <span>{{ item.TotalFare }} € </span>
-                                                                    <span> {{this.trs.deal}} <i class="fas fa-long-arrow-alt-right"></i></span>
+                                                                <span>{{ flight.TotalFare }} €</span>
 
-                                                                </a>
+                                                                <i class="fas fa-long-arrow-alt-right"></i>
                                                             </div>
                                                         </div>
 
                                                         <div class="depart_section"
-                                                             :class="item.DirectionInd==1 ? 'border-bottom-0 padding-bottom-0px-imp' : ''">
+                                                             :class="flight.DirectionInd==1 ? 'border-bottom-0 padding-bottom-0px-imp' : ''">
                                                             <div class="row">
 
                                                                 <div
@@ -700,14 +119,14 @@
 
 
                                                                     <div
-                                                                        v-for="logo in getDistinctAirline(item.airlines).filter(i => i.pivot.is_return == 0)"
+                                                                        v-for="logo in getDistinctAirline(flight.airlines).filter(i => i.pivot.is_return == 0)"
 
                                                                         class="logo_leg">
                                                                         <img :src="'images/'+logo.image"
                                                                              :alt="logo.name">
                                                                     </div>
 
-                                                                    <div v-if="!item.airlines" class="logo_leg">
+                                                                    <div v-if="!flight.airlines" class="logo_leg">
                                                                         <img src="images/AirlineLogo/default.png">
                                                                     </div>
                                                                 </div>
@@ -716,23 +135,23 @@
 
                                                                     <div class="top_item f_t_time">
                                                                 <span>
-                                                                    {{ item.flight_number }}
+                                                                    {{ flight.flight_number }}
                                                                 </span>
                                                                     </div>
                                                                     <div class="bot_item">
                                                                 <span>
-                                                                    {{ this.turn_class(item.class) }}/{{
-                                                                        item.class_code
+                                                                    {{ this.turn_class(flight.class) }}/{{
+                                                                        flight.class_code
                                                                     }}
                                                                 </span>
                                                                     </div>
 
-                                                                    <div v-if="!item.stops" class="text-black">
+                                                                    <div v-if="!flight.stops" class="text-black">
                                                                     <span class="aircraft_name">
-                                                                        {{ item.legs[0].aircraft_type }}
+                                                                        {{ flight.legs[0].aircraft_type }}
                                                                         <i class="fas fa-info-circle"></i>
                                                                         <span class="aircraft_description">
-                                                                            {{ item.legs[0].aircraft_type_description }}
+                                                                            {{ flight.legs[0].aircraft_type_description }}
                                                                         </span>
                                                                     </span>
                                                                     </div>
@@ -743,30 +162,30 @@
                                                                     <div class="top_item f_t_time">
                                                                     <span>
                                                                         {{
-                                                                            new Date(item.depart_time).toLocaleString('de-DE', this.time_option)
+                                                                            new Date(flight.depart_time).toLocaleString('de-DE', this.time_option)
                                                                         }}
                                                                     </span>
                                                                     </div>
                                                                     <div class="bot_item">
-                                                                    <span v-if="item.airports1">
+                                                                    <span v-if="flight.airports1">
                                                                         {{
-                                                                            item.airports1[this.city] != "" ? item.airports1[this.city] : item.airports1.city_en
+                                                                            flight.airports1[this.city] != "" ? flight.airports1[this.city] : flight.airports1.city_en
                                                                         }}
                                                                         -{{
-                                                                            item.airports1.code != "" ? item.airports1.code : item.depart_airport
+                                                                            flight.airports1.code != "" ? flight.airports1.code : flight.depart_airport
                                                                         }}
                                                                     </span>
                                                                         <span v-else>
-                                                                        {{ item.depart_airport }}
+                                                                        {{ flight.depart_airport }}
                                                                     </span>
 
                                                                     </div>
                                                                     <div class="date_item">
                                                                     <span>
                                                                         {{
-                                                                            this.turn_day_of_week(item.depart_time)
+                                                                            this.turn_day_of_week(flight.depart_time)
                                                                         }} {{
-                                                                            new Date(item.depart_time).toLocaleString('de-DE', this.date_option)
+                                                                            new Date(flight.depart_time).toLocaleString('de-DE', this.date_option)
                                                                         }}
                                                                     </span>
                                                                     </div>
@@ -780,10 +199,10 @@
                                                                     <div class="flight_duration_md">
                                                                     <span>
                                                                         {{
-                                                                            parseInt(item.total_time / 60) + "h"
+                                                                            parseInt(flight.total_time / 60) + "h"
                                                                         }}
                                                                         {{
-                                                                            item.total_time % 60 != 0 ? ":" + item.total_time % 60 + "'" : ""
+                                                                            flight.total_time % 60 != 0 ? ":" + flight.total_time % 60 + "'" : ""
                                                                         }}
                                                                     </span>
 
@@ -791,16 +210,16 @@
                                                                     <div class="flight_duration_md">
                                                                     <span>
                                                                         {{
-                                                                            item.stops == 0 ? this.trs.none_stop : (item.stops == 1 ? item.stops + " " + this.trs.stop : item.stops + " " + this.trs.stops_in_Counting)
+                                                                            flight.stops == 0 ? this.trs.none_stop : (flight.stops == 1 ? flight.stops + " " + this.trs.stop : flight.stops + " " + this.trs.stops_in_Counting)
                                                                         }}
 
                                                                         <span class="flight_duration_md_waiting">
                                                                             {{
-                                                                                item.total_waiting == 0 ? "" : (parseInt(item.total_waiting / 60) + "h")
+                                                                                flight.total_waiting == 0 ? "" : (parseInt(flight.total_waiting / 60) + "h")
                                                                             }} {{
-                                                                                item.total_waiting != 0 ? (item.total_waiting % 60 != 0 ? ":" + item.total_waiting % 60 + "'" : "") : ""
+                                                                                flight.total_waiting != 0 ? (flight.total_waiting % 60 != 0 ? ":" + flight.total_waiting % 60 + "'" : "") : ""
                                                                             }}{{
-                                                                                item.total_waiting == 0 ? "" : " waiting"
+                                                                                flight.total_waiting == 0 ? "" : " waiting"
                                                                             }}
                                                                         </span>
                                                                     </span>
@@ -808,13 +227,13 @@
 
                                                                     <div class="flight_duration_md">
 
-                                                                        <div v-if="min_seat_calculate(item.legs)[0]"
+                                                                        <div v-if="min_seat_calculate(flight.legs)[0]"
                                                                              class="flight_seats_price_deal">
                                                                         <span
-                                                                            :class="min_seat_calculate(item.legs)[0]==search_data.adl+search_data.chl ? 'text-red' :'' ">
+                                                                            :class="min_seat_calculate(flight.legs)[0]==search_data.adl+search_data.chl ? 'text-red' :'' ">
                                                                         <img src="images/icon/flight-seat.png"
                                                                              class="flight_seat_image"> {{
-                                                                                min_seat_calculate(item.legs)[0]
+                                                                                min_seat_calculate(flight.legs)[0]
                                                                             }}
                                                                        {{ this.trs.seats_remains }}
                                                                         </span>
@@ -831,30 +250,30 @@
                                                                     <div class="top_item f_t_time">
                                                                     <span>
                                                                         {{
-                                                                            new Date(item.arrival_time).toLocaleString('de-DE', this.time_option)
+                                                                            new Date(flight.arrival_time).toLocaleString('de-DE', this.time_option)
                                                                         }}
                                                                     </span>
                                                                     </div>
                                                                     <div class="bot_item">
-                                                                    <span v-if="item.airports2">
+                                                                    <span v-if="flight.airports2">
                                                                         {{
-                                                                            item.airports2[this.city] != "" ? item.airports2[this.city] : item.airports2.city_en
+                                                                            flight.airports2[this.city] != "" ? flight.airports2[this.city] : flight.airports2.city_en
                                                                         }}
                                                                         -{{
-                                                                            item.airports2.code != "" ? item.airports2.code : item.arrival_airport
+                                                                            flight.airports2.code != "" ? flight.airports2.code : flight.arrival_airport
                                                                         }}
                                                                     </span>
                                                                         <span v-else>
-                                                                        {{ item.arrival_airport }}
+                                                                        {{ flight.arrival_airport }}
                                                                     </span>
 
                                                                     </div>
                                                                     <div class="date_item">
                                                                     <span>
                                                                         {{
-                                                                            this.turn_day_of_week(item.arrival_time)
+                                                                            this.turn_day_of_week(flight.arrival_time)
                                                                         }} {{
-                                                                            new Date(item.arrival_time).toLocaleString('de-DE', this.date_option)
+                                                                            new Date(flight.arrival_time).toLocaleString('de-DE', this.date_option)
                                                                         }}
                                                                     </span>
                                                                     </div>
@@ -867,30 +286,30 @@
                                                                             <div class="top_item time_detail">
                                                                             <span>
                                                                                  {{
-                                                                                    parseInt(item.total_time / 60) + "h"
+                                                                                    parseInt(flight.total_time / 60) + "h"
                                                                                 }}
                                                                                 {{
-                                                                                    item.total_time % 60 != 0 ? ":" + item.total_time % 60 + "'" : ""
+                                                                                    flight.total_time % 60 != 0 ? ":" + flight.total_time % 60 + "'" : ""
                                                                                 }}
                                                                             </span>
                                                                             </div>
                                                                             <div class="bot_item">
                                                                             <span>
                                                                                 {{
-                                                                                    item.stops == 0 ? this.trs.none_stop : (item.stops == 1 ? item.stops + " " + this.trs.stop : item.stops + " " + this.trs.stops_in_Counting)
+                                                                                    flight.stops == 0 ? this.trs.none_stop : (flight.stops == 1 ? flight.stops + " " + this.trs.stop : flight.stops + " " + this.trs.stops_in_Counting)
                                                                                 }}
                                                                             </span>
                                                                             </div>
 
                                                                             <div
-                                                                                v-if="min_seat_calculate(item.legs)[0]"
+                                                                                v-if="min_seat_calculate(flight.legs)[0]"
                                                                                 class="flight_seats_price_deal">
                                                                             <span
-                                                                                :class="min_seat_calculate(item.legs)[0]==search_data.adl+search_data.chl ? 'text-red' :'' ">
+                                                                                :class="min_seat_calculate(flight.legs)[0]==search_data.adl+search_data.chl ? 'text-red' :'' ">
                                                                                 <img src="images/icon/flight-seat.png"
                                                                                      class="flight_seat_image">
                                                                                 {{
-                                                                                    min_seat_calculate(item.legs)[0]
+                                                                                    min_seat_calculate(flight.legs)[0]
                                                                                 }}
                                                                                 {{ this.trs.seats_remains }}
                                                                             </span>
@@ -906,9 +325,9 @@
                                                                             <span>
 
                                                                                 {{
-                                                                                    item.total_waiting == 0 ? "" : (parseInt(item.total_waiting / 60) + "h")
+                                                                                    flight.total_waiting == 0 ? "" : (parseInt(flight.total_waiting / 60) + "h")
                                                                                 }} {{
-                                                                                    item.total_waiting != 0 ? (item.total_waiting % 60 != 0 ? ":" + item.total_waiting % 60 + "'" : "") : ""
+                                                                                    flight.total_waiting != 0 ? (flight.total_waiting % 60 != 0 ? ":" + flight.total_waiting % 60 + "'" : "") : ""
                                                                                 }}
                                                                             </span>
                                                                             </div>
@@ -922,20 +341,20 @@
                                                         </div>
                                                         <!--                                                    return section-->
 
-                                                        <div v-if="item.DirectionInd==2">
+                                                        <div v-if="flight.DirectionInd==2">
                                                             <div class="row d-md-none">
                                                                 <div class="flight_item logo_container col-4 ">
 
 
                                                                     <div
-                                                                        v-for="logo in getDistinctAirline(item.airlines).filter(i => i.pivot.is_return === 1)"
+                                                                        v-for="logo in getDistinctAirline(flight.airlines).filter(i => i.pivot.is_return === 1)"
                                                                         class="logo_leg">
                                                                         <img :src="'images/'+logo.image"
                                                                              :alt="logo.name">
                                                                     </div>
 
 
-                                                                    <div v-if="!item.airlines" class="logo_leg">
+                                                                    <div v-if="!flight.airlines" class="logo_leg">
                                                                         <img src="images/AirlineLogo/default.png">
                                                                     </div>
 
@@ -943,27 +362,27 @@
                                                                 <div class="col-4 flight_item ">
                                                                     <div class="top_item f_t_time">
                                                                 <span>
-                                                                    {{ item.return_flight_number }}
+                                                                    {{ flight.return_flight_number }}
                                                                 </span>
                                                                     </div>
                                                                     <div class="bot_item">
                                                                 <span>
-                                                                    {{ this.turn_class(item.return_class) }}/{{
-                                                                        item.return_class_code
+                                                                    {{ this.turn_class(flight.return_class) }}/{{
+                                                                        flight.return_class_code
                                                                     }}
                                                                 </span>
                                                                     </div>
 
-                                                                    <div v-if="!item.return_stops"
+                                                                    <div v-if="!flight.return_stops"
                                                                          class="text-black">
                                                                     <span class="aircraft_name">
                                                                         {{
-                                                                            item.legs[item.legs.length - 1].aircraft_type
+                                                                            flight.legs[flight.legs.length - 1].aircraft_type
                                                                         }}
                                                                         <i class="fas fa-info-circle"></i>
                                                                         <span class="aircraft_description">
                                                                             {{
-                                                                                item.legs[item.legs.length - 1].aircraft_type_description
+                                                                                flight.legs[flight.legs.length - 1].aircraft_type_description
                                                                             }}
                                                                         </span>
                                                                     </span>
@@ -981,14 +400,14 @@
                                                                         class="flight_item logo_container col d-md-block d-none">
 
                                                                         <div
-                                                                            v-for="logo in getDistinctAirline(item.airlines).filter(i => i.pivot.is_return === 1)"
+                                                                            v-for="logo in getDistinctAirline(flight.airlines).filter(i => i.pivot.is_return === 1)"
                                                                             class="logo_leg">
                                                                             <img :src="'images/'+logo.image"
                                                                                  :alt="logo.name">
                                                                         </div>
 
 
-                                                                        <div v-if="!item.airlines" class="logo_leg">
+                                                                        <div v-if="!flight.airlines" class="logo_leg">
                                                                             <img
                                                                                 src="images/AirlineLogo/default.png">
                                                                         </div>
@@ -997,27 +416,27 @@
                                                                     <div class="flight_item col d-md-block d-none ">
                                                                         <div class="top_item f_t_time">
                                                                     <span>
-                                                                        {{ item.return_flight_number }}
+                                                                        {{ flight.return_flight_number }}
                                                                     </span>
                                                                         </div>
                                                                         <div class="bot_item">
                                                                     <span>
                                                                         {{
-                                                                            this.turn_class(item.return_class)
-                                                                        }}/{{ item.return_class_code }}
+                                                                            this.turn_class(flight.return_class)
+                                                                        }}/{{ flight.return_class_code }}
                                                                     </span>
                                                                         </div>
 
-                                                                        <div v-if="!item.return_stops"
+                                                                        <div v-if="!flight.return_stops"
                                                                              class="text-black">
                                                                     <span class="aircraft_name">
                                                                         {{
-                                                                            item.legs[item.legs.length - 1].aircraft_type
+                                                                            flight.legs[flight.legs.length - 1].aircraft_type
                                                                         }}
                                                                         <i class="fas fa-info-circle"></i>
                                                                         <span class="aircraft_description">
                                                                             {{
-                                                                                item.legs[item.legs.length - 1].aircraft_type_description
+                                                                                flight.legs[flight.legs.length - 1].aircraft_type_description
                                                                             }}
                                                                         </span>
                                                                     </span>
@@ -1030,22 +449,22 @@
                                                                         <div class="top_item f_t_time">
                                                                     <span>
                                                                         {{
-                                                                            new Date(item.return_depart_time).toLocaleString('de-DE', this.time_option)
+                                                                            new Date(flight.return_depart_time).toLocaleString('de-DE', this.time_option)
                                                                         }}
                                                                     </span>
 
                                                                         </div>
                                                                         <div class="bot_item">
-                                                                    <span v-if="item.airports3">
+                                                                    <span v-if="flight.airports3">
                                                                         {{
-                                                                            item.airports3[this.city] != "" ? item.airports3[this.city] : item.airports3.city_en
+                                                                            flight.airports3[this.city] != "" ? flight.airports3[this.city] : flight.airports3.city_en
                                                                         }}
                                                                         -{{
-                                                                            item.airports3.code != "" ? item.airports3.code : item.return_depart_airport
+                                                                            flight.airports3.code != "" ? flight.airports3.code : flight.return_depart_airport
                                                                         }}
                                                                     </span>
                                                                             <span v-else>
-                                                                        {{ item.return_depart_airport }}
+                                                                        {{ flight.return_depart_airport }}
                                                                     </span>
 
 
@@ -1053,9 +472,9 @@
                                                                         <div class="date_item">
                                                                     <span>
                                                                         {{
-                                                                            this.turn_day_of_week(item.return_depart_time)
+                                                                            this.turn_day_of_week(flight.return_depart_time)
                                                                         }} {{
-                                                                            new Date(item.return_depart_time).toLocaleString('de-DE', this.date_option)
+                                                                            new Date(flight.return_depart_time).toLocaleString('de-DE', this.date_option)
                                                                         }}
                                                                     </span>
                                                                         </div>
@@ -1069,10 +488,10 @@
                                                                         <div class="flight_duration_md">
                                                                     <span>
                                                                         {{
-                                                                            parseInt(item.return_total_time / 60) + "h"
+                                                                            parseInt(flight.return_total_time / 60) + "h"
                                                                         }}
                                                                         {{
-                                                                            item.return_total_time % 60 != 0 ? ":" + item.return_total_time % 60 + "'" : ""
+                                                                            flight.return_total_time % 60 != 0 ? ":" + flight.return_total_time % 60 + "'" : ""
                                                                         }}
                                                                     </span>
 
@@ -1080,17 +499,17 @@
                                                                         <div class="flight_duration_md">
                                                                             <span>
                                                                                 {{
-                                                                                    item.return_stops == 0 ? this.trs.none_stop : (item.return_stops == 1 ? item.return_stops + " " + this.trs.stop : item.return_stops + " " + this.trs.stops_in_Counting)
+                                                                                    flight.return_stops == 0 ? this.trs.none_stop : (flight.return_stops == 1 ? flight.return_stops + " " + this.trs.stop : flight.return_stops + " " + this.trs.stops_in_Counting)
                                                                                 }}
                                                                                 <span
                                                                                     class="flight_duration_md_waiting">
                                                                                     {{
-                                                                                        item.return_total_waiting == 0 ? "" : (parseInt(item.return_total_waiting / 60) + "h")
+                                                                                        flight.return_total_waiting == 0 ? "" : (parseInt(flight.return_total_waiting / 60) + "h")
                                                                                     }}{{
-                                                                                        item.return_total_waiting != 0 ? (item.return_total_waiting % 60 != 0 ? ":" + item.return_total_waiting % 60 + "'" : "") : ""
+                                                                                        flight.return_total_waiting != 0 ? (flight.return_total_waiting % 60 != 0 ? ":" + flight.return_total_waiting % 60 + "'" : "") : ""
                                                                                     }}
                                                                                     {{
-                                                                                        item.return_total_waiting == 0 ? "" : " waiting"
+                                                                                        flight.return_total_waiting == 0 ? "" : " waiting"
                                                                                     }}
                                                                         </span>
                                                                     </span>
@@ -1098,14 +517,14 @@
                                                                         <div class="flight_duration_md">
 
                                                                             <div
-                                                                                v-if="min_seat_calculate(item.legs)[1]"
+                                                                                v-if="min_seat_calculate(flight.legs)[1]"
                                                                                 class="flight_seats_price_deal">
                                                                             <span
-                                                                                :class="min_seat_calculate(item.legs)[1]==search_data.adl+search_data.chl ? 'text-red' :'' ">
+                                                                                :class="min_seat_calculate(flight.legs)[1]==search_data.adl+search_data.chl ? 'text-red' :'' ">
                                                                                 <img src="images/icon/flight-seat.png"
                                                                                      class="flight_seat_image">
                                                                                 {{
-                                                                                    min_seat_calculate(item.legs)[1]
+                                                                                    min_seat_calculate(flight.legs)[1]
                                                                                 }}
                                                                                 {{ this.trs.seats_remains }}
                                                                             </span>
@@ -1123,30 +542,30 @@
                                                                         <div class="top_item f_t_time">
                                                                     <span>
                                                                         {{
-                                                                            new Date(item.return_arrival_time).toLocaleString('de-DE', this.time_option)
+                                                                            new Date(flight.return_arrival_time).toLocaleString('de-DE', this.time_option)
                                                                         }}
                                                                     </span>
                                                                         </div>
                                                                         <div class="bot_item">
-                                                                    <span v-if="item.airports4">
+                                                                    <span v-if="flight.airports4">
                                                                         {{
-                                                                            item.airports4[this.city] != "" ? item.airports4[this.city] : item.airports4.city_en
+                                                                            flight.airports4[this.city] != "" ? flight.airports4[this.city] : flight.airports4.city_en
                                                                         }}
                                                                         -{{
-                                                                            item.airports4.code != "" ? item.airports4.code : item.return_arrival_airport
+                                                                            flight.airports4.code != "" ? flight.airports4.code : flight.return_arrival_airport
                                                                         }}
                                                                     </span>
                                                                             <span v-else>
-                                                                        {{ item.return_arrival_airport }}
+                                                                        {{ flight.return_arrival_airport }}
                                                                     </span>
 
                                                                         </div>
                                                                         <div class="date_item">
                                                                     <span>
                                                                         {{
-                                                                            this.turn_day_of_week(item.return_arrival_time)
+                                                                            this.turn_day_of_week(flight.return_arrival_time)
                                                                         }} {{
-                                                                            new Date(item.return_arrival_time).toLocaleString('de-DE', this.date_option)
+                                                                            new Date(flight.return_arrival_time).toLocaleString('de-DE', this.date_option)
                                                                         }}
                                                                     </span>
                                                                         </div>
@@ -1161,29 +580,29 @@
                                                                                 <div class="top_item time_detail">
                                                                             <span>
                                                                                  {{
-                                                                                    parseInt(item.return_total_time / 60) + "h"
+                                                                                    parseInt(flight.return_total_time / 60) + "h"
                                                                                 }}
                                                                                 {{
-                                                                                    item.return_total_time % 60 != 0 ? ":" + item.return_total_time % 60 + "'" : ""
+                                                                                    flight.return_total_time % 60 != 0 ? ":" + flight.return_total_time % 60 + "'" : ""
                                                                                 }}
                                                                             </span>
                                                                                 </div>
                                                                                 <div class="bot_item">
                                                                             <span>
                                                                                 {{
-                                                                                    item.return_stops == 0 ? this.trs.none_stop : (item.return_stops == 1 ? item.return_stops + " " + this.trs.stop : item.return_stops + " " + this.trs.stops_in_Counting)
+                                                                                    flight.return_stops == 0 ? this.trs.none_stop : (flight.return_stops == 1 ? flight.return_stops + " " + this.trs.stop : flight.return_stops + " " + this.trs.stops_in_Counting)
                                                                                 }}
                                                                             </span>
                                                                                 </div>
                                                                                 <div
-                                                                                    v-if="min_seat_calculate(item.legs)[1]"
+                                                                                    v-if="min_seat_calculate(flight.legs)[1]"
                                                                                     class="flight_seats_price_deal">
                                                                             <span
-                                                                                :class="min_seat_calculate(item.legs)[1]==search_data.adl+search_data.chl ? 'text-red' :'' ">
+                                                                                :class="min_seat_calculate(flight.legs)[1]==search_data.adl+search_data.chl ? 'text-red' :'' ">
                                                                                 <img src="images/icon/flight-seat.png"
                                                                                      class="flight_seat_image">
                                                                                 {{
-                                                                                    min_seat_calculate(item.legs)[1]
+                                                                                    min_seat_calculate(flight.legs)[1]
                                                                                 }}
                                                                                 {{ this.trs.seats_remains }}
                                                                             </span>
@@ -1196,9 +615,9 @@
                                                                             <span>
 
                                                                                 {{
-                                                                                    item.return_total_waiting == 0 ? "" : (parseInt(item.return_total_waiting / 60) + "h")
+                                                                                    flight.return_total_waiting == 0 ? "" : (parseInt(flight.return_total_waiting / 60) + "h")
                                                                                 }} {{
-                                                                                    item.return_total_waiting != 0 ? (item.return_total_waiting % 60 != 0 ? ":" + item.return_total_waiting % 60 + "'" : "") : ""
+                                                                                    flight.return_total_waiting != 0 ? (flight.return_total_waiting % 60 != 0 ? ":" + flight.return_total_waiting % 60 + "'" : "") : ""
                                                                                 }}
                                                                             </span>
                                                                                 </div>
@@ -1212,8 +631,8 @@
                                                         </div>
 
 
-                                                        <div v-if="item.DirectionInd==4">
-                                                            <div v-for="multi in item.multi_flights">
+                                                        <div v-if="flight.DirectionInd==4">
+                                                            <div v-for="multi in flight.multi_flights">
                                                                 <div class="row d-md-none">
 
                                                                     <div class="flight_item logo_container col-4 ">
@@ -1512,13 +931,13 @@
                                                             <div>
                                                                 <span class="details_link" data-toggle="collapse"
                                                                       role="button" aria-expanded="false"
-                                                                      @click="this.collapse(index)"
+                                                                      @click="this.collapse(0)"
                                                                       aria-controls="collapseExample">
                                                                 <span class="all_details_link">
                                                                     <i class="fas fa-info-circle"></i>
                                                                     <div
                                                                         class="flight_details_detail_link display-inline"
-                                                                        :class="this.collapse_array.includes(index) ?'details_link_active' : ''">
+                                                                        :class="this.collapse_array.includes(0) ?'details_link_active' : ''">
                                                                         <span class="d-none d-md-inline">{{
                                                                                 this.trs.details
                                                                             }}
@@ -1530,14 +949,14 @@
                                                             <div>
                                                                 <span class="price_link" data-toggle="collapse"
                                                                       role="button"
-                                                                      @click="this.collapse_price(index)"
+                                                                      @click="this.collapse_price(0)"
                                                                       aria-expanded="false"
                                                                       aria-controls="collapseExample">
                                                                 <span class="all_details_link">
                                                                     <i class="fas fa-money-bill"></i>
                                                                     <div
                                                                         class="price_details_detail_link display-inline"
-                                                                        :class="this.collapse_price_array.includes(index) ?'details_link_active' : ''">
+                                                                        :class="this.collapse_price_array.includes(0) ?'details_link_active' : ''">
                                                                         <span
                                                                             class="d-none d-md-inline">{{
                                                                                 this.trs.price
@@ -1547,26 +966,26 @@
                                                             </div>
                                                             <div>
                                                                 <span class="all_details_link"
-                                                                      @click="this.bar_rule(item.id)">
-                                                                    <span v-if="!item.bar_exist">
+                                                                      @click="this.bar_rule(flight.id)">
+                                                                    <span v-if="!flight.bar_exist">
                                                                         <i><img
                                                                             src="images/icon/suitcase-solid.png"></i>
                                                                         <span
-                                                                            v-if="item.return_bar_exist && item.DirectionInd==2">
+                                                                            v-if="flight.return_bar_exist && flight.DirectionInd==2">
                                                                             / <i class="fas fa-suitcase "></i>
                                                                             <span class="d-none d-md-inline">{{
-                                                                                    item.return_bar
+                                                                                    flight.return_bar
                                                                                 }}</span>
                                                                         </span>
                                                                     </span>
                                                                     <div v-else>
                                                                         <i class="fas fa-suitcase "></i>
-                                                                        <span class="d-md-inline">{{ item.bar }}
-                                                                            <i v-if="!item.return_bar_exist && item.DirectionInd==2">/
+                                                                        <span class="d-md-inline">{{ flight.bar }}
+                                                                            <i v-if="!flight.return_bar_exist && flight.DirectionInd==2">/
                                                                                 <img
                                                                                     src="images/icon/suitcase-solid.png"></i>
                                                                             <i v-else>{{
-                                                                                    item.bar != item.return_bar && item.return_bar != "" ? "/" + item.return_bar : ""
+                                                                                    flight.bar != flight.return_bar && flight.return_bar != "" ? "/" + flight.return_bar : ""
                                                                                 }}</i>
                                                                         </span>
                                                                     </div>
@@ -1574,7 +993,7 @@
                                                             </div>
                                                             <div>
                                                                 <span class="all_details_link"
-                                                                      @click="this.ticket_rule(item.id)">
+                                                                      @click="this.ticket_rule(flight.id)">
                                                                     <i class="fas fa-ticket-alt"></i>
                                                                     <span class="d-none d-md-inline">
                                                                         {{ this.trs.ticket_rules }}
@@ -1587,45 +1006,40 @@
                                                 <div class="col-2 d-none d-md-block deal_container">
 
                                                     <div class="deal_content"
-                                                         :class="item.DirectionInd!=1 ? 'return_deal_bottom' : 'single_deal_bottom'">
+                                                         :class="flight.DirectionInd!=1 ? 'return_deal_bottom' : 'single_deal_bottom'">
                                                         <div class="deal_price_total">
-                                                            <span>{{ item.TotalFare }} €</span>
+                                                            <span>{{ flight.TotalFare }} €</span>
                                                         </div>
 
-                                                        <div v-if="item.TotalFare!=item.FarePerAdult"
+                                                        <div v-if="flight.TotalFare!=flight.FarePerAdult"
                                                              class="deal_price_detail">
                                                         <span>{{
-                                                                Math.round(item.FarePerAdult)
+                                                                Math.round(flight.FarePerAdult)
                                                             }} € {{ this.trs["p.a"] }}</span>
                                                         </div>
 
-
-                                                        <a :href="this.select_url+'/'+item.id">
-                                                            <div class="deal_button">{{ this.trs.deal }}</div>
-                                                        </a>
-
                                                         <div class="deal_section_baggage_container">
                                                         <span class="deal_section_baggage" id="baggage_rules">
-                                                            <span v-if="!item.bar_exist">
+                                                            <span v-if="!flight.bar_exist">
                                                                 <i><img src="images/icon/suitcase-solid.png"></i>
                                                                 <span
-                                                                    v-if="item.return_bar_exist && item.DirectionInd==2">
+                                                                    v-if="flight.return_bar_exist && flight.DirectionInd==2">
                                                                     / <i class="fas fa-suitcase "></i>
                                                                     <span class="d-none d-md-inline">{{
-                                                                            item.return_bar
+                                                                            flight.return_bar
                                                                         }}</span>
                                                                 </span>
                                                             </span>
                                                             <span v-else>
                                                                 <i class="fas fa-suitcase "></i>
-                                                                <span class="d-none d-md-inline">{{ item.bar }}
+                                                                <span class="d-none d-md-inline">{{ flight.bar }}
                                                                     <span
-                                                                        v-if="!item.return_bar_exist && item.DirectionInd==2">
+                                                                        v-if="!flight.return_bar_exist && flight.DirectionInd==2">
                                                                         / <i> <img src="images/icon/suitcase-solid.png"></i>
                                                                     </span>
                                                                     <i v-else>
                                                                         {{
-                                                                            item.bar != item.return_bar && item.return_bar != "" ? "/" + item.return_bar : ""
+                                                                            flight.bar != flight.return_bar && flight.return_bar != "" ? "/" + flight.return_bar : ""
                                                                         }}
                                                                     </i>
                                                                 </span>
@@ -1634,11 +1048,11 @@
                                                         </div>
 
                                                         <div
-                                                            v-if="!item.bar_exist || (item.DirectionInd==2 && !item.return_bar_exist)"
+                                                            v-if="!flight.bar_exist || (flight.DirectionInd==2 && !flight.return_bar_exist)"
                                                             class="deal_section_baggage_alert">
                                                         <span>
                                                             {{
-                                                                (!item.bar_exist && !item.return_bar_exist) ? this.trs.no_baggage : (!item.bar_exist ? this.trs.no_baggage_depart : this.trs.no_baggage_return)
+                                                                (!flight.bar_exist && !flight.return_bar_exist) ? this.trs.no_baggage : (!flight.bar_exist ? this.trs.no_baggage_depart : this.trs.no_baggage_return)
                                                             }}
                                                         </span>
                                                         </div>
@@ -1652,7 +1066,7 @@
                                         </div>
 
                                         <!--                                    details section-->
-                                        <div class="collapse flight_details_container" :id="'flight_details'+index">
+                                        <div class="collapse flight_details_container" :id="'flight_details'+0">
                                             <!--                                    depart details-->
 
                                             <div class="details_content">
@@ -1663,18 +1077,18 @@
                                                         <div class="col-10 col-md-6 details_title">
                                                         <span class="details_title_way">
                                                             {{
-                                                                item.DirectionInd == 4 ? this.trs.trip + '1' : this.trs.depart
+                                                                flight.DirectionInd == 4 ? this.trs.trip + '1' : this.trs.depart
                                                             }}
                                                         </span>
                                                             <span class="details_title_f_t">
                                                             {{
-                                                                    (item.airports1 ? item.airports1.name : item.depart_airport) + "-" + (item.airports2 ? item.airports2.name : item.arrival_airport)
+                                                                    (flight.airports1 ? flight.airports1.name : flight.depart_airport) + "-" + (flight.airports2 ? flight.airports2.name : flight.arrival_airport)
                                                                 }}
                                                         </span>
                                                         </div>
                                                         <div class="col-2 col-md-6 details_time">
-                                                        <span>{{ parseInt(item.total_time / 60) + "h" }}{{
-                                                                item.total_time % 60 != 0 ? ":" + item.total_time % 60 + "'" : ""
+                                                        <span>{{ parseInt(flight.total_time / 60) + "h" }}{{
+                                                                flight.total_time % 60 != 0 ? ":" + flight.total_time % 60 + "'" : ""
                                                             }}</span>
                                                         </div>
                                                     </div>
@@ -1717,7 +1131,7 @@
                                                     <!--                                                flight leg-->
 
 
-                                                    <div v-for="leg in item.legs.filter(i => i.is_return === 0)"
+                                                    <div v-for="leg in flight.legs.filter(i => i.is_return === 0)"
                                                          class="depart_section">
                                                         <div class="row">
 
@@ -1978,7 +1392,7 @@
 
 
                                             <!--                                        return details-->
-                                            <div v-if="item.DirectionInd==2" class="details_content">
+                                            <div v-if="flight.DirectionInd==2" class="details_content">
 
                                                 <div class="details_header">
                                                     <div class="row">
@@ -1989,7 +1403,7 @@
                                                                     }}</span>
                                                             <span class="details_title_f_t">
                                                             {{
-                                                                    (item.airports3 ? item.airports3.name : item.return_depart_airport) + "-" + (item.airports4 ? item.airports4.name : item.return_arrival_airport)
+                                                                    (flight.airports3 ? flight.airports3.name : flight.return_depart_airport) + "-" + (flight.airports4 ? flight.airports4.name : flight.return_arrival_airport)
                                                                 }}
                                                         </span>
 
@@ -1997,10 +1411,10 @@
                                                         <div class="col-2 col-md-6 details_time text-right">
                                                         <span>
                                                            {{
-                                                                parseInt(item.return_total_time / 60) + "h"
+                                                                parseInt(flight.return_total_time / 60) + "h"
                                                             }}
                                                             {{
-                                                                item.return_total_time % 60 != 0 ? ":" + item.return_total_time % 60 + "'" : ""
+                                                                flight.return_total_time % 60 != 0 ? ":" + flight.return_total_time % 60 + "'" : ""
                                                             }}
                                                         </span>
 
@@ -2045,7 +1459,7 @@
                                                     </div>
 
                                                     <!--                                                flight leg-->
-                                                    <div v-for="leg in item.legs.filter(i => i.is_return === 1)"
+                                                    <div v-for="leg in flight.legs.filter(i => i.is_return === 1)"
                                                          class="depart_section">
                                                         <div class="row">
 
@@ -2307,8 +1721,8 @@
                                             <!--                                           return details-->
 
 
-                                            <div v-if="item.DirectionInd==4"
-                                                 v-for="(multi,key) in item.multi_flights"
+                                            <div v-if="flight.DirectionInd==4"
+                                                 v-for="(multi,key) in flight.multi_flights"
                                                  class="details_content">
 
                                                 <div class="details_header">
@@ -2328,10 +1742,10 @@
                                                         <div class="col-2 col-md-6 details_time text-right">
                                                         <span>
                                                             {{
-                                                                parseInt(item.total_time / 60) + "h"
+                                                                parseInt(flight.total_time / 60) + "h"
                                                             }}
                                                             {{
-                                                                item.total_time % 60 != 0 ? ":" + item.total_time % 60 + "'" : ""
+                                                                flight.total_time % 60 != 0 ? ":" + flight.total_time % 60 + "'" : ""
                                                             }}
                                                         </span>
                                                         </div>
@@ -2639,7 +2053,7 @@
 
 
                                         <!--    price detail-->
-                                        <div class="collapse" :id="'price_details'+index">
+                                        <div class="collapse" :id="'price_details'+0">
                                             <div class="price_container">
                                                 <div class="row">
                                                     <div class="col-12 price_table_container">
@@ -2660,45 +2074,45 @@
                                                             </thead>
                                                             <tbody>
 
-                                                            <tr v-if="item.adult">
+                                                            <tr v-if="flight.adult">
                                                                 <td>{{ this.trs.adult }}</td>
 
-                                                                <td>{{ item.FarePerAdult }}</td>
+                                                                <td>{{ flight.FarePerAdult }}</td>
                                                                 <td>{{
-                                                                        item.FarePerAdult - item.taxAdult - item.serviceAdult
+                                                                        flight.FarePerAdult - flight.taxAdult - flight.serviceAdult
                                                                     }}
                                                                 </td>
-                                                                <td>{{ item.taxAdult + item.serviceAdult }}</td>
+                                                                <td>{{ flight.taxAdult + flight.serviceAdult }}</td>
 
-                                                                <td>{{ item.adult }}</td>
-                                                                <td>{{ item.FarePerAdult * item.adult }}</td>
+                                                                <td>{{ flight.adult }}</td>
+                                                                <td>{{ flight.FarePerAdult * flight.adult }}</td>
                                                             </tr>
 
 
-                                                            <tr v-if="item.child">
+                                                            <tr v-if="flight.child">
                                                                 <td>{{ this.trs.child }}</td>
-                                                                <td>{{ item.FarePerChild }}</td>
+                                                                <td>{{ flight.FarePerChild }}</td>
                                                                 <td>{{
-                                                                        item.FarePerChild - item.taxChild - item.serviceChild
+                                                                        flight.FarePerChild - flight.taxChild - flight.serviceChild
                                                                     }}
                                                                 </td>
-                                                                <td>{{ item.taxChild + item.serviceChild }}</td>
+                                                                <td>{{ flight.taxChild + flight.serviceChild }}</td>
 
-                                                                <td>{{ item.child }}</td>
-                                                                <td>{{ item.FarePerChild * item.child }}</td>
+                                                                <td>{{ flight.child }}</td>
+                                                                <td>{{ flight.FarePerChild * flight.child }}</td>
                                                             </tr>
 
 
-                                                            <tr v-if="item.infant">
+                                                            <tr v-if="flight.infant">
                                                                 <td>{{ this.trs.infant }}</td>
-                                                                <td>{{ item.FarePerInf }}</td>
+                                                                <td>{{ flight.FarePerInf }}</td>
                                                                 <td>{{
-                                                                        item.FarePerInf - item.taxInfant - item.serviceInfant
+                                                                        flight.FarePerInf - flight.taxInfant - flight.serviceInfant
                                                                     }}
                                                                 </td>
-                                                                <td>{{ item.taxInfant + item.serviceInfant }}</td>
-                                                                <td>{{ item.infant }}</td>
-                                                                <td>{{ item.FarePerInf * item.infant }}</td>
+                                                                <td>{{ flight.taxInfant + flight.serviceInfant }}</td>
+                                                                <td>{{ flight.infant }}</td>
+                                                                <td>{{ flight.FarePerInf * flight.infant }}</td>
                                                             </tr>
 
                                                             <tr class="total_price_tax">
@@ -2709,7 +2123,7 @@
                                                                 <td>-</td>
                                                                 <td>-</td>
                                                                 <td>{{
-                                                                        item.FarePerAdult * item.adult + item.FarePerChild * item.child + item.FarePerInf * item.infant
+                                                                        flight.FarePerAdult * flight.adult + flight.FarePerChild * flight.child + flight.FarePerInf * flight.infant
                                                                     }}
                                                                 </td>
                                                             </tr>
@@ -2723,21 +2137,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="my_pagination" @click="paginate()">
-
-                        <span>{{ trs.load_more }}</span>
-
-                    </div>
-
-                    <div class="pagination_count">
-                        <span class="pagination_count_span">{{ this.resultQuery[0].length }}</span> <span> {{
-                            trs.of
-                        }} </span> <span
-                        class="pagination_total_span">{{ this.resultQuery[1].length }}</span>
-
                     </div>
                 </div>
             </div>
@@ -2937,38 +2336,16 @@
 
 
 <script>
-import noUiSlider from 'nouislider';
-import 'nouislider/dist/nouislider.css';
 
 export default {
 
     mounted() {
-        if (this.search_data.none_stop) {
-        }
-        this.searchFlight();
-        if (!this.filter.stops0) {
-            this.stops.push('0')
-        }
-        if (!this.filter.stops1) {
-            this.stops.push('1')
-        }
-        if (!this.filter.stops2) {
-            this.stops.push('2')
-        }
-        this.removeAll('stops');
-        if (!this.filter.bar0) {
-            this.bar_exist.push('0')
-        }
-        if (!this.filter.bar1) {
-            this.bar_exist.push('1')
-        }
     },
     created() {
-        window.addEventListener('scroll', this.scroll);
     },
     directives: {},
-    props: ['lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'multi_search_url', 'filter', 'air_rules_url', 'air_bag_url', 'select_url'],
-    name: 'flights',
+    props: ['lang', 'trs', 'csrf', 'air_rules_url', 'air_bag_url','flight','search_data'],
+    name: 'singleFlight',
     methods: {
         getDistinctAirline(array) {
 
@@ -3051,46 +2428,6 @@ export default {
 
             return [min_seats_depart, min_seats_return];
         },
-        searchFlight() {
-            this.ajax_render.forEach((render) => {
-
-                const headers = {
-                    'X-CSRF-TOKEN': this.csrf
-                };
-                const data = {
-                    'render': render,
-                    'search_id': this.search_data.search_id,
-                    'lang': this.lang,
-                    'filter': this.filter,
-                };
-
-                let url = this.search_data.multi ? this.multi_search_url : this.flight_search_url
-
-                axios.post(url, data, {headers})
-                    .then(response => {
-                        if (response.data.status === 0) {
-                            this.flights.push(...response.data.flights);
-                            this.airlines_list = response.data.airlines_list;
-                            this.flight_grouped = response.data.flight_grouped;
-                            this.airlines = response.data.airlines;
-                            this.ValidatingAirlineCode.push(...this.airlines.map(item => item.code));
-                            this.all_ValidatingAirlineCode = this.ValidatingAirlineCode;
-                            this.slider.range.max = Math.max(response.data.max, this.slider.range.max);
-                            if (!this.slider_init) {
-                                this.nouislidefilter_init();
-                            }
-                        } else {
-                        }
-                    });
-
-            });
-        },
-        airline_counter1Add() {
-            this.airline_counter1 = 1;
-        },
-        airline_counter2Add() {
-            this.airline_counter2 = this.airline_counter1 + 1;
-        },
         collapse(index) {
             let flight = '#flight_details' + index;
             let pricec = '#price_details' + index;
@@ -3149,210 +2486,19 @@ export default {
                     }
                 });
         },
-        handleAll(widget) {
-            this.resetPage();
-            if (this[widget].includes('ALL')) {
-                this[widget] = this['all_' + widget];
-            } else {
-                this[widget] = []
-            }
-        },
-        removeAll(widget) {
-            this.resetPage();
-            let x = this['all_' + widget].filter(item => item !== 'ALL')
-            if (x.every(r => this[widget].includes(r))) {
-                this[widget].push('ALL');
-            } else {
-                this[widget] = this[widget].filter(item => item !== 'ALL');
-            }
-        },
-        nouislidefilter_init() {
-            this.slider_init = 1;
-            this.rangeSlider = document.getElementById("slide_filter1");
-            noUiSlider.create(this.rangeSlider, {
-                start: this.slider.start,
-                direction: this.slider.direction,
-                connect: this.slider.connect,
-                step: this.slider.step,
-                range: this.slider.range
-            });
-            var vm = this
-            this.rangeSlider.noUiSlider.on('update', function (values, handle) {
-                var start_hour = parseInt(values[0] / 60);
-                var start_min = parseInt(values[0] % 60);
-                var end_hour = parseInt(values[1] / 60);
-                var end_min = parseInt(values[1] % 60);
-                if (start_hour < 10) start_hour = "0" + start_hour;
-                if (start_min < 10) start_min = "0" + start_min;
-                if (end_hour < 10) end_hour = "0" + end_hour;
-                if (end_min < 10) end_min = "0" + end_min;
-                vm.slider.text = start_hour + ":" + start_min + " - " + end_hour + ":" + end_min;
-
-            });
-            this.rangeSlider.noUiSlider.on('set', function (values, handle) {
-                vm.resetPage();
-                var start_min = values[0];
-                var end_min = values[1];
-                vm.slider.start = [start_min, end_min];
-            });
-
-        },
-        changeOrder(order) {
-            this.resetPage();
-            this.order_active = order;
-            if (order == 0) {
-                this.order = ['TotalFare', 'depart_time', 'depart_return_time', 'total', 'return_total'];
-            } else if (order == 1) {
-                this.order = ['depart_return_time', 'TotalFare', 'depart_time', 'total', 'return_total'];
-            } else if (order == 2) {
-                this.order = ['total', 'TotalFare', 'depart_time', 'depart_return_time', 'return_total'];
-            } else if (order == 3) {
-                this.order = ['return_total', 'TotalFare', 'depart_time', 'depart_return_time', 'total'];
-            }
-        },
-        only(widget, target) {
-            this.resetPage();
-            this[widget] = [target];
-        },
-        // scroll: function (e) {
-        //     if ($(".flight_page_container").height() - 280 < $(window).scrollTop()) {
-        //         var t = new Date().getTime();
-        //         if ((t - this.lastScrollUpdate) > 3000) {
-        //             this.lastScrollUpdate = t;
-        //             this.page++;
-        //         } else {
-        //         }
-        //     }
-        // },
-        resetPage() {
-            this.page = Math.min(this.page, 1);
-            $('html,body').animate({
-                scrollTop: $(".flight_post_body").offset().top
-            }, 500);
-        },
-        paginate() {
-            this.page++;
-        },
-        selectFlight(i, code) {
-            this.ValidatingAirlineCode = [code];
-            this.stops = [String(i)];
-        },
-        resetAllFilter() {
-            this.stops = this.all_stops;
-            this.bar_exist = this.all_bar_exist;
-            this.ValidatingAirlineCode = this.all_ValidatingAirlineCode;
-            this.depart_time_range = this.all_depart_time_range;
-            this.return_depart_time_range = this.all_return_depart_time_range;
-            this.slider.start = [this.slider.range.min, this.slider.range.max];
-            // this.slider.text = start_hour + ":" + start_min + " - " + end_hour + ":" + end_min;
-        }
     },
     data() {
         return {
-            'airline_counter0': 0,
-            'airline_counter1': 0,
-            'airline_counter2': 0,
             'date_option': {year: 'numeric', month: 'numeric', day: 'numeric'},
             'time_option': {hour: 'numeric', minute: 'numeric'},
             'city': "city_" + this.lang,
-            'flights': [],
-            'airlines_list': [],
-            'flight_grouped': [],
             'collapse_array': [],
             'collapse_price_array': [],
-            'airlines': [],
             'rules': null,
             'bagRules': null,
-            'all_stops': ['0', '1', '2', 'ALL'],
-            'stops': [],
-            'all_bar_exist': ['0', '1'],
-            'bar_exist': [],
-            'depart_time_range': ['0', '1', '2', '3', 'ALL'],
-            'all_depart_time_range': ['0', '1', '2', '3', 'ALL'],
-            'all_return_depart_time_range': ['0', '1', '2', '3', 'ALL'],
-            'return_depart_time_range': ['0', '1', '2', '3', 'ALL'],
-            'all_ValidatingAirlineCode': ['ALL'],
-            'ValidatingAirlineCode': ['ALL'],
-            'slider': {
-                start: [this.filter['wait0'] ? this.filter['wait0'] : 0, this.filter['wait1'] ? this.filter['wait1'] : 1200],
-                direction: this.lang == "fa" ? 'rtl' : 'ltr',
-                connect: true,
-                step: 30,
-                range: {
-                    'min': 0, 'max': 1200
-                },
-                text: ""
-            },
-            'rangeSlider': null,
-            'order': ['TotalFare', 'depart_time', 'depart_return_time', 'total', 'return_total'],
-            'order_active': 0,
-            'page': 1,
-            'lastScrollUpdate': 0,
-            'slider_init': 0,
-            'show_loader': 0,
         }
     },
-    computed: {
-        resultQuery() {
-            let x = this.flights.filter(item => {
-                let x = this.stops.includes(String(item.stops))
-                    && (item.DirectionInd != 2 || this.stops.includes(String(item.return_stops)))
-                    && (this.bar_exist.includes(String(item.bar_exist)) || item.bar_exist == 2)
-                    && (item.DirectionInd != 2 || this.bar_exist.includes(String(item.return_bar_exist)) || item.return_bar_exist == 2)
-                    && this.depart_time_range.includes(String(item.depart_time_range))
-                    && (item.DirectionInd != 2 || this.return_depart_time_range.includes(String(item.return_depart_time_range)))
-                    && this.ValidatingAirlineCode.includes(item.ValidatingAirlineCode)
-                    && this.slider.start[0] <= item.total_waiting
-                    && this.slider.start[1] >= item.total_waiting;
-
-                if (item.DirectionInd == 4) {
-                    let vm = this;
-                    item.multi_flights.forEach(function (multi) {
-                        x &= vm.stops.includes(String(multi.stops))
-                            && vm.bar_exist.includes(String(multi.bar_exist))
-                            && vm.depart_time_range.includes(String(multi.depart_time_range))
-                            && vm.ValidatingAirlineCode.includes(multi.ValidatingAirlineCode)
-                            && vm.slider.start[0] <= multi.total_waiting
-                            && vm.slider.start[1] >= multi.total_waiting;
-                    });
-                }
-
-                return x;
-
-            }).sort((a, b) => {
-                if (a.ValidatingAirlineCode == 'IR') {
-                    return -1;
-                } else if (b.ValidatingAirlineCode == 'IR') {
-                    return 1;
-                }
-                for (let i = 0; i < this.order.length; i++) {
-                    let item = this.order[i];
-                    let x, y;
-                    if (item == "total") {
-                        x = a['total_time'] + a['total_waiting'];
-                        y = b['total_time'] + b['total_waiting'];
-                    } else if (item == "return_total") {
-                        x = a['return_total_time'] + a['return_total_waiting'];
-                        y = b['return_total_time'] + b['return_total_waiting'];
-                    } else {
-                        x = a[item];
-                        y = b[item];
-                    }
-
-
-                    if (x > y) {
-                        return 1;
-                    } else if (x < y) {
-                        return -1;
-                    }
-                }
-            });
-
-            let y = x.slice(0, this.page * 25);
-
-            return [y, x];
-        },
-    },
+    computed: {},
 }
 
 </script>

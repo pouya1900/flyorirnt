@@ -5,6 +5,7 @@
 <input type="hidden" name="same_error" value="@lang('trs.same_error')">
 <input type="hidden" name="local_error" value="@lang('trs.local_flight_error')">
 <input type="hidden" name="u_d" value="@lang('trs.unrecognized_date')">
+<input type="hidden" name="u_d_o" value="@lang('trs.unrecognized_date_order')">
 <input type="hidden" name="t_n_e" value="@lang('trs.traveler_number_error')">
 <input type="hidden" name="i_w_a" value="@lang('trs.infant_with_adult')">
 <input type="hidden" name="fly_from" value="@lang('trs.flying_from')">
