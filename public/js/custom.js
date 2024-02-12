@@ -262,7 +262,7 @@ jQuery(document).ready(function ($) {
         if (l > 2) {
             // ajax
             $.ajax({
-                url: "/flymul2/public/AutoComplete",
+                url: "/AutoComplete",
                 type: "POST",
                 data: {data: data, sec: sec, lang: lang},
                 beforeSend: function () {
@@ -939,7 +939,7 @@ jQuery(document).ready(function ($) {
 
         // ajax
         $.ajax({
-            url: "/flymul2/public/filter", type: "POST", cache: true, data: {
+            url: "/filter", type: "POST", cache: true, data: {
                 search_id: search_id,
                 lang: lang,
                 order: order,
@@ -1011,7 +1011,7 @@ jQuery(document).ready(function ($) {
 
         // ajax
         $.ajax({
-            url: "/flymul2/public/bagRules",
+            url: "/bagRules",
             type: "POST",
             cache: true,
             data: {flight_token: flight_token, lang: lang},
@@ -1080,7 +1080,7 @@ jQuery(document).ready(function ($) {
 
 
         $.ajax({
-            url: "/flymul2/public/passengers/check", type: "POST", data: {
+            url: "/passengers/check", type: "POST", data: {
                 request: req
             }, beforeSend: function () {
                 ajax_show(1);
@@ -1138,7 +1138,7 @@ jQuery(document).ready(function ($) {
         });
 
         $.ajax({
-            url: "/flymul2/public/profile/log", type: "POST", data: {
+            url: "/profile/log", type: "POST", data: {
                 request: req
             }, beforeSend: function () {
                 ajax_show(1);
@@ -1375,7 +1375,7 @@ jQuery(document).ready(function ($) {
 
 
         $.ajax({
-            url: "/flymul2/public/CipPassengers/check", type: "POST", data: {
+            url: "/CipPassengers/check", type: "POST", data: {
                 request: req
             }, beforeSend: function () {
                 ajax_show(1);
@@ -1501,7 +1501,7 @@ jQuery(document).ready(function ($) {
         if (l > 1) {
             // ajax
             $.ajax({
-                url: "/flymul2/public/AutoCompleteAirline",
+                url: "/AutoCompleteAirline",
                 type: "POST",
                 data: {data: data, sec: sec, lang: lang},
                 beforeSend: function () {
@@ -1566,7 +1566,7 @@ jQuery(document).ready(function ($) {
         var div = ".transfer_form_data_container" + target;
 
         $.ajax({
-            url: "/flymul2/public/transfer_data", type: "POST", data: {
+            url: "/transfer_data", type: "POST", data: {
                 request: req, lang: lang
             }, beforeSend: function () {
 
@@ -1636,9 +1636,9 @@ jQuery(document).ready(function ($) {
         $('#render_number_counter').val(l_render);
         let ajax_url;
         if (direction != 4) {
-            ajax_url = "/flymul2/public/ajax_flight";
+            ajax_url = "/ajax_flight";
         } else {
-            ajax_url = "/flymul2/public/ajax_flight_multi";
+            ajax_url = "/ajax_flight_multi";
         }
 
         render.forEach(function (item) {
