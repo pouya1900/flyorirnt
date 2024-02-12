@@ -455,5 +455,6 @@ WhatsApp: <b>+49-176-618 75 479</b></span>",
     "iran_air_not_support_one_way_for_non_iranian" => "iran air does not issue one way ticket to Tehran for non iranian",
     "unrecognized_date_order"                      => "Date Order is wrong",
     "iran"                                         => "Iran",
+    "multi_city"                                   => "Multi city",
 
 ];
