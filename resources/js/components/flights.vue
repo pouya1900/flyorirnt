@@ -685,7 +685,8 @@
                                                             <div class="flight_item col-4 deal_button_md_d">
                                                                 <span>{{ item.TotalFare }} € </span>
                                                                 <a :href="this.select_url+'/'+item.id">
-                                                                    <span> {{this.trs.deal}} <i class="fas fa-long-arrow-alt-right"></i></span>
+                                                                    <span> {{ this.trs.deal }} <i
+                                                                        class="fas fa-long-arrow-alt-right"></i></span>
 
                                                                 </a>
                                                             </div>
@@ -3302,8 +3303,8 @@ export default {
                     && this.depart_time_range.includes(String(item.depart_time_range))
                     && (item.DirectionInd != 2 || this.return_depart_time_range.includes(String(item.return_depart_time_range)))
                     && this.ValidatingAirlineCode.includes(item.ValidatingAirlineCode)
-                    && this.slider.start[0] <= item.total_waiting
-                    && this.slider.start[1] >= item.total_waiting;
+                    && ((this.slider.start[0] <= item.total_waiting
+                        && this.slider.start[1] >= item.total_waiting) || item.total_waiting == 0);
 
                 if (item.DirectionInd == 4) {
                     let vm = this;
@@ -3312,8 +3313,8 @@ export default {
                             && vm.bar_exist.includes(String(multi.bar_exist))
                             && vm.depart_time_range.includes(String(multi.depart_time_range))
                             && vm.ValidatingAirlineCode.includes(multi.ValidatingAirlineCode)
-                            && vm.slider.start[0] <= multi.total_waiting
-                            && vm.slider.start[1] >= multi.total_waiting;
+                            && ((vm.slider.start[0] <= multi.total_waiting
+                                && vm.slider.start[1] >= multi.total_waiting) || multi.total_waiting == 0);
                     });
                 }
 
