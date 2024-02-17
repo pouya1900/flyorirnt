@@ -683,8 +683,8 @@
 
                                                             </div>
                                                             <div class="flight_item col-4 deal_button_md_d">
+                                                                <span>{{ item.TotalFare }} € </span>
                                                                 <a :href="this.select_url+'/'+item.id">
-                                                                    <span>{{ item.TotalFare }} € </span>
                                                                     <span> {{this.trs.deal}} <i class="fas fa-long-arrow-alt-right"></i></span>
 
                                                                 </a>

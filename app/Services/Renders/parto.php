@@ -251,6 +251,7 @@ class parto implements render_interface
         $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
 //        $response = array_slice($response["PricedItineraries"], 0, 10);
 
+        dd($response);
 
         if (!$search_id) {
             $search = Search::create();
@@ -262,14 +263,8 @@ class parto implements render_interface
 
             $cost_insert = [];
             $tax_insert = [];
-            $final_tax_insert = [];
-            $leg_insert = [];
-            $airline_insert = [];
-            $final_airline_insert = [];
-            $final_leg_insert = [];
             $i = 0;
             $leg_insert_equal = [];
-            $query = "INSERT INTO flights(search_id,token,render,FareSourceCode,IsPassportMandatory,IsPassportIssueDateMandatory,IsPassportNumberMandatory,DirectionInd,RefundMethod,ValidatingAirlineCode,flight_number,depart_time,depart_time_range,depart_airport,arrival_time,arrival_airport,stops,total_time,total_waiting,bar,bar_exist,class,class_code,depart_first_airline,return_flight_number,return_depart_time,return_depart_time_range,return_depart_airport,return_arrival_time,return_arrival_airport,return_stops,return_total_time,return_total_waiting,return_bar,return_bar_exist,return_class,return_class_code,return_first_airline,depart_return_time) VALUES ($search_id";
             foreach ($response as $item) {
                 $leg_insert_equal_text = "";
                 $before_arrival = "";
@@ -323,11 +318,6 @@ class parto implements render_interface
                     continue;
                 }
 
-
-                if ($i != 0) {
-                    $query .= ",($search_id";
-                }
-
                 $depart_time = date("H", strtotime($item["OriginDestinationOptions"][0]["FlightSegments"][0]["DepartureDateTime"]));
                 $depart_time_min = date("i", strtotime($item["OriginDestinationOptions"][0]["FlightSegments"][0]["DepartureDateTime"]));
                 $depart_time += $depart_time_min / 60;
@@ -341,74 +331,35 @@ class parto implements render_interface
                     $depart_range = 3;
                 }
 
-                $query .= ",";
-                $query .= "0,";
-                $query .= $this->render_code . ",";
-                $query .= "'" . $item["FareSourceCode"] . "'" . ",";
-//                $query .= (boolval($item["IsPassportMandatory"]) ? "1" : "0") . ",";
-                $query .= "1" . ",";
-                $query .= (boolval($item["IsPassportIssueDateMandatory"]) ? "1" : "0") . ",";
-                $query .= "1" . ",";
-                $query .= $item["DirectionInd"] . ",";
-                $query .= $item["RefundMethod"] . ",";
-                $query .= "'" . $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"] . "'" . ",";
-                $query .= "'" . (substr($item["OriginDestinationOptions"][0]["FlightSegments"][0]["FlightNumber"], 0, 2) != $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"] ? $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"] : "") . $item["OriginDestinationOptions"][0]["FlightSegments"][0]["FlightNumber"] . "'" . ",";
-                $query .= "'" . $item["OriginDestinationOptions"][0]["FlightSegments"][0]["DepartureDateTime"] . "'" . ",";
-                $query .= $depart_range . ",";
-                $query .= "'" . $item["OriginDestinationOptions"][0]["FlightSegments"][0]["DepartureAirportLocationCode"] . "'" . ",";
+                $insert_array = [
+                    "search_id"                    => $search_id,
+                    "token"                        => 0,
+                    "render"                       => $this->render_code,
+                    "FareSourceCode"               => $item["FareSourceCode"],
+                    "IsPassportMandatory"          => 1,
+                    "IsPassportIssueDateMandatory" => boolval($item["IsPassportIssueDateMandatory"]) ? "1" : "0",
+                    "IsPassportNumberMandatory"    => 1,
+                    "DirectionInd"                 => $item["DirectionInd"],
+                    "RefundMethod"                 => $item["RefundMethod"],
+                    "ValidatingAirlineCode"        => $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"],
+                    "flight_number"                => (substr($item["OriginDestinationOptions"][0]["FlightSegments"][0]["FlightNumber"], 0, 2) != $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"] ? $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"] : "") . $item["OriginDestinationOptions"][0]["FlightSegments"][0]["FlightNumber"],
+                    "depart_time"                  => $item["OriginDestinationOptions"][0]["FlightSegments"][0]["DepartureDateTime"],
+                    "depart_time_range"            => $depart_range,
+                    "depart_airport"               => $item["OriginDestinationOptions"][0]["FlightSegments"][0]["DepartureAirportLocationCode"],
+                    "arrival_time"                 => $item["OriginDestinationOptions"][0]["FlightSegments"][$help_var2]["ArrivalDateTime"],
+                    "arrival_airport"              => $item["OriginDestinationOptions"][0]["FlightSegments"][$help_var2]["ArrivalAirportLocationCode"],
+                    "stops"                        => $help_var2,
+                    "total_time"                   => $item["OriginDestinationOptions"][0]["JourneyDurationPerMinute"],
+                    "total_waiting"                => $item["OriginDestinationOptions"][0]["ConnectionTimePerMinute"],
+                    "bar"                          => $this->baggage_filter($item["OriginDestinationOptions"][0]["FlightSegments"][0]["Baggage"]),
+                    "bar_exist"                    => !$item["OriginDestinationOptions"][0]["FlightSegments"][0]["Baggage"] || substr($item["OriginDestinationOptions"][0]["FlightSegments"][0]["Baggage"], 0, 1) == 0 ? 0 : 1,
+                    "class"                        => $item["OriginDestinationOptions"][0]["FlightSegments"][0]["CabinClassCode"],
+                    "class_code"                   => $item["OriginDestinationOptions"][0]["FlightSegments"][0]["ResBookDesigCode"],
+                    "depart_first_airline"         => $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"],
+                ];
 
-                $query .= "'" . $item["OriginDestinationOptions"][0]["FlightSegments"][$help_var2]["ArrivalDateTime"] . "'" . ",";
-                $query .= "'" . $item["OriginDestinationOptions"][0]["FlightSegments"][$help_var2]["ArrivalAirportLocationCode"] . "'" . ",";
-                $query .= $help_var2 . ",";
-                $query .= $item["OriginDestinationOptions"][0]["JourneyDurationPerMinute"] . ",";
-                $query .= $item["OriginDestinationOptions"][0]["ConnectionTimePerMinute"] . ",";
-                $query .= "'" . $this->baggage_filter($item["OriginDestinationOptions"][0]["FlightSegments"][0]["Baggage"]) . "'" . ",";
-
-                if (!$item["OriginDestinationOptions"][0]["FlightSegments"][0]["Baggage"] || substr($item["OriginDestinationOptions"][0]["FlightSegments"][0]["Baggage"], 0, 1) == 0) {
-                    $query .= 0 . ",";
-                } else {
-                    $query .= 1 . ",";
-                }
-
-                $query .= $item["OriginDestinationOptions"][0]["FlightSegments"][0]["CabinClassCode"] . ",";
-                $query .= "'" . $item["OriginDestinationOptions"][0]["FlightSegments"][0]["ResBookDesigCode"] . "'" . ",";
-                $query .= "'" . $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"] . "'" . ",";
                 $depart_return_time = $item["OriginDestinationOptions"][0]["JourneyDurationPerMinute"] + $item["OriginDestinationOptions"][0]["ConnectionTimePerMinute"];
 
-                $j = 0;
-                foreach ($item["OriginDestinationOptions"][0]["FlightSegments"] as $segment) {
-
-                    $airline_insert[$i][$j]["airline_code"] = $segment["MarketingAirlineCode"];
-                    $airline_insert[$i][$j]["is_return"] = $segment["IsReturn"] ? 1 : 0;
-
-                    foreach ($airplanes as $airplane) {
-                        if ($airplane->code == $segment["OperatingAirline"]["Equipment"]) {
-                            $aircraft = $airplane;
-                            break;
-                        }
-                    }
-
-                    $leg_insert[$i][$j]["aircraft_type"] = isset($aircraft) ? $aircraft->manufacture . ' ' . $aircraft->code : $segment["OperatingAirline"]["Equipment"];
-                    $leg_insert[$i][$j]["aircraft_type_description"] = isset($aircraft) ? $aircraft->description : $segment["OperatingAirline"]["Equipment"];
-                    $leg_insert[$i][$j]["seats_remaining"] = $segment["SeatsRemaining"];
-                    $leg_insert[$i][$j]["leg_flight_number"] = (substr($segment["FlightNumber"], 0, 2) != $segment["MarketingAirlineCode"] ? $segment["MarketingAirlineCode"] : "") . $segment["FlightNumber"];
-                    $leg_insert[$i][$j]["cabin_class"] = $segment["CabinClassCode"];
-                    $leg_insert[$i][$j]["cabin_class_code"] = $segment["ResBookDesigCode"];
-                    $leg_insert[$i][$j]["leg_depart_time"] = $segment["DepartureDateTime"];
-                    $leg_insert[$i][$j]["leg_depart_airport"] = $segment["DepartureAirportLocationCode"];
-                    $leg_insert[$i][$j]["leg_arrival_time"] = $segment["ArrivalDateTime"];
-                    $leg_insert[$i][$j]["leg_arrival_airport"] = $segment["ArrivalAirportLocationCode"];
-                    $leg_insert[$i][$j]["leg_time"] = $segment["JourneyDurationPerMinute"];
-                    $leg_insert[$i][$j]["leg_waiting"] = $segment["ConnectionTimePerMinute"];
-                    $leg_insert[$i][$j]["leg_airline_code"] = $segment["MarketingAirlineCode"];
-                    $leg_insert[$i][$j]["is_charter"] = $segment["IsCharter"];
-                    $leg_insert[$i][$j]["is_return"] = $segment["IsReturn"];
-                    $leg_insert[$i][$j]["leg_bar"] = $this->baggage_filter($segment["Baggage"]);
-                    $leg_insert[$i][$j]["leg_bar_exist"] = !$segment["Baggage"] || substr($segment["Baggage"], 0, 1) == 0 ? 0 : 1;
-
-
-                    $j++;
-                }
 
                 if (isset($item["OriginDestinationOptions"][1]) and $item["DirectionInd"] == 2) {
 
@@ -425,36 +376,81 @@ class parto implements render_interface
                         $return_depart_range = 3;
                     }
 
-
-                    $query .= "'" . (substr($item["OriginDestinationOptions"][1]["FlightSegments"][0]["FlightNumber"], 0, 2) != $item["OriginDestinationOptions"][1]["FlightSegments"][0]["MarketingAirlineCode"] ? $item["OriginDestinationOptions"][1]["FlightSegments"][0]["MarketingAirlineCode"] : "") . $item["OriginDestinationOptions"][1]["FlightSegments"][0]["FlightNumber"] . "'" . ",";
-                    $query .= "'" . $item["OriginDestinationOptions"][1]["FlightSegments"][0]["DepartureDateTime"] . "'" . ",";
-                    $query .= $return_depart_range . ",";
-                    $query .= "'" . $item["OriginDestinationOptions"][1]["FlightSegments"][0]["DepartureAirportLocationCode"] . "'" . ",";
-
                     $help_var3 = sizeof($item["OriginDestinationOptions"][1]["FlightSegments"]) - 1;
-                    $query .= "'" . $item["OriginDestinationOptions"][1]["FlightSegments"][$help_var3]["ArrivalDateTime"] . "'" . ",";
-                    $query .= "'" . $item["OriginDestinationOptions"][1]["FlightSegments"][$help_var3]["ArrivalAirportLocationCode"] . "'" . ",";
-                    $query .= $help_var3 . ",";
-                    $query .= $item["OriginDestinationOptions"][1]["JourneyDurationPerMinute"] . ",";
-                    $query .= $item["OriginDestinationOptions"][1]["ConnectionTimePerMinute"] . ",";
-                    $query .= "'" . $this->baggage_filter($item["OriginDestinationOptions"][1]["FlightSegments"][0]["Baggage"]) . "'" . ",";
-
-                    if (!$item["OriginDestinationOptions"][1]["FlightSegments"][0]["Baggage"] || substr($item["OriginDestinationOptions"][1]["FlightSegments"][0]["Baggage"], 0, 1) == 0) {
-                        $query .= 0 . ",";
-                    } else {
-                        $query .= 1 . ",";
-                    }
-
-                    $query .= $item["OriginDestinationOptions"][1]["FlightSegments"][0]["CabinClassCode"] . ",";
-                    $query .= "'" . $item["OriginDestinationOptions"][1]["FlightSegments"][0]["ResBookDesigCode"] . "'" . ",";
-                    $query .= "'" . $item["OriginDestinationOptions"][1]["FlightSegments"][0]["MarketingAirlineCode"] . "'" . ",";
 
                     $depart_return_time += $item["OriginDestinationOptions"][1]["JourneyDurationPerMinute"] + $item["OriginDestinationOptions"][1]["ConnectionTimePerMinute"];
 
-                    foreach ($item["OriginDestinationOptions"][1]["FlightSegments"] as $segment) {
+                    $insert_array["return_flight_number"] = (substr($item["OriginDestinationOptions"][1]["FlightSegments"][0]["FlightNumber"], 0, 2) != $item["OriginDestinationOptions"][1]["FlightSegments"][0]["MarketingAirlineCode"] ? $item["OriginDestinationOptions"][1]["FlightSegments"][0]["MarketingAirlineCode"] : "") . $item["OriginDestinationOptions"][1]["FlightSegments"][0]["FlightNumber"];
+                    $insert_array["return_depart_time"] = $item["OriginDestinationOptions"][1]["FlightSegments"][0]["DepartureDateTime"];
+                    $insert_array["return_depart_time_range"] = $return_depart_range;
+                    $insert_array["return_depart_airport"] = $item["OriginDestinationOptions"][1]["FlightSegments"][0]["DepartureAirportLocationCode"];
+                    $insert_array["return_arrival_time"] = $item["OriginDestinationOptions"][1]["FlightSegments"][$help_var3]["ArrivalDateTime"];
+                    $insert_array["return_arrival_airport"] = $item["OriginDestinationOptions"][1]["FlightSegments"][$help_var3]["ArrivalAirportLocationCode"];
+                    $insert_array["return_stops"] = $help_var3;
+                    $insert_array["return_total_time"] = $item["OriginDestinationOptions"][1]["JourneyDurationPerMinute"];
+                    $insert_array["return_total_waiting"] = $item["OriginDestinationOptions"][1]["ConnectionTimePerMinute"];
+                    $insert_array["return_bar"] = $this->baggage_filter($item["OriginDestinationOptions"][1]["FlightSegments"][0]["Baggage"]);
+                    $insert_array["return_bar_exist"] = !$item["OriginDestinationOptions"][1]["FlightSegments"][0]["Baggage"] || substr($item["OriginDestinationOptions"][1]["FlightSegments"][0]["Baggage"], 0, 1) == 0 ? 0 : 1;
+                    $insert_array["return_class"] = $item["OriginDestinationOptions"][1]["FlightSegments"][0]["CabinClassCode"];
+                    $insert_array["return_class_code"] = $item["OriginDestinationOptions"][1]["FlightSegments"][0]["ResBookDesigCode"];
+                    $insert_array["return_first_airline"] = $item["OriginDestinationOptions"][1]["FlightSegments"][0]["MarketingAirlineCode"];
 
-                        $airline_insert[$i][$j]["airline_code"] = $segment["MarketingAirlineCode"];
-                        $airline_insert[$i][$j]["is_return"] = $segment["IsReturn"] ? 1 : 0;
+                } else {
+                    $insert_array["return_flight_number"] = null;
+                    $insert_array["return_depart_time"] = null;
+                    $insert_array["return_depart_time_range"] = null;
+                    $insert_array["return_depart_airport"] = null;
+                    $insert_array["return_arrival_time"] = null;
+                    $insert_array["return_arrival_airport"] = null;
+                    $insert_array["return_stops"] = null;
+                    $insert_array["return_total_time"] = null;
+                    $insert_array["return_total_waiting"] = null;
+                    $insert_array["return_bar"] = null;
+                    $insert_array["return_bar_exist"] = null;
+                    $insert_array["return_class"] = null;
+                    $insert_array["return_class_code"] = null;
+                    $insert_array["return_first_airline"] = null;
+
+                }
+                $insert_array["depart_return_time"] = $depart_return_time;
+
+                $inserted_flight = Flight::create($insert_array);
+
+
+                foreach ($item["OriginDestinationOptions"][0]["FlightSegments"] as $segment) {
+
+                    foreach ($airplanes as $airplane) {
+                        if ($airplane->code == $segment["OperatingAirline"]["Equipment"]) {
+                            $aircraft = $airplane;
+                            break;
+                        }
+                    }
+                    $inserted_flight->legs()->create([
+                        "aircraft_type"             => isset($aircraft) ? $aircraft->manufacture . ' ' . $aircraft->code : $segment["OperatingAirline"]["Equipment"],
+                        "aircraft_type_description" => isset($aircraft) ? $aircraft->description : $segment["OperatingAirline"]["Equipment"],
+                        "seats_remaining"           => $segment["SeatsRemaining"],
+                        "leg_flight_number"         => (substr($segment["FlightNumber"], 0, 2) != $segment["MarketingAirlineCode"] ? $segment["MarketingAirlineCode"] : "") . $segment["FlightNumber"],
+                        "cabin_class"               => $segment["CabinClassCode"],
+                        "cabin_class_code"          => $segment["ResBookDesigCode"],
+                        "leg_depart_time"           => $segment["DepartureDateTime"],
+                        "leg_depart_airport"        => $segment["DepartureAirportLocationCode"],
+                        "leg_arrival_time"          => $segment["ArrivalDateTime"],
+                        "leg_arrival_airport"       => $segment["ArrivalAirportLocationCode"],
+                        "leg_time"                  => $segment["JourneyDurationPerMinute"],
+                        "leg_waiting"               => $segment["ConnectionTimePerMinute"],
+                        "leg_airline_code"          => $segment["MarketingAirlineCode"],
+                        "is_charter"                => $segment["IsCharter"],
+                        "is_return"                 => $segment["IsReturn"],
+                        "leg_bar"                   => $this->baggage_filter($segment["Baggage"]),
+                        "leg_bar_exist"             => !$segment["Baggage"] || substr($segment["Baggage"], 0, 1) == 0 ? 0 : 1,
+                    ]);
+
+
+                    $inserted_flight->airlines()->attach($segment["MarketingAirlineCode"], ["is_return" => $segment["IsReturn"] ? 1 : 0]);
+                }
+
+                if (isset($item["OriginDestinationOptions"][1]) and $item["DirectionInd"] == 2) {
+                    foreach ($item["OriginDestinationOptions"][1]["FlightSegments"] as $segment) {
 
                         foreach ($airplanes as $airplane) {
                             if ($airplane->code == $segment["OperatingAirline"]["Equipment"]) {
@@ -462,35 +458,29 @@ class parto implements render_interface
                                 break;
                             }
                         }
-                        $leg_insert[$i][$j]["aircraft_type"] = isset($aircraft) ? $aircraft->manufacture . ' ' . $aircraft->code : $segment["OperatingAirline"]["Equipment"];
-                        $leg_insert[$i][$j]["aircraft_type_description"] = isset($aircraft) ? $aircraft->description : $segment["OperatingAirline"]["Equipment"];
-                        $leg_insert[$i][$j]["seats_remaining"] = $segment["SeatsRemaining"] ?? 0;
-                        $leg_insert[$i][$j]["leg_flight_number"] = (substr($segment["FlightNumber"], 0, 2) != $segment["MarketingAirlineCode"] ? $segment["MarketingAirlineCode"] : "") . $segment["FlightNumber"];
-                        $leg_insert[$i][$j]["cabin_class"] = $segment["CabinClassCode"];
-                        $leg_insert[$i][$j]["cabin_class_code"] = $segment["ResBookDesigCode"];
-                        $leg_insert[$i][$j]["leg_depart_time"] = $segment["DepartureDateTime"];
-                        $leg_insert[$i][$j]["leg_depart_airport"] = $segment["DepartureAirportLocationCode"];
-                        $leg_insert[$i][$j]["leg_arrival_time"] = $segment["ArrivalDateTime"];
-                        $leg_insert[$i][$j]["leg_arrival_airport"] = $segment["ArrivalAirportLocationCode"];
-                        $leg_insert[$i][$j]["leg_time"] = $segment["JourneyDurationPerMinute"];
-                        $leg_insert[$i][$j]["leg_waiting"] = $segment["ConnectionTimePerMinute"];
-                        $leg_insert[$i][$j]["leg_airline_code"] = $segment["MarketingAirlineCode"];
-                        $leg_insert[$i][$j]["is_charter"] = $segment["IsCharter"];
-                        $leg_insert[$i][$j]["is_return"] = $segment["IsReturn"];
-                        $leg_insert[$i][$j]["leg_bar"] = $this->baggage_filter($segment["Baggage"]) ?? 0;
-                        $leg_insert[$i][$j]["leg_bar_exist"] = !$segment["Baggage"] || substr($segment["Baggage"], 0, 1) == 0 ? 0 : 1;
+                        $inserted_flight->legs()->create([
+                            "aircraft_type"             => isset($aircraft) ? $aircraft->manufacture . ' ' . $aircraft->code : $segment["OperatingAirline"]["Equipment"],
+                            "aircraft_type_description" => isset($aircraft) ? $aircraft->description : $segment["OperatingAirline"]["Equipment"],
+                            "seats_remaining"           => $segment["SeatsRemaining"],
+                            "leg_flight_number"         => (substr($segment["FlightNumber"], 0, 2) != $segment["MarketingAirlineCode"] ? $segment["MarketingAirlineCode"] : "") . $segment["FlightNumber"],
+                            "cabin_class"               => $segment["CabinClassCode"],
+                            "cabin_class_code"          => $segment["ResBookDesigCode"],
+                            "leg_depart_time"           => $segment["DepartureDateTime"],
+                            "leg_depart_airport"        => $segment["DepartureAirportLocationCode"],
+                            "leg_arrival_time"          => $segment["ArrivalDateTime"],
+                            "leg_arrival_airport"       => $segment["ArrivalAirportLocationCode"],
+                            "leg_time"                  => $segment["JourneyDurationPerMinute"],
+                            "leg_waiting"               => $segment["ConnectionTimePerMinute"],
+                            "leg_airline_code"          => $segment["MarketingAirlineCode"],
+                            "is_charter"                => $segment["IsCharter"],
+                            "is_return"                 => $segment["IsReturn"],
+                            "leg_bar"                   => $this->baggage_filter($segment["Baggage"]),
+                            "leg_bar_exist"             => !$segment["Baggage"] || substr($segment["Baggage"], 0, 1) == 0 ? 0 : 1,
+                        ]);
 
-
-                        $j++;
+                        $inserted_flight->airlines()->attach($segment["MarketingAirlineCode"], ["is_return" => $segment["IsReturn"] ? 1 : 0]);
                     }
-
-                } else {
-                    $query .= "null,null,null,null,null,null,null,null,null,null,0,null,null,null,";
                 }
-
-                $query .= $depart_return_time;
-
-                $query .= ")";
 
                 $cost_insert[$i]["FareType"] = $item["AirItineraryPricingInfo"]["FareType"];
                 $cost_insert[$i]["VendorTotalFare"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["TotalFare"];
@@ -512,71 +502,15 @@ class parto implements render_interface
 
                 }
 
-
                 $cost_insert[$i]["TotalFare"] = $calc_price->getTotal();
                 $cost_insert[$i]["TotalAgencyCommission"] = $calc_price->getTotalAgencyCommission();
 
 
+                $inserted_flight->costs()->create($cost_insert[$i]);
+                $inserted_flight->taxes()->create($tax_insert[$i]);
+
                 $i++;
             }
-            if ($i > 0) {
-                $flight_id = Flight::my_insert($query);
-
-                $flight_count = $flight_id;
-                for ($j = 0; $j < $i; $j++) {
-                    $cost_insert[$j]["flight_id"] = $flight_count;
-                    $item = $tax_insert[$j];
-                    foreach ($item as $item_h) {
-                        $item_h["flight_id"] = $flight_count;
-                        $final_tax_insert[] = $item_h;
-
-                    }
-                    $flight_count++;
-                }
-
-                $flight_count = $flight_id;
-                $k = 0;
-                foreach ($airline_insert as $airline) {
-
-                    foreach ($airline as $item) {
-                        $item["flight_id"] = $flight_count;
-                        $final_airline_insert[$k] = $item;
-                        $k++;
-                    }
-                    $flight_count++;
-                }
-
-                $flight_count = $flight_id;
-                $k = 0;
-                foreach ($leg_insert as $leg) {
-
-                    foreach ($leg as $item2) {
-                        $item2["flight_id"] = $flight_count;
-                        $final_leg_insert[$k] = $item2;
-                        $k++;
-                    }
-                    $flight_count++;
-                    if (sizeof($final_leg_insert) * sizeof($final_leg_insert[$k - 1]) > 60000) {
-                        Leg::insert($final_leg_insert);
-                        $final_leg_insert = [];
-                        $k = 0;
-                    }
-
-                }
-
-                if (!empty($final_leg_insert)) {
-                    Leg::insert($final_leg_insert);
-                }
-
-
-                Cost::insert($cost_insert);
-                Tax::insert($final_tax_insert);
-                FlightAirline::insert($final_airline_insert);
-
-            }
-//		save search_id in page or cookie
-
-//		//save search_id in page or cookie
 
         }
 
@@ -700,8 +634,8 @@ class parto implements render_interface
         //$this->diff_time = Carbon::now()->diffInSeconds( $test_time1 );
 //		test for timing
 
-//        $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
-        $response = array_slice($response["PricedItineraries"], 0, 10);
+        $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
+//        $response = array_slice($response["PricedItineraries"], 0, 10);
         if (!$search_id) {
             $search = Search::create();
             $search_id = $search->id;
