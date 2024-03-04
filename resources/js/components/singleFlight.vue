@@ -1077,7 +1077,7 @@
                                                         <div class="col-10 col-md-6 details_title">
                                                         <span class="details_title_way">
                                                             {{
-                                                                flight.DirectionInd == 4 ? this.trs.trip + '1' : this.trs.depart
+                                                                flight.DirectionInd == 4 ? this.trs.trip + ' 1' : this.trs.depart
                                                             }}
                                                         </span>
                                                             <span class="details_title_f_t">

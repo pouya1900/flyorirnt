@@ -377,31 +377,30 @@
 
                                                 </div>
 
-                                                <div v-for="item in this.airlines" class="widget_item">
+                                                <div v-for="airline in this.airlines" class="widget_item">
 
                                                     <div class="custom-control custom-checkbox ">
                                                         <input type="checkbox"
                                                                @change="removeAll('ValidatingAirlineCode')"
                                                                class="custom-control-input filter_input"
-                                                               :id="'airline'+item.airline.id"
-                                                               v-model="ValidatingAirlineCode"
-                                                               :value="item.airline.code"
+                                                               :id="'airline'+airline.id"
+                                                               v-model="ValidatingAirlineCode" :value="airline.code"
                                                                checked>
                                                         <label class="custom-control-label"
-                                                               :for="'airline'+item.airline.id">
+                                                               :for="'airline'+airline.id">
 
-                                                            {{ item.airline.name }}
+                                                            {{ airline.name }}
                                                             <img class="airline_filter_logo"
-                                                                 :src="'images/AirlineLogo_k/'+item.airline.image">
+                                                                 :src="'images/AirlineLogo_k/'+airline.image">
 
                                                             <span
                                                                 class="filter_min_fare">{{ trs.from }} {{
-                                                                    item.totalFare
+                                                                    airline.TotalFare
                                                                 }}€
                                                             </span>
                                                         </label>
                                                         <span class="only_filter"
-                                                              @click="only('ValidatingAirlineCode',item.airline.code)">{{
+                                                              @click="only('ValidatingAirlineCode',airline.code)">{{
                                                                 this.trs.only
                                                             }}</span>
                                                     </div>
@@ -413,7 +412,6 @@
                                         </div>
 
                                     </div>
-
                                     <!--// airline Search -->
                                 </div>
                                 <div class="d-lg-none">
@@ -438,6 +436,7 @@
                             <div class="row">
 
                                 <div class="col-12">
+
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr class="thead_airline_logo">
@@ -448,7 +447,7 @@
 
 
                                             <th v-for="item in airlines_list" scope="col">
-                                                <div><img :src="'images/'+item[0].airline.image"></div>
+                                                <div><img :src="'images/'+item[0].image"></div>
                                             </th>
 
                                         </tr>
@@ -456,42 +455,42 @@
 
                                             <th v-for="item in airlines_list" scope="col">
                                                 <div>{{
-                                                        item[0].airline.name
+                                                        item[0].name
                                                     }}
                                                 </div>
                                             </th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-if="this.flight_grouped[0]==0">
+                                        <tr v-if="this.flight_grouped[0] && this.flight_grouped[0].stops==0">
                                             <th class="first_row" scope="row">{{ this.trs.none_stop }}</th>
 
-                                            <td v-for="item in this.airlines_list">
-                                                <span @click="selectFlight(0,item[0].airline.code)"
+                                            <td v-for="airline in this.airlines_list">
+                                                <span @click="selectFlight(0,airline[0].code)"
                                                       class="airline_list_filter"
-                                                      v-if="item[0].stops == 0">{{
-                                                        (item[0].costs.TotalFare)
+                                                      v-if="airline[0].stops == 0">{{
+                                                        (airline[0].FarePerAdult * airline[0].adult + airline[0].FarePerChild * airline[0].child + airline[0].FarePerInf * airline[0].infant)
                                                     }}</span>
                                                 <span v-else>-</span>
                                             </td>
                                             {{ this.airline_counter1Add() }}
                                         </tr>
 
-                                        <tr v-if="this.flight_grouped[this.airline_counter1]==1">
+                                        <tr v-if="this.flight_grouped[this.airline_counter1] && this.flight_grouped[this.airline_counter1].stops==1">
 
                                             <th class="first_row" scope="row">1 {{ this.trs.stop }}</th>
 
-                                            <td v-for="item in this.airlines_list">
+                                            <td v-for="airline in this.airlines_list">
 
-                                                <span @click="selectFlight(1,item[0].airline.code)"
+                                                <span @click="selectFlight(1,airline[0].code)"
                                                       class="airline_list_filter"
-                                                      v-if="item[0].stops == 1">{{
-                                                        (item[0].costs.TotalFare)
+                                                      v-if="airline[0].stops == 1">{{
+                                                        (airline[0].FarePerAdult * airline[0].adult + airline[0].FarePerChild * airline[0].child + airline[0].FarePerInf * airline[0].infant)
                                                     }}</span>
-                                                <span @click="selectFlight(1,item[1].airline.code)"
+                                                <span @click="selectFlight(1,airline[1].code)"
                                                       class="airline_list_filter"
-                                                      v-else-if="item[1] && item[1].stops == 1">{{
-                                                        (item[1].costs.TotalFare)
+                                                      v-else-if="airline[1] && airline[1].stops == 1">{{
+                                                        (airline[1].FarePerAdult * airline[1].adult + airline[1].FarePerChild * airline[1].child + airline[1].FarePerInf * airline[1].infant)
                                                     }}</span>
                                                 <span v-else>-</span>
                                             </td>
@@ -499,28 +498,28 @@
                                             {{ this.airline_counter2Add() }}
                                         </tr>
 
-                                        <tr v-if="this.flight_grouped[this.airline_counter2]==2">
+                                        <tr v-if="this.flight_grouped[this.airline_counter2] && this.flight_grouped[this.airline_counter2].stops==2">
                                             <th class="first_row" scope="row">+2 {{
                                                     this.trs.stops_in_Counting
                                                 }}
                                             </th>
 
-                                            <td v-for="item in this.airlines_list">
+                                            <td v-for="airline in this.airlines_list">
 
-                                                <span @click="selectFlight(2,item[0].airline.code)"
+                                                <span @click="selectFlight(2,airline[0].code)"
                                                       class="airline_list_filter"
-                                                      v-if="item[0].stops == 2">{{
-                                                        (item[0].costs.TotalFare)
+                                                      v-if="airline[0].stops == 2">{{
+                                                        (airline[0].FarePerAdult * airline[0].adult + airline[0].FarePerChild * airline[0].child + airline[0].FarePerInf * airline[0].infant)
                                                     }}</span>
-                                                <span @click="selectFlight(2,item[1].airline.code)"
+                                                <span @click="selectFlight(2,airline[1].code)"
                                                       class="airline_list_filter"
-                                                      v-else-if="item[1] && item[1].stops == 2">{{
-                                                        (item[1].costs.TotalFare)
+                                                      v-else-if="airline[1] && airline[1].stops == 2">{{
+                                                        (airline[1].FarePerAdult * airline[1].adult + airline[1].FarePerChild * airline[1].child + airline[1].FarePerInf * airline[1].infant)
                                                     }}</span>
-                                                <span @click="selectFlight(2,item[2].airline.code)"
+                                                <span @click="selectFlight(2,airline[2].code)"
                                                       class="airline_list_filter"
-                                                      v-else-if="item[2]">{{
-                                                        (item[2].costs.TotalFare)
+                                                      v-else-if="airline[2]">{{
+                                                        (airline[2].FarePerAdult * airline[2].adult + airline[2].FarePerChild * airline[2].child + airline[2].FarePerInf * airline[2].infant)
                                                     }}</span>
                                                 <span v-else>-</span>
                                             </td>
@@ -528,7 +527,6 @@
 
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </div>
@@ -649,7 +647,7 @@
                                                             <div class="flight_item logo_container col-4 ">
 
                                                                 <div
-                                                                    v-for="logo in getDistinctAirline(item.airlines).filter(i => i.is_return === 0)"
+                                                                    v-for="logo in getDistinctAirline(item.airlines).filter(i => i.pivot.is_return === 0)"
                                                                     class="logo_leg">
                                                                     <img :src="'images/'+logo.image"
                                                                          :alt="logo.name">
@@ -703,7 +701,7 @@
 
 
                                                                     <div
-                                                                        v-for="logo in getDistinctAirline(item.airlines).filter(i => i.is_return == 0)"
+                                                                        v-for="logo in getDistinctAirline(item.airlines).filter(i => i.pivot.is_return == 0)"
 
                                                                         class="logo_leg">
                                                                         <img :src="'images/'+logo.image"
@@ -931,7 +929,7 @@
 
 
                                                                     <div
-                                                                        v-for="logo in getDistinctAirline(item.airlines).filter(i => i.is_return === 1)"
+                                                                        v-for="logo in getDistinctAirline(item.airlines).filter(i => i.pivot.is_return === 1)"
                                                                         class="logo_leg">
                                                                         <img :src="'images/'+logo.image"
                                                                              :alt="logo.name">
@@ -984,7 +982,7 @@
                                                                         class="flight_item logo_container col d-md-block d-none">
 
                                                                         <div
-                                                                            v-for="logo in getDistinctAirline(item.airlines).filter(i => i.is_return === 1)"
+                                                                            v-for="logo in getDistinctAirline(item.airlines).filter(i => i.pivot.is_return === 1)"
                                                                             class="logo_leg">
                                                                             <img :src="'images/'+logo.image"
                                                                                  :alt="logo.name">
@@ -2710,8 +2708,9 @@
                                                                 <td>-</td>
                                                                 <td>-</td>
                                                                 <td>-</td>
+                                                                <td>-</td>
                                                                 <td>{{
-                                                                        item.FarePerAdult * item.adult + (item.child ? item.FarePerChild * item.child : 0) + (item.infant ? item.FarePerInf * item.infant : 0)
+                                                                        item.FarePerAdult * item.adult + item.FarePerChild * item.child + item.FarePerInf * item.infant
                                                                     }}
                                                                 </td>
                                                             </tr>
@@ -2974,7 +2973,7 @@ export default {
     methods: {
         getDistinctAirline(array) {
 
-            return [...new Map(array.map(item => [item['id'] + 'r' + item['is_return'], item])).values()];
+            return [...new Map(array.map(item => [item['id'] + 'r' + item.pivot['is_return'], item])).values()];
         },
         turn_class(code) {
             let cabin_class;
@@ -3072,17 +3071,10 @@ export default {
                     .then(response => {
                         if (response.data.status === 0) {
                             this.flights.push(...response.data.flights);
-                            console.log(response.data.time);
                             this.airlines_list = response.data.airlines_list;
                             this.flight_grouped = response.data.flight_grouped;
-                            this.airlines = response.data.airlines_filter_list;
-                            let airline_push = [];
-
-                            let vm = this;
-                            Object.keys(this.airlines).forEach(function (key) {
-                                airline_push.push(vm.airlines[key].airline.code);
-                            });
-                            this.ValidatingAirlineCode.push(...airline_push);
+                            this.airlines = response.data.airlines;
+                            this.ValidatingAirlineCode.push(...this.airlines.map(item => item.code));
                             this.all_ValidatingAirlineCode = this.ValidatingAirlineCode;
                             this.slider.range.max = Math.max(response.data.max, this.slider.range.max);
                             if (!this.slider_init) {

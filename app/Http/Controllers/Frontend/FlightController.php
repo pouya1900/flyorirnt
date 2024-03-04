@@ -180,6 +180,8 @@ class FlightController extends Controller
 
     public function index($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop = 0)
     {
+
+
         ini_set('max_execution_time', 120);
         set_time_limit(0);
         $actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
@@ -553,19 +555,21 @@ class FlightController extends Controller
         $instance_render = $this->set_render($render_number);
 //		choose render from database
 
-        $search_id = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
+//        $search_id = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
 //        $search_id = 620;
-        $response = $this->search_flight($search_id, 0, [], 0, 500, 0, $render_number);
+//        $response = $this->search_flight($search_id, 0, [], 0, 500, 0, $render_number);
+
+        $response = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
 
 
-        $airlines_list = Airline::filter_airline_list($search_id);
-        $airlines_list = json_decode(json_encode($airlines_list), true);
+//        $airlines_list = Airline::filter_airline_list($search_id);
+//        $airlines_list = json_decode(json_encode($airlines_list), true);
 
-        $airlines_list = $this->sort_airline($airlines_list);
+//        $airlines_list = $this->sort_airline($airlines_list);
 
 
-        $flight = $response["flight"];
-        $count = $response["count"];
+        $flights = $response["flights"];
+        $count = count($flights);
         $search_data = [
             "none_stop" => $none_stop,
             "render"    => $render_number,
@@ -574,21 +578,22 @@ class FlightController extends Controller
             "chl"       => $chl,
             "inf"       => $inf,
         ];
-        $max = $response["max"];
-        $flight_grouped = $response["flight_grouped"];
-        $return_flight_grouped = $response["return_flight_grouped"];
-        $airlines = Airline::filter_airline($search_id);
-        $airlines = json_decode(json_encode($airlines), true);
+        $max = 30;
+//        $flight_grouped = $response["flight_grouped"];
+//        $return_flight_grouped = $response["return_flight_grouped"];
+//        $airlines = Airline::filter_airline($search_id);
+//        $airlines = json_decode(json_encode($airlines), true);
 
         return response()->json([
-            "status"         => 0,
-            "flights"        => $flight,
-            "count"          => $count,
-            "search_data"    => $search_data,
-            "max"            => $max,
-            "airlines_list"  => $airlines_list,
-            "flight_grouped" => $flight_grouped,
-            "airlines"       => $airlines,
+            "status"               => 0,
+            "flights"              => $flights,
+            "time"                 => $response["time"],
+            "count"                => $count,
+            "search_data"          => $search_data,
+            "max"                  => $max,
+            "airlines_list"        => $response["airlines_list"],
+            "flight_grouped"       => $response["flight_grouped"],
+            "airlines_filter_list" => $response["airlines_filter_list"],
         ]);
 
 
