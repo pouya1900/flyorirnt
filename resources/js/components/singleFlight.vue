@@ -68,7 +68,7 @@
                                                             <div class="flight_item logo_container col-4 ">
 
                                                                 <div
-                                                                    v-for="logo in getDistinctAirline(flight.airlines).filter(i => i.pivot.is_return === 0)"
+                                                                    v-for="logo in getDistinctAirline(flight.airlines).filter(i => i.is_return === 0)"
                                                                     class="logo_leg">
                                                                     <img :src="'images/'+logo.image"
                                                                          :alt="logo.name">
@@ -119,7 +119,7 @@
 
 
                                                                     <div
-                                                                        v-for="logo in getDistinctAirline(flight.airlines).filter(i => i.pivot.is_return == 0)"
+                                                                        v-for="logo in getDistinctAirline(flight.airlines).filter(i => i.is_return == 0)"
 
                                                                         class="logo_leg">
                                                                         <img :src="'images/'+logo.image"
@@ -347,7 +347,7 @@
 
 
                                                                     <div
-                                                                        v-for="logo in getDistinctAirline(flight.airlines).filter(i => i.pivot.is_return === 1)"
+                                                                        v-for="logo in getDistinctAirline(flight.airlines).filter(i => i.is_return === 1)"
                                                                         class="logo_leg">
                                                                         <img :src="'images/'+logo.image"
                                                                              :alt="logo.name">
@@ -400,7 +400,7 @@
                                                                         class="flight_item logo_container col d-md-block d-none">
 
                                                                         <div
-                                                                            v-for="logo in getDistinctAirline(flight.airlines).filter(i => i.pivot.is_return === 1)"
+                                                                            v-for="logo in getDistinctAirline(flight.airlines).filter(i => i.is_return === 1)"
                                                                             class="logo_leg">
                                                                             <img :src="'images/'+logo.image"
                                                                                  :alt="logo.name">
@@ -2349,7 +2349,8 @@ export default {
     methods: {
         getDistinctAirline(array) {
 
-            return [...new Map(array.map(item => [item['id'] + 'r' + item.pivot['is_return'], item])).values()];
+            return [...new Map(array.map(item => [item['id'] + 'r' + item['is_return'], item])).values()];
+
         },
         turn_class(code) {
             let cabin_class;

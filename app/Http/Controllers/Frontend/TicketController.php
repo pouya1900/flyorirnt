@@ -535,6 +535,15 @@ class TicketController extends Controller
 
     }
 
+    public function new_process_payment(Request $request)
+    {
+
+        $flight = $request->input('flight');
+        $passengers = $request->input("passengers");
+        $contact = $request->input("contact");
+
+        dd($flight);
+    }
 
     public function confirm_payment(request $request, $method)
     {
@@ -761,7 +770,7 @@ class TicketController extends Controller
                     "invoice_number" => $new_invoice_n,
                 ]);
 
-                require_once "script / xinvoice . php";
+                require_once "script/xinvoice.php";
 
                 $xinvoice2 = new \Xinvoice();
 
@@ -846,8 +855,7 @@ class TicketController extends Controller
     }
 
 
-    public
-    function ticket_issue_scheduler()
+    public function ticket_issue_scheduler()
     {
 
         $schedulers = Scheduler::where('status', 'active')->get();
@@ -874,8 +882,7 @@ class TicketController extends Controller
 
     }
 
-    public
-    function check_booking_status($instance_render, $book, $lang, $book_first_status)
+    public function check_booking_status($instance_render, $book, $lang, $book_first_status)
     {
         $book_unique_id = $book->UniqueId;
         $book_id = $book->id;
@@ -895,7 +902,7 @@ class TicketController extends Controller
             return ["error" => 1];
         }
 
-        $file_name = $book->token . " . pdf";
+        $file_name = $book->token . ".pdf";
 
         $pdf_download = 1;
 
@@ -908,11 +915,11 @@ class TicketController extends Controller
         $confirm_view = view('front.payment_result.confirm', compact('book', 'lang', 'file_name', 'booked', 'pdf_download', 'condition'))->render();
         $ticket_view = view('front.payment_result.confirm', compact('book', 'lang', 'file_name', 'booked', 'condition'))->render();
 
-        require_once "script / xinvoice . php";
+        require_once "script/xinvoice.php";
 
         $xinvoice = new \Xinvoice();
 
-        $xinvoice->setSettings("filename", " ../../../../../../public/tickets / $file_name");
+        $xinvoice->setSettings("filename", " ../../../../../../public/tickets/$file_name");
         $xinvoice->setSettings("output", "F");
         $xinvoice->setSettings("format", "A4");
         $xinvoice->htmlToPDF($ticket_view);
@@ -939,8 +946,7 @@ class TicketController extends Controller
 
     }
 
-    public
-    function capture_payment_scheduler()
+    public function capture_payment_scheduler()
     {
         $schedulers = Payment_scheduler::where('status', 'active')->get();
 
@@ -975,14 +981,31 @@ class TicketController extends Controller
 
     }
 
-    public
-    function void_payment($method, $payment)
+    public function void_payment($method, $payment)
     {
         $paypal = new paypal();
 
         if ($method == "paypal") {
             $paypal->void_payment($payment->auth_id);
         }
+    }
+
+    public function revalidate(request $request)
+    {
+        $flight = $request->input("flight");
+
+
+//		choose render
+        $render_number = $flight["render"];
+        $instance_render = $this->set_render($render_number);
+//		choose render
+
+        $validate = $instance_render->revalidate($flight);
+        //$validate = 1;
+
+        return response()->json(["validate" => $validate]);
+
+
     }
 
 }

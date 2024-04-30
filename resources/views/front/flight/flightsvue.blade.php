@@ -40,6 +40,12 @@
             :air_rules_url="{{json_encode(route('air_rules'))}}"
             :air_bag_url="{{json_encode(route('bagRules'))}}"
             :select_url="{{json_encode(route("passengers_info"))}}"
+            :revalidate_url="{{json_encode(route("revalidate"))}}"
+            :user="{{json_encode($user)}}"
+            :country="{{json_encode($country)}}"
+            :airlines_rule_url="{{json_encode(route('airlines.index'). ($lang!="de"? "?lang=".$lang : ""))}}"
+            :process_payment_url="{{json_encode(route('new_process_payment'). ($lang!="de"? "?lang=".$lang : ""))}}"
+            :paypal_id="{{json_encode($setting->payment ? env('PAYPAL_CLIENT_ID') : env('PAYPAL_TEST_CLIENT_ID'))}}"
             :filter="{{json_encode($filter)}}">
 
         </flights>
@@ -62,6 +68,7 @@
 @endsection
 
 @section('script')
+
 
     <script type="text/javascript">
         var userLanguage1 = "{{$lang=="de" ? "de" : "en"}}";
@@ -318,7 +325,42 @@
         });
     </script>
 
+    <script>
+        jQuery(document).on('focus', '.EXP_date', function () {
+            let vm = this;
+            jQuery(this).caleran({
+                locale: "{{$lang=="de" ? "de" : "en"}}",
+                startEmpty: true,
+                startOnMonday: true,
+                minDate: moment(),
+                showFooter: false,
+                autoCloseOnSelect: true,
+                format: "DD.MM.YYYY",
+                DOBCalendar: true,
+                onafterselect: function (instance, start1, end1) {
+                    vm.dispatchEvent(new Event('input'))
+                }
 
+            });
+        });
+        jQuery(document).on('focus', '.DOB_date', function () {
+            let vm = this;
+            jQuery(this).caleran({
+                locale: "{{$lang=="de" ? "de" : "en"}}",
+                startEmpty: true,
+                startOnMonday: true,
+                maxDate: moment(),
+                showFooter: false,
+                autoCloseOnSelect: true,
+                format: "DD.MM.YYYY",
+                DOBCalendar: true,
+                onafterselect: function (instance, start1, end1) {
+                    vm.dispatchEvent(new Event('input'))
+                }
+            });
+        });
+
+    </script>
 
     <script type="text/javascript" src="js/nouislider.min.js"></script>
 

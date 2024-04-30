@@ -24,10 +24,9 @@ class TestController extends Controller
 
     public function test()
     {
+        $lang="en";
+        return view('front.test.test', compact('lang', ));
 
-        $irr=new iranAir(4);
-
-        $irr->test();
 
     }
 }

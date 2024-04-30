@@ -246,12 +246,13 @@ class parto implements render_interface
         $result = curl_exec($ch);
         $response = json_decode($result, true);
         curl_close($ch);
+
 //		test for timing
         //$this->time2     = Carbon::now();
         //$this->diff_time = Carbon::now()->diffInSeconds( $test_time1 );
 //		test for timing
-        $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
-//        $response = array_slice($response["PricedItineraries"], 0, 10);
+//        $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
+        $response = array_slice($response["PricedItineraries"], 0, 2);
         $after_parto = Carbon::now();
 
 
@@ -1413,7 +1414,6 @@ class parto implements render_interface
 
         $faresourcecode = $flight["FareSourceCode"];
         $service_url = $this->base . '/Rest/Air/AirRules';
-
         $array["SessionId"] = $this->session;
         $array["FareSourceCode"] = $faresourcecode;
 
@@ -1466,7 +1466,6 @@ class parto implements render_interface
         $result = curl_exec($ch);
         $response = json_decode($result, true);
         curl_close($ch);
-
         return $response;
 
     }
@@ -1567,6 +1566,9 @@ class parto implements render_interface
                 "price"     => $cost_insert[$i]["taxInfant"],
             ];
         }
+
+        $cost_insert[$i]["child"] = $cost_insert[$i]["child"] ?? 0;
+        $cost_insert[$i]["infant"] = $cost_insert[$i]["infant"] ?? 0;
 
         return $calc_price;
     }

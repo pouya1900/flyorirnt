@@ -6,6 +6,7 @@ use App\Models\Airline;
 use App\Models\Ads_search;
 use App\Models\Airport;
 use App\Models\Cost;
+use App\Models\Country;
 use App\Models\Flight;
 use App\Models\FlightAirline;
 use App\Models\Leg;
@@ -180,8 +181,6 @@ class FlightController extends Controller
 
     public function index($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop = 0)
     {
-
-
         ini_set('max_execution_time', 120);
         set_time_limit(0);
         $actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
@@ -308,8 +307,11 @@ class FlightController extends Controller
             "user_id"          => Auth::check() ? Auth::user()->id : null,
         ]);
 
+        $country = Country::all();
 
-        return response(view('front.flight.flightsvue', compact('lang', 'search_data', 'ajax_render', 'filter')));
+        $user = Auth::user();
+
+        return response(view('front.flight.flightsvue', compact('lang', 'search_data', 'ajax_render', 'filter', 'country', 'user')));
 
     }
 
@@ -423,12 +425,10 @@ class FlightController extends Controller
     public function air_rules(Request $request)
     {
 
-        $id = $request->input('id');
-
-        $flight = Flight::find($id);
+        $flight = $request->input('flight');
+        $render_number = $flight['render'];
 
 //		choose render
-        $render_number = $flight->render;
         $instance_render = $this->set_render($render_number);
 //		choose render
 
@@ -455,10 +455,10 @@ class FlightController extends Controller
 
             $rules["FareRuleText"]["Description"][0] = $description1;
             $rules["FareRuleText"]["Description"][1] = $description2;
-            $rules["FareRuleText"]["depart"][0] = $flight->depart_airport;
-            $rules["FareRuleText"]["depart"][1] = $flight->arrival_airport;
-            $rules["FareRuleText"]["return"][0] = $flight->return_depart_airport;
-            $rules["FareRuleText"]["return"][1] = $flight->return_arrival_airport;
+            $rules["FareRuleText"]["depart"][0] = $flight["depart_airport"];
+            $rules["FareRuleText"]["depart"][1] = $flight["arrival_airport"];
+            $rules["FareRuleText"]["return"][0] = $flight["return_depart_airport"];
+            $rules["FareRuleText"]["return"][1] = $flight["return_arrival_airport"];
         }
 
 
@@ -469,13 +469,10 @@ class FlightController extends Controller
     public function bagRules(Request $request)
     {
 
-        $id = $request->input('id');
-
-        $flight = Flight::find($id);
-
+        $flight = $request->input('flight');
 
 //		choose render
-        $render_number = $flight->render;
+        $render_number = $flight["render"];
         $instance_render = $this->set_render($render_number);
 //		choose render
 
@@ -514,10 +511,10 @@ class FlightController extends Controller
             $rules['iran_air'][0] = $final1;
             $rules['iran_air'][1] = $final2;
 
-            $rules["FareRuleText"]["depart"][0] = $flight->depart_airport;
-            $rules["FareRuleText"]["depart"][1] = $flight->arrival_airport;
-            $rules["FareRuleText"]["return"][0] = $flight->return_depart_airport;
-            $rules["FareRuleText"]["return"][1] = $flight->return_arrival_airport;
+            $rules["FareRuleText"]["depart"][0] = $flight["depart_airport"];
+            $rules["FareRuleText"]["depart"][1] = $flight["arrival_airport"];
+            $rules["FareRuleText"]["return"][0] = $flight["return_depart_airport"];
+            $rules["FareRuleText"]["return"][1] = $flight["return_arrival_airport"];
 
         }
 
@@ -559,7 +556,7 @@ class FlightController extends Controller
 //        $search_id = 620;
 //        $response = $this->search_flight($search_id, 0, [], 0, 500, 0, $render_number);
 
-        $response = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
+//        $response = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
 
 
 //        $airlines_list = Airline::filter_airline_list($search_id);
@@ -567,6 +564,11 @@ class FlightController extends Controller
 
 //        $airlines_list = $this->sort_airline($airlines_list);
 
+
+        $x=file_get_contents("../config/testFlight.json");
+
+
+        $response=json_decode($x,true);
 
         $flights = $response["flights"];
         $count = count($flights);

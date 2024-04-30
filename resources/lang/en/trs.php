@@ -457,4 +457,10 @@ WhatsApp: <b>+49-176-618 75 479</b></span>",
     "iran"                                         => "Iran",
     "multi_city"                                   => "Multi city",
 
+//    vue js version
+    "its_required"                                 => "this filed is required",
+    "adt_dob_error"                                => "adult should be older than 12 years",
+    "chl_dob_error"                                => "child should be older than 2 years and younger than 12 years",
+    "inf_dob_error"                                => "infant should be younger than 2 years",
+    "there_are_errors_in_form"                     => "there are some errors in the form",
 ];

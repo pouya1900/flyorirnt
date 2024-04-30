@@ -230,7 +230,7 @@ return [
     "footer_text"                                   => 'FlyOrient.de ist eine moderne Webseite zum Suchen und Buchen von Flugreisen weltweit. Die verschiedenen Filter helfen, Ihre Flugsuche zu optimieren.
 		<br><br><span style="font-size:14px;"> E-mail: </span> <a style="color:#ffffff; font-size:14px;" href="mailto:info@flyorient.de">info@flyorient.de</a>
 <br><span style="font-size:14px;">Tel.</span> <span style="color:#ffffff; font-size:14px;""><a href="tel:+4921117420289">+49-211-174 202 89</a> </span>	<br><span style="font-size:14px;"> Mob. & WhatsApp: </span><a style="color:#ffffff; font-size:14px;" target="_blank" href="https://wa.me/+4917661875479">+49-176-618 75 479</a>',
-		        
+
     "english"                                       => "Englisch",
     "germany"                                       => "Deutsch",
     "persian"                                       => "Persisch",
@@ -396,9 +396,9 @@ return [
 	<a href='https://flyorient.de/' target='_blank'><span style='font-size:18px;'>www.flyorient.de</span>
 	<img src='images/settings/logo.png' width=160px>
 	<span style='font-family:verdana;color:blue;font-size:20px;'>
-	  : پرواز مستقیم به تهران با ایران ایر . نمونه قیمت ها  
+	  : پرواز مستقیم به تهران با ایران ایر . نمونه قیمت ها
 	  </span>
-	</a>  
+	</a>
 
     <table align='center' dir='rtl' border='1' bordercolor='#fff' width='90%'>
        <tr align='right'>
@@ -424,7 +424,7 @@ WhatsApp: <b>+49-176-618 75 479</b></span>",
     "no_baggage_depart" => "Kein Freigepäck beim Hinflug!",
     "no_baggage_return" => "Kein Freigepäck beim Rückflug!",
     "no_baggage" => "Kein Freigepäck!",
-	
+
 	//    after 8 july , adding agency
     "credit"               => "Ihr Guthaben",
     "pay_with_balance"     => "Zahlung aus Guthaben",
@@ -446,5 +446,6 @@ WhatsApp: <b>+49-176-618 75 479</b></span>",
     "invoice_attached"     => "Rechnung angehängt",
     "invoice_number"       => "Rechnungsnummer",
     "issued_date"          => "Ausstellungsdatum",
+    "id_or_passport_number"             => "ID/Passport Nummer",
 
 ];
