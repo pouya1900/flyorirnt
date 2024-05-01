@@ -37,13 +37,16 @@ Route::group(['namespace' => 'Frontend'], function () {
 
     Route::post('/revalidate', 'TicketController@revalidate')->name('revalidate');
 
-    Route::get('/passengers')->name('passengers_info');
-    Route::get('/passengers/{id}', 'TicketController@passengers');
-    Route::post('/passengers/check', 'TicketController@passengers_check')->name('passengers_check');
-    Route::get('/payment/{book_token}', 'TicketController@payment')->name('payment');
-    Route::get('/PaymentProcess/{book_token}', 'TicketController@process_payment')->name('process_payment');
-    Route::get('/confirm/{method}', 'TicketController@confirm_payment')->name('confirm_payment');
-    Route::get('/cancel/{book_token}', 'TicketController@cancel_payment')->name('cancel_payment');
+//    Route::get('/passengers')->name('passengers_info');
+//    Route::get('/passengers/{id}', 'TicketController@passengers');
+//    Route::post('/passengers/check', 'TicketController@passengers_check')->name('passengers_check');
+//    Route::get('/payment/{book_token}', 'TicketController@payment')->name('payment');
+//    Route::get('/PaymentProcess/{book_token}', 'TicketController@process_payment')->name('process_payment');
+    Route::post('/confirm', 'TicketController@confirm_payment')->name('confirm_payment');
+
+    Route::get('result/cancel', 'TicketController@cancel_payment')->name('cancel_payment');
+    Route::get('result/failed', 'TicketController@failed_book')->name('failed_book');
+    Route::get('/result/booked', 'TicketController@successful_book')->name('successful_book');
 
     Route::post('/NewPaymentProcess', 'TicketController@new_process_payment')->name('new_process_payment');
 

@@ -548,27 +548,14 @@ class FlightController extends Controller
         if (!$return) {
             $return = "-";
         }
-//		choose render from database
         $instance_render = $this->set_render($render_number);
-//		choose render from database
-
-//        $search_id = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
-//        $search_id = 620;
-//        $response = $this->search_flight($search_id, 0, [], 0, 500, 0, $render_number);
 
 //        $response = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
 
 
-//        $airlines_list = Airline::filter_airline_list($search_id);
-//        $airlines_list = json_decode(json_encode($airlines_list), true);
+        $x = file_get_contents("../config/testFlight.json");
+        $response = json_decode($x, true);
 
-//        $airlines_list = $this->sort_airline($airlines_list);
-
-
-        $x=file_get_contents("../config/testFlight.json");
-
-
-        $response=json_decode($x,true);
 
         $flights = $response["flights"];
         $count = count($flights);
@@ -581,10 +568,6 @@ class FlightController extends Controller
             "inf"       => $inf,
         ];
         $max = 30;
-//        $flight_grouped = $response["flight_grouped"];
-//        $return_flight_grouped = $response["return_flight_grouped"];
-//        $airlines = Airline::filter_airline($search_id);
-//        $airlines = json_decode(json_encode($airlines), true);
 
         return response()->json([
             "status"               => 0,

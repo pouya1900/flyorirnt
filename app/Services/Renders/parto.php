@@ -550,7 +550,7 @@ class parto implements render_interface
 
 
                 $inserted_flight = array_merge($inserted_flight, $cost_insert[$i]);
-                $inserted_flight["taxes"][] = $tax_insert[$i];
+                $inserted_flight["taxes"] = $tax_insert[$i];
 
                 $airline_code = $inserted_flight["ValidatingAirlineCode"];
 
@@ -627,9 +627,6 @@ class parto implements render_interface
         $last = Carbon::now();
 
         return ["flights" => $flights, "airlines_list" => $airlines_list, "airlines_filter_list" => $airlines_filter_list, "flight_grouped" => $flight_grouped, "time" => [$start, $after_parto, $last]];
-        dd($flights);
-        dd($timeteststart . "----" . $timetest1 . "---" . Carbon::now());
-        return $search_id;
 
     }
 

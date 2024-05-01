@@ -3412,7 +3412,7 @@
                                     </div>
 
 
-                                    <!--                                    <div id="paypal-button-container"></div>-->
+                                    <div id="paypal-button-container"></div>
 
 
                                 </div>
@@ -3428,9 +3428,7 @@
 
         </div>
     </div>
-    <div v-if="step==3">
-        <div id="paypal-button-container"></div>
-    </div>
+
 </template>
 
 
@@ -3438,7 +3436,6 @@
 import noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 import singleFlight from './singleFlight.vue';
-import {loadScript} from "@paypal/paypal-js";
 
 export default {
 
@@ -3470,7 +3467,7 @@ export default {
     components: {
         singleFlight
     },
-    props: ['user', 'agency', 'lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'multi_search_url', 'filter', 'air_rules_url', 'air_bag_url', 'select_url', 'revalidate_url', 'country', 'airlines_rule_url', 'process_payment_url', 'paypal_id'],
+    props: ['user', 'agency', 'lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'multi_search_url', 'filter', 'air_rules_url', 'air_bag_url', 'revalidate_url', 'country', 'airlines_rule_url', 'process_payment_url', 'paypal_id', 'confirm_payment_url', 'successful_book_url', 'failed_book_url', 'cancel_payment_url'],
     name: 'flights',
     methods: {
         getDistinctAirline(array) {
@@ -3762,8 +3759,7 @@ export default {
         step1(flight) {
             this.selected_flight = flight;
             // this.revalidate(flight);
-            this.step = 3;
-            this.payment_call();
+            this.step = 1;
             for (let i = 0; i < this.getPassengersCount(); i++) {
                 this.gender[i] = "";
                 this.first_name[i] = "";
@@ -3945,121 +3941,138 @@ export default {
             this.iss[i] = $("#iss" + i).val();
         },
         getCountry(code) {
-            console.log(code);
             let country = this.country.find(x => x.code == code);
-            console.log(country);
-
             return country[this.country_lang] !== "" ? country[this.country_lang] : country.country_en;
         },
-        async payment_call() {
-            let paypal;
-            try {
-                paypal = await loadScript({
-                    clientId: this.paypal_id,
-                });
-            } catch (error) {
-                console.log(error);
-            }
+        payment_call() {
             let vm = this;
-            await paypal.Buttons({
+            let x = $("#paypal-button-container");
 
-                onInit: function (data, actions) {
+            if (!x.length) {
+                setTimeout(() => this.payment_call(), 5);
+            } else {
+                paypal.Buttons({
 
-                    // Disable the buttons
-                    actions.disable();
+                    onInit: function (data, actions) {
 
-                    // Listen for changes to the checkbox
-                    document.querySelector('#confirm')
-                        .addEventListener('change', function (event) {
+                        // Disable the buttons
+                        actions.disable();
 
-                            // Enable or disable the button when it is checked or unchecked
-                            if (event.target.checked) {
-                                actions.enable();
-                                $('#confirm_error').addClass('display_none');
-                            } else {
-                                actions.disable();
-                            }
-                        });
-                },
+                        // Listen for changes to the checkbox
+                        document.querySelector('#confirm')
+                            .addEventListener('change', function (event) {
 
-                // onClick is called when the button is clicked
-                onClick: function () {
+                                // Enable or disable the button when it is checked or unchecked
+                                if (event.target.checked) {
+                                    actions.enable();
+                                    $('#confirm_error').addClass('display_none');
+                                } else {
+                                    actions.disable();
+                                }
+                            });
+                    },
 
-                    // Show a validation error if the checkbox is not checked
-                    if (!document.querySelector('#confirm').checked) {
-                        document.querySelector('#confirm_error').classList.remove('display_none');
-                        alert("please confirm rules check box");
-                        $('html, body').animate({
-                            scrollTop: parseInt($("#confirm_error").offset().top) - 200
-                        }, 500);
-                    }
-                },
+                    // onClick is called when the button is clicked
+                    onClick: function () {
+
+                        // Show a validation error if the checkbox is not checked
+                        if (!document.querySelector('#confirm').checked) {
+                            document.querySelector('#confirm_error').classList.remove('display_none');
+                            alert("please confirm rules check box");
+                            $('html, body').animate({
+                                scrollTop: parseInt($("#confirm_error").offset().top) - 200
+                            }, 500);
+                        }
+                    },
 
 
 // Set up the transaction
-                createOrder: function (data, actions) {
+                    createOrder: async function (data, actions) {
 
-                    let passengers = [];
+                        let passengers = [];
 
-                    for (let i = 0; i < vm.getPassengersCount(); i++) {
-                        passengers[i] = [];
-                        passengers[i]["gender"] = vm.gender[i];
-                        passengers[i]["first_name"] = vm.first_name[i];
-                        passengers[i]["last_name"] = vm.last_name[i];
-                        passengers[i]["birthday"] = vm.birthday[i];
-                        passengers[i]["nationality"] = vm.nationality[i];
-                        passengers[i]["national_id_number"] = vm.national_id_number[i];
-                        passengers[i]["pass_number"] = vm.pass_number[i];
-                        passengers[i]["exp"] = vm.exp[i];
-                        passengers[i]["iss"] = vm.iss[i];
-                    }
-
-                    const headers = {
-                        'X-CSRF-TOKEN': this.csrf
-                    };
-                    const array = {
-                        'flight': this.selected_flight,
-                        'passengers': passengers,
-                        'contact': {
-                            'contact_person': vm.contact_person,
-                            'contact_last_name': vm.contact_last_name,
-                            'country_dial_code': vm.country_dial_code,
-                            'phone': vm.phone,
-                            'email': vm.email,
+                        for (let i = 0; i < vm.getPassengersCount(); i++) {
+                            passengers[i] = {
+                                "type": vm.getPassengerType(i),
+                                "gender": vm.gender[i],
+                                "first_name": vm.first_name[i],
+                                "last_name": vm.last_name[i],
+                                "birthday": vm.birthday[i],
+                                "nationality": vm.nationality[i],
+                                "national_id_number": vm.national_id_number[i],
+                                "passport_number": vm.pass_number[i],
+                                "exp": vm.exp[i],
+                                "iss": vm.iss[i],
+                            };
                         }
-                    };
 
-                    axios.post(vm.process_payment_url, array, {headers})
-                        .then(response => {
-                            if (!response.data.orderID) {
+                        const headers = {
+                            'X-CSRF-TOKEN': vm.csrf
+                        };
+                        const array = {
+                            'flight': vm.selected_flight,
+                            'passengers': passengers,
+                            'contact': {
+                                'contact_person': vm.contact_person,
+                                'contact_first_name': vm.contact_first_name,
+                                'contact_last_name': vm.contact_last_name,
+                                'country_dial_code': vm.country_dial_code,
+                                'phone': vm.phone,
+                                'email': vm.email,
+                            },
+                            'method': "paypal"
+                        };
+                        await axios.post(vm.process_payment_url, array, {headers})
+                            .then(response => {
+                                if (response.data.status) {
 
-                                if (response.data.error == 1) {
-                                } else if (response.data.error == 2) {
+                                    if (response.data.error == 1) {
+                                    } else if (response.data.error == 2) {
+                                    }
+
+                                } else {
+                                    return response.data.orderID;
                                 }
+                            });
 
-                            } else {
-                                return response.data.orderID;
-                            }
-                        });
-
-                },
+                    },
 
 // Finalize the transaction
-                onApprove: function (data, actions) {
+                    onApprove: function (data, actions) {
 
-                },
-                onCancel: function (data) {
+                        const headers = {
+                            'X-CSRF-TOKEN': vm.csrf
+                        };
 
-                },
-                style: {
-                    color: 'gold',
-                    shape: 'pill',
-                    label: 'pay',
-                    layout: 'vertical'
-                }
+                        let url = vm.confirm_payment_url + (vm.lang != "de" ? "?lang=" + vm.lang : "");
 
-            }).render('#paypal-button-container');
+                        const array = {
+                            method: "paypal",
+                            paymentId: data.orderID,
+                            payerID: data.payerID,
+                        };
+                        axios.post(url, array, {headers})
+                            .then(response => {
+                                if (response.data.status) {
+                                    window.location.replace(vm.failed_book_url);
+                                } else {
+                                    window.location.replace(vm.successful_book_url + "?token=" + response.data.token + (vm.lang != "de" ? "&lang=" + vm.lang : ""));
+                                }
+                            });
+                    },
+                    onCancel: function (data) {
+                        window.location.replace(vm.cancel_payment_url);
+                    },
+                    style: {
+                        color: 'gold',
+                        shape: 'pill',
+                        label: 'pay',
+                        layout: 'vertical'
+                    }
 
+
+                }).render('#paypal-button-container');
+            }
         },
         turn_title(gender, n) {
             return "a";

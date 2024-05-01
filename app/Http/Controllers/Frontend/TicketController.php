@@ -9,6 +9,7 @@ use App\Mail\ticket_sup;
 use App\Models\Book;
 use App\Models\Country;
 use App\Models\Flight;
+use App\Models\Leg;
 use App\Models\Passenger;
 use App\Models\Payment;
 use App\Models\Session;
@@ -538,20 +539,220 @@ class TicketController extends Controller
     public function new_process_payment(Request $request)
     {
 
+        $user = Auth::user();
         $flight = $request->input('flight');
         $passengers = $request->input("passengers");
         $contact = $request->input("contact");
+        $method = $request->input("method");
 
-        dd($flight);
+        if (!$user) {
+            $user = User::where('email', '=', $contact["email"])->first();
+            if (!$user) {
+                $user = User::create([
+                    "email" => $contact["email"],
+                ]);
+            }
+        }
+
+        $flight_object = Flight::create([
+            "search_id"                    => $flight["search_id"],
+            "token"                        => $flight["token"],
+            "render"                       => $flight["render"],
+            "FareSourceCode"               => $flight["FareSourceCode"],
+            "IsPassportMandatory"          => $flight["IsPassportMandatory"],
+            "IsPassportIssueDateMandatory" => $flight["IsPassportIssueDateMandatory"],
+            "IsPassportNumberMandatory"    => $flight["IsPassportNumberMandatory"],
+            "DirectionInd"                 => $flight["DirectionInd"],
+            "RefundMethod"                 => $flight["RefundMethod"],
+            "ValidatingAirlineCode"        => $flight["ValidatingAirlineCode"],
+            "flight_number"                => $flight["flight_number"],
+            "depart_time"                  => $flight["depart_time"],
+            "depart_time_range"            => $flight["depart_time_range"],
+            "depart_airport"               => $flight["depart_airport"],
+            "arrival_time"                 => $flight["arrival_time"],
+            "arrival_airport"              => $flight["arrival_airport"],
+            "stops"                        => $flight["stops"],
+            "total_time"                   => $flight["total_time"],
+            "total_waiting"                => $flight["total_waiting"],
+            "bar"                          => $flight["bar"],
+            "bar_exist"                    => $flight["bar_exist"],
+            "class"                        => $flight["class"],
+            "class_code"                   => $flight["class_code"],
+            "depart_first_airline"         => $flight["depart_first_airline"],
+            "return_flight_number"         => $flight["return_flight_number"],
+            "return_depart_time"           => $flight["return_depart_time"],
+            "return_depart_time_range"     => $flight["return_depart_time_range"],
+            "return_depart_airport"        => $flight["return_depart_airport"],
+            "return_arrival_time"          => $flight["return_arrival_time"],
+            "return_arrival_airport"       => $flight["return_arrival_airport"],
+            "return_stops"                 => $flight["return_stops"],
+            "return_total_time"            => $flight["return_total_time"],
+            "return_total_waiting"         => $flight["return_total_waiting"],
+            "return_bar"                   => $flight["return_bar"],
+            "return_bar_exist"             => $flight["return_bar_exist"],
+            "return_class"                 => $flight["return_class"],
+            "return_class_code"            => $flight["return_class_code"],
+            "return_first_airline"         => $flight["return_first_airline"],
+            "depart_return_time"           => $flight["depart_return_time"],
+        ]);
+
+        foreach ($flight["legs"] as $leg) {
+            Leg::create([
+                "flight_id"                 => $flight_object->id,
+                "aircraft_type"             => $leg["aircraft_type"],
+                "aircraft_type_description" => $leg["aircraft_type_description"],
+                "seats_remaining"           => $leg["seats_remaining"],
+                "leg_flight_number"         => $leg["leg_flight_number"],
+                "cabin_class"               => $leg["cabin_class"],
+                "cabin_class_code"          => $leg["cabin_class_code"],
+                "leg_depart_time"           => $leg["leg_depart_time"],
+                "leg_depart_airport"        => $leg["leg_depart_airport"],
+                "leg_arrival_time"          => $leg["leg_arrival_time"],
+                "leg_arrival_airport"       => $leg["leg_arrival_airport"],
+                "leg_time"                  => $leg["leg_time"],
+                "leg_waiting"               => $leg["leg_waiting"],
+                "leg_airline_code"          => $leg["leg_airline_code"],
+                "is_charter"                => $leg["is_charter"],
+                "is_return"                 => $leg["is_return"],
+                "leg_bar"                   => $leg["leg_bar"],
+                "leg_bar_exist"             => $leg["leg_bar_exist"],
+            ]);
+        }
+
+        foreach ($flight["airlines"] as $airline) {
+            $flight_object->airlines()->attach($airline["code"], ["is_return" => $airline["is_return"]]);
+        }
+
+        $flight_object->costs()->create([
+            "FareType"               => $flight["FareType"],
+            "VendorTotalFare"        => $flight["VendorTotalFare"],
+            "TotalCommission"        => $flight["TotalCommission"],
+            "TotalTax"               => $flight["TotalTax"],
+            "ServiceTax"             => $flight["ServiceTax"],
+            "Currency"               => $flight["Currency"],
+            "FarePerAdult"           => $flight["FarePerAdult"],
+            "FarePerChild"           => $flight["FarePerChild"] ?? 0,
+            "FarePerInf"             => $flight["FarePerInf"] ?? 0,
+            "serviceAdult"           => $flight["serviceAdult"],
+            "serviceChild"           => $flight["serviceChild"] ?? 0,
+            "serviceInfant"          => $flight["serviceInfant"] ?? 0,
+            "adult"                  => $flight["adult"],
+            "taxAdult"               => $flight["taxAdult"],
+            "taxChild"               => $flight["taxChild"] ?? 0,
+            "taxInfant"              => $flight["taxInfant"] ?? 0,
+            "AgencyCommissionAdult"  => $flight["AgencyCommissionAdult"],
+            "AgencyCommissionChild"  => $flight["AgencyCommissionChild"] ?? 0,
+            "AgencyCommissionInfant" => $flight["AgencyCommissionInfant"] ?? 0,
+            "child"                  => $flight["child"],
+            "infant"                 => $flight["infant"],
+            "TotalFare"              => $flight["TotalFare"],
+            "TotalAgencyCommission"  => $flight["TotalAgencyCommission"],
+        ]);
+
+        foreach ($flight["taxes"] as $tax) {
+            $flight_object->taxes()->create([
+                "type"  => $tax["type"],
+                "name"  => $tax["name"],
+                "code"  => $tax["code"],
+                "price" => $tax["price"],
+            ]);
+        }
+
+        $helper = $contact["contact_person"];
+        $book = Book::create([
+            "flight_id"           => $flight_object->id,
+            "user_id"             => $user->id,
+            "phone"               => $contact["phone"],
+            "dial_code"           => $contact["country_dial_code"],
+            "arranger_first_name" => $helper ? $passengers[$helper - 1]["first_name"] : $contact["contact_first_name"],
+            "arranger_last_name"  => $helper ? $passengers[$helper - 1]["last_name"] : $contact["contact_last_name"],
+        ]);
+
+        $book_id = $book->id;
+        $book_id_hash = chr(rand(100, 999) % 26 + 65) . chr(rand(10, 99) % 26 + 65) . chr(rand(1000, 9999) % 26 + 65) . $book_id % 1000 . rand(100, 999);
+        $book->update(["token" => $book_id_hash]);
+
+        foreach ($passengers as $passenger) {
+            Passenger::create([
+                "book_id"         => $book_id,
+                "first_name"      => $passenger["first_name"],
+                "last_name"       => $passenger["last_name"],
+                "gender"          => $passenger["gender"],
+                "type"            => $passenger["type"],
+                "birthday"        => date('Y-m-d', strtotime($passenger["birthday"])),
+                "country"         => $passenger["nationality"],
+                "expiry_date"     => isset($passenger["exp"]) ? date('Y-m-d', strtotime($passenger["exp"])) : null,
+                "passport_number" => $passenger["passport_number"],
+                "national_id"     => $passenger["national_id_number"],
+                "issue_date"      => isset($passenger["iss"]) ? date('Y-m-d', strtotime($passenger["iss"])) : null,
+            ]);
+        }
+
+        if ($method == "paypal") {
+
+            $paypal = new paypal();
+
+            $create_data = [
+                "total"            => $flight["TotalFare"],
+                "currency"         => $flight["Currency"],
+                "description"      => "Payment for " . $book["token"] . " in fly orient",
+                "custom"           => "FlyOrient" . "_" . $book["token"],
+                "invoice_number"   => $book["token"],
+                "soft_descriptor"  => "Fly Orient online booking site " . $book["token"],
+                "item_name"        => "flight",
+                "item_description" => $flight["depart_airport"] . " to " . $flight["arrival_airport"],
+                "item_quantity"    => 1,
+                "item_currency"    => $flight["Currency"],
+                "book_token"       => $book["token"],
+            ];
+            $result = $paypal->create_payment($create_data);
+            if (!isset($result["status"]) || $result["status"] != "CREATED") {
+                //error handling
+                $this->log->payment_error(json_encode($result), 'create');
+                $return = ["status" => 1];
+                return response()->json($return);
+            }
+            $book->payments()->create([
+                "payment_id" => $result["id"],
+                "status"     => $result["status"],
+                "method"     => "paypal",
+            ]);
+            $return = ["status" => 0, "orderID" => $result["id"]];
+        } elseif ($method == "admin") {
+            $book->payments()->create([
+                "payment_id" => "paymentByAdmin" . $book["id"],
+                "payer_id"   => Auth::user()->id,
+                "status"     => "COMPLETED",
+                "method"     => "admin",
+            ]);
+            $return = ["status" => 0];
+        } elseif ($method == "agency") {
+
+            if (!Auth::user()->active) {
+            }
+            $book->payments()->create([
+                "payment_id"     => "paymentByAgency" . $book["id"],
+                "payer_id"       => Auth::user()->id,
+                "status"         => "CREATED",
+                "method"         => "agency",
+                "before_balance" => Auth::user()->balance->amount,
+            ]);
+            $return = ["status" => 0];
+        }
+
+        return response()->json($return);
+
     }
 
-    public function confirm_payment(request $request, $method)
+
+    public function confirm_payment(request $request)
     {
         ini_set('max_execution_time', 120);
         $lang = App::getLocale();
 
         $setting = Setting::get()->first();
 
+        $method = $request->input('method');
         $payment_id = $request->input('paymentId');
         $payer_id = $request->input('payerID');
         $blocked_payer = \Illuminate\Support\Facades\Config::get("blockPayer");
@@ -570,22 +771,6 @@ class TicketController extends Controller
         $flight_obj = $book->flights;
         $searches = $flight_obj->searches;
 
-        $research_data =
-            [
-                "link"             => $searches->link,
-                'origin'           => $searches->origin_code,
-                "destination"      => $searches->destination_code,
-                "origin_name"      => $searches->origin_name,
-                "destination_name" => $searches->destination_name,
-                "adl"              => $searches->adult,
-                "chl"              => $searches->child,
-                "inf"              => $searches->infant,
-                "depart_date"      => date('d.m.Y', strtotime($flight_obj->depart_time)),
-                "return_date"      => "",
-            ];
-        if ($flight_obj->return_depart_time) {
-            $research_data["return_date"] = date('d.m.Y', strtotime($flight_obj->return_depart_time));
-        }
         $paypal = new paypal();
 
         $flight = Flight::where('id', '=', $flight_id)->join('costs', 'costs.flight_id', '=', 'flights.id')->get();
@@ -597,99 +782,85 @@ class TicketController extends Controller
                 $payment->update([
                     "status" => "BLOCKED",
                 ]);
+                $book->update([
+                    "status" => "payment_failed",
+                ]);
+                return response()->json(["status" => 1, 'error' => 'payment']);
+            }
+
+            if ($payment->status != "CREATED") {
+                return response()->json(["status" => 1, 'error' => 'payment']);
+            }
+            $result = $paypal->order($payment_id);
+
+            if (!isset($result["status"]) || ($result["status"] != "APPROVED" && $result["status"] != "COMPLETED")) {
+                //failed payment
+                $payment->update([
+                    "status" => "FAILED",
+                ]);
 
                 $book->update([
                     "status" => "payment_failed",
                 ]);
-                return view('front.payment_result.failed', compact('lang', 'research_data'));
+
+                $this->log->payment_error(json_encode($result), 'orderDetails', $payment);
+
+                return response()->json(["status" => 1, 'error' => 'payment']);
             }
 
-            if ($payment->status == "CREATED") {
-//				//payment is in cancel state or approved
+            $result = $paypal->authorize($payment_id);
 
-                $result = $paypal->order($payment_id);
-
-
-                if (!isset($result["status"]) || ($result["status"] != "APPROVED" && $result["status"] != "COMPLETED")) {
-                    //failed payment
-                    $payment->update([
-                        "status" => "FAILED",
-                    ]);
-
-                    $book->update([
-                        "status" => "payment_failed",
-                    ]);
-
-                    $this->log->payment_error(json_encode($result), 'orderDetails', $payment);
-
-
-                    return view('front.payment_result.failed', compact('lang', 'research_data'));
-                }
-
-                $result = $paypal->authorize($payment_id);
-
-                if (!isset($result["status"]) || ($result["status"] != "APPROVED" && $result["status"] != "COMPLETED")) {
-                    //failed payment
-                    $payment->update([
-                        "status" => "FAILED",
-                    ]);
-
-                    $book->update([
-                        "status" => "payment_failed",
-                    ]);
-
-                    $this->log->payment_error(json_encode($result), 'authorize', $payment);
-
-                    return view('front.payment_result.failed', compact('lang', 'research_data'));
-                }
-
+            if (!isset($result["status"]) || ($result["status"] != "APPROVED" && $result["status"] != "COMPLETED")) {
+                //failed payment
                 $payment->update([
-                    "payer_id" => $payer_id,
-                    "auth_id"  => $result["purchase_units"][0]["payments"]["authorizations"][0]["id"],
-                    "status"   => "APPROVED",
+                    "status" => "FAILED",
                 ]);
 
-            } elseif ($payment->status != "APPROVED" && $payment->status != "COMPLETED") {
-                return view('front.payment_result.failed', compact('lang', 'research_data'));
+                $book->update([
+                    "status" => "payment_failed",
+                ]);
+
+                $this->log->payment_error(json_encode($result), 'authorize', $payment);
+                return response()->json(["status" => 1, 'error' => 'payment']);
+
             }
 
+            $payment->update([
+                "payer_id" => $payer_id,
+                "auth_id"  => $result["purchase_units"][0]["payments"]["authorizations"][0]["id"],
+                "status"   => "APPROVED",
+            ]);
 
-        } elseif ($setting->no_payment_admin && Auth::check() && Auth::user()->role == User::admin) {
+
+        } elseif ($method == "admin" && $setting->no_payment_admin && Auth::check() && Auth::user()->role == User::admin) {
 
         } elseif ($method == "agency") {
             $user = Auth::user();
-            if ($payment->status == "CREATED") {
+            if ($payment->status != "CREATED") {
+                return response()->json(["status" => 1, 'error' => 'payment']);
+            }
 
-                if ($user->balance->amount < $flight["TotalFare"] - $flight["TotalAgencyCommission"]) {
-                    $payment->update([
-                        "status" => "FAILED",
-                    ]);
+            if ($user->balance->amount < $flight["TotalFare"] - $flight["TotalAgencyCommission"]) {
+                $payment->update([
+                    "status" => "FAILED",
+                ]);
 
-                    $book->update([
-                        "status" => "payment_failed",
-                    ]);
-
-                    return view('front.payment_result.failed', compact('lang', 'research_data'));
-                }
-            } elseif ($payment->status != "APPROVED" && $payment->status != "COMPLETED") {
-
-                return view('front.payment_result.failed', compact('lang', 'research_data'));
+                $book->update([
+                    "status" => "payment_failed",
+                ]);
+                return response()->json(["status" => 1, 'error' => 'payment']);
             }
 
         } else {
-//			other method
-
-            redirect(route('home') . ($lang != "de" ? " ? lang = " . $lang : ""));
+            return response()->json(["status" => 1, 'error' => 'payment']);
         }
 
 
-        //		choose render
         $render_number = $flight["render"];
         $instance_render = $this->set_book_render($render_number);
         if (!$instance_render) {
-            return view('front.errors.ticket_cant_book_at_this_time', compact('lang'));
+            return response()->json(["status" => 1, 'error' => 'book']);
         }
-//		choose render
 
         //payment was success , go for vendor api call
 
@@ -697,118 +868,157 @@ class TicketController extends Controller
             $book->update([
                 "status" => "vendor_failed",
             ]);
-
-            dd("test payment was success by admin , booking not call and payment not capture");
+            return response()->json(["status" => 1, 'error' => 'payment']);
         }
 
 
-        if ($book->status == "booking") {
+        if ($book->status != "booking") {
+            return response()->json(["status" => 1, 'error' => 'book']);
+        }
 
-            //			call revalidate  vendor
-            $validate = $instance_render->revalidate($flight);
-            //$validate = 1;
+        //			call revalidate  vendor
+        $validate = $instance_render->revalidate($flight);
 
-            if (!$validate) {
+        if (!$validate) {
 //			error handling flight is not valid , go search result
 
-                $book->update([
-                    "status" => "vendor_failed",
-                ]);
+            $book->update([
+                "status" => "vendor_failed",
+            ]);
 
-                $this->void_payment($method, $payment);
+            $this->void_payment($method, $payment);
+            return response()->json(["status" => 1, 'error' => 'validation']);
+        }
 
-                return view('front.payment_result.single_validate_error', compact('research_data', 'lang'));
-            }
-
-            //call airbook
+        //call airbook
 
 
 //			call all booking and issue tickets apis from vendor
-            $book_response = $instance_render->book($flight, $payment);
+        $book_response = $instance_render->book($flight, $payment);
 
 
-            if ($book_response["error"] == 1) {
-                $this->void_payment($method, $payment);
-                return view('front.payment_result.failed', compact('lang', 'research_data'));
-            }
+        if ($book_response["error"] == 1) {
+            $this->void_payment($method, $payment);
+            return response()->json(["status" => 1, 'error' => 'book']);
+        }
 
-            $book_unique_id = $book_response["book_unique_id"];
+        $book_unique_id = $book_response["book_unique_id"];
 
 //		capture order
-            if ($method == "paypal" && $payment["status"] != "COMPLETED") {
+        if ($method == "paypal" && $payment["status"] != "COMPLETED") {
 
-                $result = $paypal->capture_payment($payment->auth_id);
-                if (!isset($result["status"]) || $result["status"] != "COMPLETED") {
-                    $payment_scheduler = Payment_scheduler::create(["payment_id" => $payment_id]);
-                    $this->log->payment_error(json_encode($result), 'capture', $payment);
+            $result = $paypal->capture_payment($payment->auth_id);
+            if (!isset($result["status"]) || $result["status"] != "COMPLETED") {
+                $payment_scheduler = Payment_scheduler::create(["payment_id" => $payment_id]);
+                $this->log->payment_error(json_encode($result), 'capture', $payment);
 
-                } else {
-                    $payment->update([
-                        "status" => "COMPLETED",
-                    ]);
-                }
-            }
-
-            if ($method == "agency" && $payment["status"] != "COMPLETED" && $payment["status"] != "APPROVED") {
-                $before_balance = Auth::user()->balance->amount;
-                Auth::user()->balance->update(['amount' => $before_balance - $flight["TotalFare"] + $flight["TotalAgencyCommission"]]);
-
-                $last_payment = Payment::where('payer_id', Auth::user()->id)
-                    ->where(function ($q) {
-                        return $q->where('status', 'COMPLETED')->orwhere('status', 'APPROVED');
-                    })->orderBy('invoice_number', 'desc')->first();
-
-                if ($last_payment) {
-                    $new_invoice_n = $last_payment->invoice_number + 1;
-                } else {
-                    $new_invoice_n = 0;
-                }
+            } else {
                 $payment->update([
-                    "status"         => "APPROVED",
-                    "before_balance" => $before_balance,
-                    "after_balance"  => Auth::user()->balance->amount,
-                    "invoice_number" => $new_invoice_n,
+                    "status" => "COMPLETED",
                 ]);
-
-                require_once "script/xinvoice.php";
-
-                $xinvoice2 = new \Xinvoice();
-
-
-                $number_string = MyHelperFunction::turn_4digit_format($new_invoice_n);
-
-                $this_year = Carbon::now()->year;
-                $this_year = $this_year % 100;
-                $invoice_number = $book->users->code . '-' . $this_year . $number_string;
-
-                $book = $book->fresh();
-
-                $invoice_view = view('front.invoice.agency_invoice', compact('book', 'lang', 'invoice_number'))->render();
-
-
-                $file_name = $invoice_number . '.pdf';
-                $xinvoice2->setSettings("filename", " ../../../../../../public/invoices / $file_name");
-                $xinvoice2->setSettings("output", "F");
-                $xinvoice2->setSettings("format", "A4");
-                $xinvoice2->htmlToPDF($invoice_view);
-
-                $file_path = realpath("invoices / " . $file_name);
-
-                Event::dispatch(new SendEmailEvent($user_email, new invoice($lang, $file_path)));
-
             }
-//		/capture order
+        } elseif ($method == "agency" && $payment["status"] != "COMPLETED" && $payment["status"] != "APPROVED") {
+            $before_balance = Auth::user()->balance->amount;
+            Auth::user()->balance->update(['amount' => $before_balance - $flight["TotalFare"] + $flight["TotalAgencyCommission"]]);
 
+            $last_payment = Payment::where('payer_id', Auth::user()->id)
+                ->where(function ($q) {
+                    return $q->where('status', 'COMPLETED')->orwhere('status', 'APPROVED');
+                })->orderBy('invoice_number', 'desc')->first();
+
+            if ($last_payment) {
+                $new_invoice_n = $last_payment->invoice_number + 1;
+            } else {
+                $new_invoice_n = 0;
+            }
+            $payment->update([
+                "status"         => "APPROVED",
+                "before_balance" => $before_balance,
+                "after_balance"  => Auth::user()->balance->amount,
+                "invoice_number" => $new_invoice_n,
+            ]);
+
+            require_once "script/xinvoice.php";
+
+            $xinvoice2 = new \Xinvoice();
+
+
+            $number_string = MyHelperFunction::turn_4digit_format($new_invoice_n);
+
+            $this_year = Carbon::now()->year;
+            $this_year = $this_year % 100;
+            $invoice_number = $book->users->code . '-' . $this_year . $number_string;
+
+            $book = $book->fresh();
+
+            $invoice_view = view('front.invoice.agency_invoice', compact('book', 'lang', 'invoice_number'))->render();
+
+
+            $file_name = $invoice_number . '.pdf';
+            $xinvoice2->setSettings("filename", " ../../../../../../public/invoices / $file_name");
+            $xinvoice2->setSettings("output", "F");
+            $xinvoice2->setSettings("format", "A4");
+            $xinvoice2->htmlToPDF($invoice_view);
+
+            $file_path = realpath("invoices / " . $file_name);
+
+            Event::dispatch(new SendEmailEvent($user_email, new invoice($lang, $file_path)));
 
         }
+
 
         $response = $this->check_booking_status($instance_render, $book, $lang, $book_first_status);
 
         if (isset($response["error"])) {
-            return view('front.payment_result.failed', compact('lang', 'research_data'));
+            return response()->json(["status" => 1, 'error' => 'book']);
+        }
+
+        return response()->json(["status" => 0, 'token' => $book->token]);
+
+    }
+
+    public function successful_book(Request $request)
+    {
+        $token = $request->input('token');
+        $lang = App::getLocale();
+
+        $book = Book::where('token', $token)->first();
+
+        $flight = $book->flights;
+
+        $render_number = $flight->render;
+        $instance_render = $this->set_book_render($render_number);
+        if (!$instance_render) {
+        }
+
+        $response = $this->check_booking_status($instance_render, $book, $lang, $book->status);
+
+        if (isset($response["error"])) {
         }
 
         return $response["view"];
+    }
+
+    public function failed_book(Request $request)
+    {
+        $token = $request->input('token');
+        $lang = App::getLocale();
+
+        $book = Book::where('token', $token)->first();
+
+        $research_data = [
+            "link"             => $book->flights->searches->link,
+            'origin'           => $book->flights->searches->origin_code,
+            "destination"      => $book->flights->searches->destination_code,
+            "origin_name"      => $book->flights->searches->origin_name,
+            "destination_name" => $book->flights->searches->destination_name,
+            "adl"              => $book->flights->searches->adult,
+            "chl"              => $book->flights->searches->child,
+            "inf"              => $book->flights->searches->infant,
+            "depart_date"      => date('d.m.Y', strtotime($book->flights->searches->depart_date)),
+            "return_date"      => $book->flights->searches->return_date ? date('d.m.Y', strtotime($book->flights->searches->return_date)) : "",
+        ];
+        return view('front.payment_result.failed', compact('lang', 'research_data'));
 
     }
 

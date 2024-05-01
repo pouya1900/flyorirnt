@@ -39,12 +39,15 @@
             :multi_search_url="{{json_encode(route('ajax_flight_multi'))}}"
             :air_rules_url="{{json_encode(route('air_rules'))}}"
             :air_bag_url="{{json_encode(route('bagRules'))}}"
-            :select_url="{{json_encode(route("passengers_info"))}}"
             :revalidate_url="{{json_encode(route("revalidate"))}}"
             :user="{{json_encode($user)}}"
             :country="{{json_encode($country)}}"
             :airlines_rule_url="{{json_encode(route('airlines.index'). ($lang!="de"? "?lang=".$lang : ""))}}"
             :process_payment_url="{{json_encode(route('new_process_payment'). ($lang!="de"? "?lang=".$lang : ""))}}"
+            :confirm_payment_url="{{json_encode(route('confirm_payment'))}}"
+            :successful_book_url="{{json_encode(route('successful_book'))}}"
+            :failed_book_url="{{json_encode(route('failed_book'))}}"
+            :cancel_payment_url="{{json_encode(route('cancel_payment'))}}"
             :paypal_id="{{json_encode($setting->payment ? env('PAYPAL_CLIENT_ID') : env('PAYPAL_TEST_CLIENT_ID'))}}"
             :filter="{{json_encode($filter)}}">
 
@@ -69,6 +72,9 @@
 
 @section('script')
 
+
+    <script
+        src="https://www.paypal.com/sdk/js?client-id={{$setting->payment ? env('PAYPAL_CLIENT_ID') : env('PAYPAL_TEST_CLIENT_ID')}}&currency=EUR&intent=authorize"></script>
 
     <script type="text/javascript">
         var userLanguage1 = "{{$lang=="de" ? "de" : "en"}}";
