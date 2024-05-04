@@ -217,7 +217,6 @@ class iranAir implements render_interface
         //$this->time2     = Carbon::now();
         //$this->diff_time = Carbon::now()->diffInSeconds( $test_time1 );
 //		test for timing
-
         if (!$search_id) {
             $search = Search::create();
             $search_id = $search->id;
@@ -485,20 +484,20 @@ class iranAir implements render_interface
                     }
 
                 } else {
-                    $insert_array["return_flight_number"] = null;
-                    $insert_array["return_depart_time"] = null;
-                    $insert_array["return_depart_time_range"] = null;
-                    $insert_array["return_depart_airport"] = null;
-                    $insert_array["return_arrival_time"] = null;
-                    $insert_array["return_arrival_airport"] = null;
-                    $insert_array["return_stops"] = null;
-                    $insert_array["return_total_time"] = null;
-                    $insert_array["return_total_waiting"] = null;
-                    $insert_array["return_bar"] = null;
-                    $insert_array["return_bar_exist"] = 0;
-                    $insert_array["return_class"] = null;
-                    $insert_array["return_class_code"] = null;
-                    $insert_array["return_first_airline"] = null;
+                    $inserted_flight["return_flight_number"] = null;
+                    $inserted_flight["return_depart_time"] = null;
+                    $inserted_flight["return_depart_time_range"] = null;
+                    $inserted_flight["return_depart_airport"] = null;
+                    $inserted_flight["return_arrival_time"] = null;
+                    $inserted_flight["return_arrival_airport"] = null;
+                    $inserted_flight["return_stops"] = null;
+                    $inserted_flight["return_total_time"] = null;
+                    $inserted_flight["return_total_waiting"] = null;
+                    $inserted_flight["return_bar"] = null;
+                    $inserted_flight["return_bar_exist"] = 0;
+                    $inserted_flight["return_class"] = null;
+                    $inserted_flight["return_class_code"] = null;
+                    $inserted_flight["return_first_airline"] = null;
                 }
                 $inserted_flight["depart_return_time"] = $depart_return_time;
 
