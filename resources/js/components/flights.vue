@@ -4061,7 +4061,7 @@ export default {
                         axios.post(url, array, {headers})
                             .then(response => {
                                 if (response.data.status) {
-                                    window.location.replace(vm.failed_book_url);
+                                    // window.location.replace(vm.failed_book_url);
                                 } else {
                                     window.location.replace(vm.successful_book_url + "?token=" + response.data.token + (vm.lang != "de" ? "&lang=" + vm.lang : ""));
                                 }
