@@ -1211,8 +1211,8 @@ class TicketController extends Controller
         $instance_render = $this->set_render($render_number);
 //		choose render
 
-//        $validate = $instance_render->revalidate($flight);
-        $validate = 1;
+        $validate = $instance_render->revalidate($flight);
+//        $validate = 1;
 
         return response()->json(["validate" => $validate]);
 
