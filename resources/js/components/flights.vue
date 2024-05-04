@@ -3761,7 +3761,7 @@ export default {
         },
         step1(flight) {
             this.selected_flight = flight;
-            // this.revalidate(flight);
+            this.revalidate(flight);
             this.step = 1;
             for (let i = 0; i < this.getPassengersCount(); i++) {
                 this.gender[i] = "";
@@ -3788,7 +3788,7 @@ export default {
             axios.post(url, data, {headers})
                 .then(response => {
                     if (response.data.validate === 0) {
-
+                        console.log("not valid");
                     }
                 });
         },
@@ -3807,7 +3807,7 @@ export default {
             return this.selected_flight.adult + this.selected_flight.child + this.selected_flight.infant;
         },
         step2() {
-            // this.revalidate(flight);
+            this.revalidate(this.selected_flight);
 
             let error = 0;
             this.errors = {};
