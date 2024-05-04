@@ -3362,12 +3362,15 @@
                     <div class="confirm_rules">
 
                         <div class="custom-control custom-checkbox ">
-                            <input type="checkbox" class="custom-control-input" id="confirm" name="confirm" required>
+                            <input type="checkbox" class="custom-control-input" v-model="confirm" id="confirm"
+                                   name="confirm" required>
                             <label class="custom-control-label" for="confirm" v-html="trs.confirm_rules"></label>
                             <a :href="airlines_rule_url" target="_blank"
                                class="payment_agb_link">{{ trs.agb_of_airlines }} <i
                                 class="fas fa-external-link-alt"></i></a>
-                            <p id="confirm_error" class="display_none">{{ trs.check_checkbox }}</p>
+                            <p id="confirm_error" :class="confirm_error ? '' : 'display_none'">{{
+                                    trs.check_checkbox
+                                }}</p>
 
                         </div>
 
@@ -3963,9 +3966,10 @@ export default {
                             .addEventListener('change', function (event) {
 
                                 // Enable or disable the button when it is checked or unchecked
-                                if (event.target.checked) {
+
+                                if (vm.confirm) {
                                     actions.enable();
-                                    $('#confirm_error').addClass('display_none');
+                                    vm.confirm_error=0;
                                 } else {
                                     actions.disable();
                                 }
@@ -3976,8 +3980,8 @@ export default {
                     onClick: function () {
 
                         // Show a validation error if the checkbox is not checked
-                        if (!document.querySelector('#confirm').checked) {
-                            document.querySelector('#confirm_error').classList.remove('display_none');
+                        if (!vm.confirm) {
+                            vm.confirm_error=1;
                             alert("please confirm rules check box");
                             $('html, body').animate({
                                 scrollTop: parseInt($("#confirm_error").offset().top) - 200
@@ -3990,7 +3994,8 @@ export default {
                     createOrder: async function (data, actions) {
 
                         let passengers = [];
-
+                        let error = 0;
+                        let orderID = null;
                         for (let i = 0; i < vm.getPassengersCount(); i++) {
                             passengers[i] = {
                                 "type": vm.getPassengerType(i),
@@ -4020,20 +4025,22 @@ export default {
                                 'phone': vm.phone,
                                 'email': vm.email,
                             },
-                            'method': "paypal"
+                            'method': "paypalasd"
                         };
                         await axios.post(vm.process_payment_url, array, {headers})
                             .then(response => {
                                 if (response.data.status) {
-
-                                    if (response.data.error == 1) {
-                                    } else if (response.data.error == 2) {
-                                    }
-
+                                    error = response.data.error;
                                 } else {
-                                    return response.data.orderID;
+                                    orderID = response.data.orderID;
                                 }
+                            }).catch(() => {
+                                error = 3;
                             });
+
+                        if (!error && orderID) {
+                            return orderID;
+                        }
 
                     },
 
@@ -4148,7 +4155,9 @@ export default {
             'phone': null,
             'email': this.user ? this.user.email : '',
             'errors': {},
-            'is_error': 0
+            'is_error': 0,
+            'confirm': 0,
+            'confirm_error': 0
         }
     },
     computed: {
