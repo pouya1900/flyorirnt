@@ -4025,7 +4025,7 @@ export default {
                                 'phone': vm.phone,
                                 'email': vm.email,
                             },
-                            'method': "paypalasd"
+                            'method': "paypal"
                         };
                         await axios.post(vm.process_payment_url, array, {headers})
                             .then(response => {
