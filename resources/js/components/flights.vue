@@ -3922,7 +3922,6 @@ export default {
         use_my_account_info() {
         },
         getPassengersCount() {
-            console.log(this.selected_flight);
             return parseInt(this.selected_flight.adult) + parseInt(this.selected_flight.child) + parseInt(this.selected_flight.infant);
         },
         step2() {
