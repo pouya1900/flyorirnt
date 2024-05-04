@@ -382,6 +382,7 @@ class iranAir implements render_interface
                         "is_charter"                => 0,
                         "is_return"                 => 0,
                         "leg_bar"                   => "nd",
+                        "leg_bar_exist"             => 2,
                         "fare_basis_code"           => $FareBasisCode[0],
                         "fareRPH"                   => json_decode(json_encode($FareBasisCodeXmlModel[0]->attributes()->fareRPH), true)[0],
                     ];
@@ -464,6 +465,7 @@ class iranAir implements render_interface
                             "is_charter"                => 0,
                             "is_return"                 => 1,
                             "leg_bar"                   => "nd",
+                            "leg_bar_exist"             => 2,
                             "fare_basis_code"           => $FareBasisCode[1],
                             "fareRPH"                   => json_decode(json_encode($FareBasisCodeXmlModel[1]->attributes()->fareRPH), true)[0],
                         ];
