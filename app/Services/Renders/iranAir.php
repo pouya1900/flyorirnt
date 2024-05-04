@@ -613,12 +613,14 @@ class iranAir implements render_interface
 
                 }
 
+                $cost_insert[$i]["child"] = $cost_insert[$i]["child"] ?? 0;
+                $cost_insert[$i]["infant"] = $cost_insert[$i]["infant"] ?? 0;
+
                 $cost_insert[$i]["TotalFare"] = $calc_price->getTotal();
                 $cost_insert[$i]["TotalAgencyCommission"] = $calc_price->getTotalAgencyCommission();
 
                 $inserted_flight = array_merge($inserted_flight, $cost_insert[$i]);
                 $inserted_flight["taxes"] = $tax_insert[$i];
-
 
                 $airline_code = $inserted_flight["ValidatingAirlineCode"];
 

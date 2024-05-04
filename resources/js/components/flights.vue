@@ -2874,7 +2874,8 @@
                             </div>
                         </div>
                     </div>
-                    <div v-show="this.resultQuery[1].length > 25 && this.resultQuery[0].length < this.resultQuery[1].length">
+                    <div
+                        v-show="this.resultQuery[1].length > 25 && this.resultQuery[0].length < this.resultQuery[1].length">
                         <div class="my_pagination" @click="paginate()">
 
                             <span>{{ trs.load_more }}</span>
@@ -3921,7 +3922,8 @@ export default {
         use_my_account_info() {
         },
         getPassengersCount() {
-            return this.selected_flight.adult + this.selected_flight.child + this.selected_flight.infant;
+            console.log(this.selected_flight);
+            return parseInt(this.selected_flight.adult) + parseInt(this.selected_flight.child) + parseInt(this.selected_flight.infant);
         },
         step2() {
             this.revalidate(this.selected_flight);
