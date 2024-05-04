@@ -550,11 +550,11 @@ class FlightController extends Controller
         }
         $instance_render = $this->set_render($render_number);
 
-//        $response = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
+        $response = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
 
 
-        $x = file_get_contents("../config/testFlight.json");
-        $response = json_decode($x, true);
+//        $x = file_get_contents("../config/testFlight.json");
+//        $response = json_decode($x, true);
 
 
         $flights = $response["flights"];
