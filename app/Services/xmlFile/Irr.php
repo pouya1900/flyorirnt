@@ -23,7 +23,7 @@ class Irr
 
         $req = '<OTA_AirLowFareSearchRQ xmlns="http://www.opentravel.org/OTA/2003/05"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05
   OTA_AirLowFareSearchRQ.xsd" EchoToken="50987" TimeStamp="' . date('Y-m-d\TH:i:s.uP', strtotime('now')) . '"
   Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
     <POS>
@@ -74,26 +74,26 @@ class Irr
     </POS>
    <OriginDestinationOptions>
       <OriginDestinationOption>
-        <FlightSegment FlightNumber="' . $flight->flight_number . '" ResBookDesigCode="' . $flight->class_code . '" DepartureDateTime="' . $flight->depart_time . '" ArrivalDateTime="' . $flight->arrival_time . '" Duration="' . MyHelperFunction::turn_min_to_time($flight->total_time) . '" StopQuantity="' . $flight->stops . '" RPH="' . $flight->legs[0]->RPH . '">
-           <DepartureAirport LocationCode="' . $flight->depart_airport . '"/>
-           <ArrivalAirport LocationCode="' . $flight->arrival_airport . '"/>
-           <OperatingAirline Code="' . $flight->legs[0]->leg_airline_code . '"/>
-           <Equipment AirEquipType="' . $flight->legs[0]->aircraft_type . '"/>
+        <FlightSegment FlightNumber="' . $flight["flight_number"] . '" ResBookDesigCode="' . $flight["class_code"] . '" DepartureDateTime="' . $flight["depart_time"] . '" ArrivalDateTime="' . $flight["arrival_time"] . '" Duration="' . MyHelperFunction::turn_min_to_time($flight["total_time"]) . '" StopQuantity="' . $flight["stops"] . '" RPH="' . $flight["legs"][0]["RPH"] . '">
+           <DepartureAirport LocationCode="' . $flight["depart_airport"] . '"/>
+           <ArrivalAirport LocationCode="' . $flight["arrival_airport"] . '"/>
+           <OperatingAirline Code="' . $flight["legs"][0]["leg_airline_code"] . '"/>
+           <Equipment AirEquipType="' . $flight["legs"][0]["aircraft_type"] . '"/>
            <BookingClassAvails>
-              <BookingClassAvail ResBookDesigCode="' . $flight->class_code . '" ResBookDesigQuantity="' . $flight->legs[0]->seats_remaining . '"/>
+              <BookingClassAvail ResBookDesigCode="' . $flight["class_code"] . '" ResBookDesigQuantity="' . $flight["legs"][0]["seats_remaining"] . '"/>
            </BookingClassAvails>
         </FlightSegment>
       </OriginDestinationOption>
       ';
         if ($flight["DirectionInd"] == 2) {
             $req .= ' <OriginDestinationOption>
-        <FlightSegment FlightNumber="' . $flight->return_flight_number . '" ResBookDesigCode="' . $flight->return_class_code . '" DepartureDateTime="' . $flight->return_depart_time . '" ArrivalDateTime="' . $flight->return_arrival_time . '" Duration="' . MyHelperFunction::turn_min_to_time($flight->return_total_time) . '" StopQuantity="' . $flight->return_stops . '" RPH="' . $flight->legs[1]->RPH . '">
-           <DepartureAirport LocationCode="' . $flight->return_depart_airport . '"/>
-           <ArrivalAirport LocationCode="' . $flight->return_arrival_airport . '"/>
-           <OperatingAirline Code="' . $flight->legs[1]->leg_airline_code . '"/>
-           <Equipment AirEquipType="' . $flight->legs[1]->aircraft_type . '"/>
+        <FlightSegment FlightNumber="' . $flight["return_flight_number"] . '" ResBookDesigCode="' . $flight["return_class_code"] . '" DepartureDateTime="' . $flight["return_depart_time"] . '" ArrivalDateTime="' . $flight["return_arrival_time"] . '" Duration="' . MyHelperFunction::turn_min_to_time($flight["return_total_time"]) . '" StopQuantity="' . $flight["return_stops"] . '" RPH="' . $flight["legs"][1]["RPH"] . '">
+           <DepartureAirport LocationCode="' . $flight["return_depart_airport"] . '"/>
+           <ArrivalAirport LocationCode="' . $flight["return_arrival_airport"] . '"/>
+           <OperatingAirline Code="' . $flight["legs"][1]["leg_airline_code"] . '"/>
+           <Equipment AirEquipType="' . $flight["legs"][1]["aircraft_type"] . '"/>
            <BookingClassAvails>
-              <BookingClassAvail ResBookDesigCode="' . $flight->return_class_code . '" ResBookDesigQuantity="' . $flight->legs[1]->seats_remaining . '"/>
+              <BookingClassAvail ResBookDesigCode="' . $flight["return_class_code"] . '" ResBookDesigQuantity="' . $flight["legs"][1]["seats_remaining"] . '"/>
            </BookingClassAvails>
         </FlightSegment>
       </OriginDestinationOption>';
@@ -101,10 +101,10 @@ class Irr
 
         $req .= '</OriginDestinationOptions>
    <FareBasisCodes>
-      <FareBasisCode FlightSegmentRPH="' . $flight->legs[0]->RPH . '" fareRPH="' . $flight->legs[0]->fareRPH . '">' . $flight->legs[0]->fare_basis_code . '</FareBasisCode>
+      <FareBasisCode FlightSegmentRPH="' . $flight["legs"][0]["RPH"] . '" fareRPH="' . $flight["legs"][0]["fareRPH"] . '">' . $flight["legs"][0]["fare_basis_code"] . '</FareBasisCode>
   ';
-        if ($flight->DirectionInd == 2) {
-            $req .= '      <FareBasisCode FlightSegmentRPH="' . $flight->legs[1]->RPH . '" fareRPH="' . $flight->legs[1]->fareRPH . '">' . $flight->legs[1]->fare_basis_code . '</FareBasisCode>';
+        if ($flight["DirectionInd"] == 2) {
+            $req .= '      <FareBasisCode FlightSegmentRPH="' . $flight["legs"][1]["RPH"] . '" fareRPH="' . $flight["legs"][1]["fareRPH"] . '">' . $flight["legs"][1]["fare_basis_code"] . '</FareBasisCode>';
         }
 
         $req .= '</FareBasisCodes>
@@ -128,7 +128,7 @@ class Irr
 
         $req = '<OTA_AirBookRQ xmlns="http://www.opentravel.org/OTA/2003/05"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05
   OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="' . date('Y-m-d\TH:i:s.uP', strtotime('now')) . '"
   Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
     <POS>
@@ -218,7 +218,7 @@ class Irr
 		  <Telephone PhoneNumber="(' . substr($payment->books->dial_code, 1) . ')' . $payment->books->phone . '"/>
 		  <HomeTelephone PhoneNumber="(98)21236541"/>
         <Email>' . $payment->books->users->email . '</Email>
-  
+
     </ContactPerson>
     <Fulfillment>
         <PaymentDetails>
@@ -266,7 +266,7 @@ class Irr
 
         $req = '<OTA_AirBookModifyRQ xmlns="http://www.opentravel.org/OTA/2003/05"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05
 OTA_AirBookRQ.xsd" EchoToken="50987" TimeStamp="' . date('Y-m-d\TH:i:s.uP', strtotime('now')) . '"
 Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
 <POS>
@@ -316,7 +316,7 @@ Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
 
         $req = '<OTA_AirBookModifyRQ xmlns="http://www.opentravel.org/OTA/2003/05"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05
   OTA_AirBookModifyRQ.xsd" EchoToken="50987" TimeStamp="' . date('Y-m-d\TH:i:s.uP', strtotime('now')) . '"
   Target="Production" Version="2.001" SequenceNmbr="1"  PrimaryLangID="En-us">
 	<POS>
@@ -337,7 +337,7 @@ Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
       </Fulfillment>
     </AirBookModifyRQ>
     <AirReservation>
-    
+
 <AirItinerary DirectionInd="' . ($flight->DirectionInd == 2 ? "Return" : "OneWay") . '">
 	<OriginDestinationOptions>
       <OriginDestinationOption>
@@ -361,8 +361,8 @@ Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
         }
 
         $req .= '</OriginDestinationOptions>
-	</AirItinerary>    
-    
+	</AirItinerary>
+
       <Fulfillment>
          <PaymentDetails>
             <PaymentDetail PaymentType="2">
@@ -397,7 +397,7 @@ Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
 
         $req = '<OTA_AirBookModifyRQ xmlns="http://www.opentravel.org/OTA/2003/05"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05
   OTA_AirBookModifyRQ.xsd" EchoToken="50987" TimeStamp="' . date('Y-m-d\TH:i:s.uP', strtotime('now')) . '"
   Target="Production" Version="2.001" SequenceNmbr="1"  PrimaryLangID="En-us">
 	<POS>
@@ -466,7 +466,7 @@ Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
         }
 
         $req .= '</OriginDestinationOptions>
-	</AirItinerary>  
+	</AirItinerary>
 	 <TravelerInfo>';
 
         $i = 0;
@@ -523,7 +523,7 @@ Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
     {
         $req = '<OTA_AirBookModifyRQ xmlns="http://www.opentravel.org/OTA/2003/05"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05
   OTA_AirBookModifyRQ.xsd" EchoToken="50987" TimeStamp="' . date('Y-m-d\TH:i:s.uP', strtotime('now')) . '"
   Target="Production" Version="4.001" SequenceNmbr="1"  PrimaryLangID="En-us">
 	<POS>
@@ -540,7 +540,7 @@ Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
 		  <Telephone PhoneNumber="(' . substr($book->dial_code, 1) . ')' . $book->phone . '"/>
 		  <HomeTelephone PhoneNumber="(98)23126941"/>
         <Email>' . $book->users->email . '</Email>
-  
+
     </ContactPerson>
     </AirBookModifyRQ>
     <AirReservation>
@@ -557,7 +557,7 @@ Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
     {
         $req = '<OTA_AirLowFareSearchRQ xmlns="http://www.opentravel.org/OTA/2003/05"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 
+  xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05
   OTA_AirLowFareSearchRQ.xsd" EchoToken="50987" TimeStamp="' . date('Y-m-d\TH:i:s.uP', strtotime('now')) . '"
   Target="Production" Version="2.001" SequenceNmbr="1" PrimaryLangID="En-us">
     <POS>

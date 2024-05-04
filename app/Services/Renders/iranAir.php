@@ -230,6 +230,11 @@ class iranAir implements render_interface
 //        $log->save($result);
 //		end log test
 
+        $airlines_list = [];
+        $airlines_filter_list = [];
+        $flight_grouped = [];
+        $flights = [];
+
         if (!empty($response) && isset($response["Success"])) {
 
 
@@ -243,14 +248,8 @@ class iranAir implements render_interface
             $cost_insert = [];
             $tax_insert = [];
             $final_tax_insert = [];
-            $leg_insert = [];
-            $airline_insert = [];
-            $final_airline_insert = [];
-            $final_leg_insert = [];
             $i = 0;
 
-
-            $query = "INSERT INTO flights(search_id,token,render,FareSourceCode,IsPassportMandatory,IsPassportIssueDateMandatory,IsPassportNumberMandatory,DirectionInd,RefundMethod,ValidatingAirlineCode,flight_number,depart_time,depart_time_range,depart_airport,arrival_time,arrival_airport,stops,total_time,total_waiting,bar,bar_exist,class,class_code,depart_first_airline,return_flight_number,return_depart_time,return_depart_time_range,return_depart_airport,return_arrival_time,return_arrival_airport,return_stops,return_total_time,return_total_waiting,return_bar,return_bar_exist,return_class,return_class_code,return_first_airline,depart_return_time) VALUES ($search_id";
             foreach ($response as $item) {
 
                 $itinerary_depart = [];
@@ -297,11 +296,6 @@ class iranAir implements render_interface
 
                 $FareBasisCodeXmlModel = $xml->PricedItineraries->PricedItinerary->AirItineraryPricingInfo->PTC_FareBreakdowns->PTC_FareBreakdown[0]->FareBasisCodes->FareBasisCode;
 
-
-                if ($i != 0) {
-                    $query .= ",($search_id";
-                }
-
                 $depart_time = date("H", strtotime($itinerary_depart[0]["@attributes"]["DepartureDateTime"]));
                 $depart_time_min = date("i", strtotime($itinerary_depart[0]["@attributes"]["DepartureDateTime"]));
                 $depart_time += $depart_time_min / 60;
@@ -318,44 +312,50 @@ class iranAir implements render_interface
                 $total_fly_time_segments_per_min = intval(substr($itinerary_depart[0]["@attributes"]["Duration"], 0, 2)) * 60
                     + intval(substr($itinerary_depart[0]["@attributes"]["Duration"], 3, 2));
 
-                $query .= ",";
-                $query .= "0,";
-                $query .= $this->render_code . ",";
-                $query .= "'" . 0 . "'" . ",";
-                $query .= 1 . ",";
-                $query .= 0 . ",";
-                $query .= 1 . ",";
-                $query .= ($itinerary_return ? 2 : 1) . ",";
-                $query .= 0 . ",";
-                $query .= "'" . $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"] . "'" . ",";
-                $query .= "'" . $itinerary_depart[0]["@attributes"]["FlightNumber"] . "'" . ",";
-                $query .= "'" . $itinerary_depart[0]["@attributes"]["DepartureDateTime"] . "'" . ",";
-                $query .= $depart_range . ",";
-                $query .= "'" . $itinerary_depart[0]["DepartureAirport"]["@attributes"]["LocationCode"] . "'" . ",";
 
+                $inserted_flight = [
+                    "id"                           => $i,
+                    "search_id"                    => $search_id,
+                    "token"                        => 0,
+                    "render"                       => $this->render_code,
+                    "FareSourceCode"               => 0,
+                    "IsPassportMandatory"          => 1,
+                    "IsPassportIssueDateMandatory" => 0,
+                    "IsPassportNumberMandatory"    => 1,
+                    "DirectionInd"                 => $itinerary_return ? 2 : 1,
+                    "RefundMethod"                 => 0,
+                    "ValidatingAirlineCode"        => $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"],
+                    "flight_number"                => $itinerary_depart[0]["@attributes"]["FlightNumber"],
+                    "depart_time"                  => $itinerary_depart[0]["@attributes"]["DepartureDateTime"],
+                    "depart_time_range"            => $depart_range,
+                    "depart_airport"               => $itinerary_depart[0]["DepartureAirport"]["@attributes"]["LocationCode"],
+                    "arrival_time"                 => $itinerary_depart[$help_var]["@attributes"]["ArrivalDateTime"],
+                    "arrival_airport"              => $itinerary_depart[$help_var]["ArrivalAirport"]["@attributes"]["LocationCode"],
+                    "stops"                        => $help_var,
+                    "total_time"                   => $total_fly_time_segments_per_min,
+                    "total_waiting"                => 0,
+                    "bar"                          => "nd",
+                    "bar_exist"                    => 2,
+                    "class"                        => MyHelperFunction::turn_OTA_code_to_class($itinerary_depart[0]["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"]),
+                    "class_code"                   => $itinerary_depart[0]["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"],
+                    "depart_first_airline"         => $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"],
+                ];
 
-                $query .= "'" . $itinerary_depart[$help_var]["@attributes"]["ArrivalDateTime"] . "'" . ",";
-                $query .= "'" . $itinerary_depart[$help_var]["ArrivalAirport"]["@attributes"]["LocationCode"] . "'" . ",";
-                $query .= $help_var . ",";
-                $query .= $total_fly_time_segments_per_min . ",";
-                $query .= 0 . ",";
-                $query .= '"nd"' . ",";
+                $inserted_flight["airports1"] = Airport::where("code", $inserted_flight["depart_airport"])->first();
+                $inserted_flight["airports2"] = Airport::where("code", $inserted_flight["arrival_airport"])->first();
 
-
-                $query .= 2 . ",";
-
-
-                $query .= MyHelperFunction::turn_OTA_code_to_class($itinerary_depart[0]["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"]) . ",";
-                $query .= "'" . $itinerary_depart[0]["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"] . "'" . ",";
-                $query .= "'" . $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"] . "'" . ",";
 
                 $depart_return_time = $total_fly_time_segments_per_min;
+
+
+                $inserted_flight["legs"] = [];
+                $inserted_flight["airlines"] = [];
+                $inserted_flight["costs"] = [];
+                $inserted_flight["taxes"] = [];
 
                 $j = 0;
                 foreach ($itinerary_depart as $segment) {
 
-                    $airline_insert[$i][$j]["airline_code"] = $segment["OperatingAirline"]["@attributes"]["Code"];
-                    $airline_insert[$i][$j]["is_return"] = 0;
 
                     foreach ($airplanes as $airplane) {
                         if ($airplane->code == $segment["Equipment"]["@attributes"]["AirEquipType"]) {
@@ -364,26 +364,37 @@ class iranAir implements render_interface
                         }
                     }
 
-                    $leg_insert[$i][$j]["seats_remaining"] = $segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigQuantity"];
-                    $leg_insert[$i][$j]["aircraft_type"] = isset($aircraft) ? $aircraft->manufacture . ' ' . $aircraft->code : $segment["Equipment"]["@attributes"]["AirEquipType"];
-                    $leg_insert[$i][$j]["aircraft_type_description"] = isset($aircraft) ? $aircraft->description : $segment["Equipment"]["@attributes"]["AirEquipType"];
-                    $leg_insert[$i][$j]["RPH"] = $segment["@attributes"]["RPH"];
-                    $leg_insert[$i][$j]["leg_flight_number"] = $segment["@attributes"]["FlightNumber"];
-                    $leg_insert[$i][$j]["cabin_class"] = MyHelperFunction::turn_OTA_code_to_class($segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"]);
-                    $leg_insert[$i][$j]["cabin_class_code"] = $segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"];
-                    $leg_insert[$i][$j]["leg_depart_time"] = $segment["@attributes"]["DepartureDateTime"];
-                    $leg_insert[$i][$j]["leg_depart_airport"] = $segment["DepartureAirport"]["@attributes"]["LocationCode"];
-                    $leg_insert[$i][$j]["leg_arrival_time"] = $segment["@attributes"]["ArrivalDateTime"];
-                    $leg_insert[$i][$j]["leg_arrival_airport"] = $segment["ArrivalAirport"]["@attributes"]["LocationCode"];
-                    $leg_insert[$i][$j]["leg_time"] = $total_fly_time_segments_per_min;
-                    $leg_insert[$i][$j]["leg_waiting"] = 0;
-                    $leg_insert[$i][$j]["leg_airline_code"] = $segment["OperatingAirline"]["@attributes"]["Code"];
-                    $leg_insert[$i][$j]["is_charter"] = 0;
-                    $leg_insert[$i][$j]["is_return"] = 0;
-                    $leg_insert[$i][$j]["leg_bar"] = "nd";
-                    $leg_insert[$i][$j]["fare_basis_code"] = $FareBasisCode[0];
-                    $leg_insert[$i][$j]["fareRPH"] = json_decode(json_encode($FareBasisCodeXmlModel[0]->attributes()->fareRPH), true)[0];
+                    $leg = [
+                        "seats_remaining"           => $segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigQuantity"],
+                        "aircraft_type"             => isset($aircraft) ? $aircraft->manufacture . ' ' . $aircraft->code : $segment["Equipment"]["@attributes"]["AirEquipType"],
+                        "aircraft_type_description" => isset($aircraft) ? $aircraft->description : $segment["Equipment"]["@attributes"]["AirEquipType"],
+                        "RPH"                       => $segment["@attributes"]["RPH"],
+                        "leg_flight_number"         => $segment["@attributes"]["FlightNumber"],
+                        "cabin_class"               => MyHelperFunction::turn_OTA_code_to_class($segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"]),
+                        "cabin_class_code"          => $segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"],
+                        "leg_depart_time"           => $segment["@attributes"]["DepartureDateTime"],
+                        "leg_depart_airport"        => $segment["DepartureAirport"]["@attributes"]["LocationCode"],
+                        "leg_arrival_time"          => $segment["@attributes"]["ArrivalDateTime"],
+                        "leg_arrival_airport"       => $segment["ArrivalAirport"]["@attributes"]["LocationCode"],
+                        "leg_time"                  => $total_fly_time_segments_per_min,
+                        "leg_waiting"               => 0,
+                        "leg_airline_code"          => $segment["OperatingAirline"]["@attributes"]["Code"],
+                        "is_charter"                => 0,
+                        "is_return"                 => 0,
+                        "leg_bar"                   => "nd",
+                        "fare_basis_code"           => $FareBasisCode[0],
+                        "fareRPH"                   => json_decode(json_encode($FareBasisCodeXmlModel[0]->attributes()->fareRPH), true)[0],
+                    ];
 
+                    $leg["airports1"] = Airport::where("code", $leg["leg_depart_airport"])->first();
+                    $leg["airports2"] = Airport::where("code", $leg["leg_arrival_airport"])->first();
+                    $leg["airlines"] = Airline::where("code", $leg["leg_airline_code"])->first();
+
+                    $inserted_flight["legs"][] = $leg;
+
+                    $airline = Airline::where("code", $segment["OperatingAirline"]["@attributes"]["Code"])->first();
+                    $airline->is_return = 0;
+                    $inserted_flight["airlines"][] = $airline;
 
                     $j++;
                 }
@@ -405,33 +416,28 @@ class iranAir implements render_interface
                     $total_return_fly_time_segments_per_min = intval(substr($itinerary_return[0]["@attributes"]["Duration"], 0, 2)) * 60
                         + intval(substr($itinerary_return[0]["@attributes"]["Duration"], 3, 2));
 
+                    $inserted_flight["return_flight_number"] = $itinerary_return[0]["@attributes"]["FlightNumber"];
+                    $inserted_flight["return_depart_time"] = $itinerary_return[0]["@attributes"]["DepartureDateTime"];
+                    $inserted_flight["return_depart_time_range"] = $return_depart_range;
+                    $inserted_flight["return_depart_airport"] = $itinerary_return[0]["DepartureAirport"]["@attributes"]["LocationCode"];
+                    $inserted_flight["return_arrival_time"] = $itinerary_return[$help_var2]["@attributes"]["ArrivalDateTime"];
+                    $inserted_flight["return_arrival_airport"] = $itinerary_return[$help_var2]["ArrivalAirport"]["@attributes"]["LocationCode"];
+                    $inserted_flight["return_stops"] = $help_var2;
+                    $inserted_flight["return_total_time"] = $total_return_fly_time_segments_per_min;
+                    $inserted_flight["return_total_waiting"] = 0;
+                    $inserted_flight["return_bar"] = "nd";
+                    $inserted_flight["return_bar_exist"] = 2;
+                    $inserted_flight["return_class"] = MyHelperFunction::turn_OTA_code_to_class($itinerary_return[0]["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"]);
+                    $inserted_flight["return_class_code"] = $itinerary_return[0]["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"];
+                    $inserted_flight["return_first_airline"] = $itinerary_return[0]["OperatingAirline"]["@attributes"]["Code"];
 
-                    $query .= "'" . $itinerary_return[0]["@attributes"]["FlightNumber"] . "'" . ",";
-                    $query .= "'" . $itinerary_return[0]["@attributes"]["DepartureDateTime"] . "'" . ",";
-                    $query .= $return_depart_range . ",";
-                    $query .= "'" . $itinerary_return[0]["DepartureAirport"]["@attributes"]["LocationCode"] . "'" . ",";
-
-                    $query .= "'" . $itinerary_return[$help_var2]["@attributes"]["ArrivalDateTime"] . "'" . ",";
-                    $query .= "'" . $itinerary_return[$help_var2]["ArrivalAirport"]["@attributes"]["LocationCode"] . "'" . ",";
-                    $query .= $help_var2 . ",";
-                    $query .= $total_return_fly_time_segments_per_min . ",";
-                    $query .= 0 . ",";
-                    $query .= '"nd"' . ",";
-
-
-                    $query .= 2 . ",";
-
-
-                    $query .= MyHelperFunction::turn_OTA_code_to_class($itinerary_return[0]["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"]) . ",";
-                    $query .= "'" . $itinerary_return[0]["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"] . "'" . ",";
-                    $query .= "'" . $itinerary_return[0]["OperatingAirline"]["@attributes"]["Code"] . "'" . ",";
+                    $inserted_flight["airports3"] = Airport::where("code", $inserted_flight["return_depart_airport"])->first();
+                    $inserted_flight["airports4"] = Airport::where("code", $inserted_flight["return_arrival_airport"])->first();
 
 
                     $depart_return_time += $total_return_fly_time_segments_per_min;
 
                     foreach ($itinerary_return as $segment) {
-                        $airline_insert[$i][$j]["airline_code"] = $segment["OperatingAirline"]["@attributes"]["Code"];
-                        $airline_insert[$i][$j]["is_return"] = 1;
 
                         foreach ($airplanes as $airplane) {
                             if ($airplane->code == $segment["Equipment"]["@attributes"]["AirEquipType"]) {
@@ -440,37 +446,59 @@ class iranAir implements render_interface
                             }
                         }
 
-                        $leg_insert[$i][$j]["seats_remaining"] = $segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigQuantity"];
-                        $leg_insert[$i][$j]["aircraft_type"] = isset($aircraft) ? $aircraft->manufacture . ' ' . $aircraft->code : $segment["Equipment"]["@attributes"]["AirEquipType"];
-                        $leg_insert[$i][$j]["aircraft_type_description"] = isset($aircraft) ? $aircraft->description : $segment["Equipment"]["@attributes"]["AirEquipType"];
-                        $leg_insert[$i][$j]["RPH"] = $segment["@attributes"]["RPH"];
-                        $leg_insert[$i][$j]["leg_flight_number"] = $segment["@attributes"]["FlightNumber"];
-                        $leg_insert[$i][$j]["cabin_class"] = MyHelperFunction::turn_OTA_code_to_class($segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"]);
-                        $leg_insert[$i][$j]["cabin_class_code"] = $segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"];
-                        $leg_insert[$i][$j]["leg_depart_time"] = $segment["@attributes"]["DepartureDateTime"];
-                        $leg_insert[$i][$j]["leg_depart_airport"] = $segment["DepartureAirport"]["@attributes"]["LocationCode"];
-                        $leg_insert[$i][$j]["leg_arrival_time"] = $segment["@attributes"]["ArrivalDateTime"];
-                        $leg_insert[$i][$j]["leg_arrival_airport"] = $segment["ArrivalAirport"]["@attributes"]["LocationCode"];
-                        $leg_insert[$i][$j]["leg_time"] = $total_return_fly_time_segments_per_min;
-                        $leg_insert[$i][$j]["leg_waiting"] = 0;
-                        $leg_insert[$i][$j]["leg_airline_code"] = $segment["OperatingAirline"]["@attributes"]["Code"];
-                        $leg_insert[$i][$j]["is_charter"] = 0;
-                        $leg_insert[$i][$j]["is_return"] = 1;
-                        $leg_insert[$i][$j]["leg_bar"] = "nd";
-                        $leg_insert[$i][$j]["fare_basis_code"] = $FareBasisCode[1];
-                        $leg_insert[$i][$j]["fareRPH"] = json_decode(json_encode($FareBasisCodeXmlModel[1]->attributes()->fareRPH), true)[0];
+                        $leg = [
+                            "seats_remaining"           => $segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigQuantity"],
+                            "aircraft_type"             => isset($aircraft) ? $aircraft->manufacture . ' ' . $aircraft->code : $segment["Equipment"]["@attributes"]["AirEquipType"],
+                            "aircraft_type_description" => isset($aircraft) ? $aircraft->description : $segment["Equipment"]["@attributes"]["AirEquipType"],
+                            "RPH"                       => $segment["@attributes"]["RPH"],
+                            "leg_flight_number"         => $segment["@attributes"]["FlightNumber"],
+                            "cabin_class"               => MyHelperFunction::turn_OTA_code_to_class($segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"]),
+                            "cabin_class_code"          => $segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"],
+                            "leg_depart_time"           => $segment["@attributes"]["DepartureDateTime"],
+                            "leg_depart_airport"        => $segment["DepartureAirport"]["@attributes"]["LocationCode"],
+                            "leg_arrival_time"          => $segment["@attributes"]["ArrivalDateTime"],
+                            "leg_arrival_airport"       => $segment["ArrivalAirport"]["@attributes"]["LocationCode"],
+                            "leg_time"                  => $total_return_fly_time_segments_per_min,
+                            "leg_waiting"               => 0,
+                            "leg_airline_code"          => $segment["OperatingAirline"]["@attributes"]["Code"],
+                            "is_charter"                => 0,
+                            "is_return"                 => 1,
+                            "leg_bar"                   => "nd",
+                            "fare_basis_code"           => $FareBasisCode[1],
+                            "fareRPH"                   => json_decode(json_encode($FareBasisCodeXmlModel[1]->attributes()->fareRPH), true)[0],
+                        ];
+
+                        $leg["airports1"] = Airport::where("code", $leg["leg_depart_airport"])->first();
+                        $leg["airports2"] = Airport::where("code", $leg["leg_arrival_airport"])->first();
+                        $leg["airlines"] = Airline::where("code", $leg["leg_airline_code"])->first();
+
+                        $inserted_flight["legs"][] = $leg;
+
+                        $airline = Airline::where("code", $segment["OperatingAirline"]["@attributes"]["Code"])->first();
+                        $airline->is_return = 1;
+                        $inserted_flight["airlines"][] = $airline;
 
 
                         $j++;
                     }
 
                 } else {
-                    $query .= "null,null,null,null,null,null,null,null,null,null,0,null,null,null,";
+                    $insert_array["return_flight_number"] = null;
+                    $insert_array["return_depart_time"] = null;
+                    $insert_array["return_depart_time_range"] = null;
+                    $insert_array["return_depart_airport"] = null;
+                    $insert_array["return_arrival_time"] = null;
+                    $insert_array["return_arrival_airport"] = null;
+                    $insert_array["return_stops"] = null;
+                    $insert_array["return_total_time"] = null;
+                    $insert_array["return_total_waiting"] = null;
+                    $insert_array["return_bar"] = null;
+                    $insert_array["return_bar_exist"] = 0;
+                    $insert_array["return_class"] = null;
+                    $insert_array["return_class_code"] = null;
+                    $insert_array["return_first_airline"] = null;
                 }
-
-                $query .= $depart_return_time;
-
-                $query .= ")";
+                $inserted_flight["depart_return_time"] = $depart_return_time;
 
                 $price_addition_adult = 0;
                 $price_addition_child = 0;
@@ -588,85 +616,85 @@ class iranAir implements render_interface
                 $cost_insert[$i]["TotalFare"] = $calc_price->getTotal();
                 $cost_insert[$i]["TotalAgencyCommission"] = $calc_price->getTotalAgencyCommission();
 
+                $inserted_flight = array_merge($inserted_flight, $cost_insert[$i]);
+                $inserted_flight["taxes"] = $tax_insert[$i];
+
+
+                $airline_code = $inserted_flight["ValidatingAirlineCode"];
+
+                if (!isset($airlines_list[$airline_code])) {
+                    $airlines_list[$airline_code] = [];
+                }
+
+                $airline = Airline::where("code", $airline_code)->first();
+
+                $airline_array = ["airline" => $airline, "costs" => $cost_insert[$i], "stops" => $inserted_flight["stops"], "return_stops" => $inserted_flight["return_stops"], "depart_time" => $inserted_flight["depart_time"]];
+
+                for ($k = 0; $k <= 2; $k++) {
+                    if (!isset($airlines_list[$airline_code][$k])) {
+                        $airlines_list[$airline_code][$k] = $airline_array;
+                        break;
+                    } else {
+                        if ($airlines_list[$airline_code][$k]["stops"] > $inserted_flight["stops"]) {
+                            if (isset($airlines_list[$airline_code][$k + 1])) {
+                                $airlines_list[$airline_code][$k + 2] = $airlines_list[$airline_code][$k + 1];
+                            }
+                            $x = $airlines_list[$airline_code][$k];
+                            $airlines_list[$airline_code][$k] = $airline_array;
+                            $airlines_list[$airline_code][$k + 1] = $x;
+                            break;
+                        } elseif ($airlines_list[$airline_code][$k]["stops"] == $inserted_flight["stops"]) {
+                            if ($airlines_list[$airline_code][$k]["costs"]["TotalFare"] > $cost_insert[$i]["TotalFare"]) {
+                                $airlines_list[$airline_code][$k]["costs"] = $cost_insert[$i];
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                if (!isset($airlines_filter_list[$airline_code]) || $airlines_filter_list[$airline_code]["totalFare"] > $cost_insert[$i]["TotalFare"]) {
+                    $airlines_filter_list[$airline_code] = ["airline" => $airline, "totalFare" => $cost_insert[$i]["TotalFare"]];
+                }
+
+                for ($k = 0; $k <= 2; $k++) {
+                    if (!isset($flight_grouped[$k])) {
+                        $flight_grouped[$k] = $inserted_flight["stops"];
+                        break;
+                    }
+                    if ($flight_grouped[$k] > $inserted_flight["stops"]) {
+                        $x = $flight_grouped[$k];
+                        $flight_grouped[$k] = $inserted_flight["stops"];
+                        $flight_grouped[$k + 1] = $x;
+                        break;
+                    }
+                    if ($flight_grouped[$k] == $inserted_flight["stops"]) {
+                        break;
+                    }
+                }
+
+                $inserted_flight = $this->get_bag_info($inserted_flight);
+
+                $flights[] = $inserted_flight;
 
                 $i++;
             }
-
-            if (!$i) {
-                return $search_id;
-            }
-
-            $flight_id = Flight::my_insert($query);
-
-            $k_h = 0;
-            $flight_count = $flight_id;
-            for ($j = 0; $j < $i; $j++) {
-                $cost_insert[$j]["flight_id"] = $flight_count;
-                $item = [];
-                if (isset($tax_insert[$j])) {
-                    $item = $tax_insert[$j];
-                }
-                foreach ($item as $item_h) {
-                    $item_h["flight_id"] = $flight_count;
-                    $final_tax_insert[] = $item_h;
-
-                }
-                $flight_count++;
-            }
-
-
-            $flight_count = $flight_id;
-            $k = 0;
-            foreach ($airline_insert as $airline) {
-
-                foreach ($airline as $item) {
-                    $item["flight_id"] = $flight_count;
-                    $final_airline_insert[$k] = $item;
-                    $k++;
-                }
-                $flight_count++;
-            }
-
-            $flight_count = $flight_id;
-            $k = 0;
-            foreach ($leg_insert as $leg) {
-
-                foreach ($leg as $item2) {
-                    $item2["flight_id"] = $flight_count;
-                    $final_leg_insert[$k] = $item2;
-                    $k++;
-                }
-                $flight_count++;
-                if (sizeof($final_leg_insert) * sizeof($final_leg_insert[$k - 1]) > 60000) {
-                    Leg::insert($final_leg_insert);
-                    $final_leg_insert = [];
-                    $k = 0;
-                }
-
-            }
-
-            if (!empty($final_leg_insert)) {
-                Leg::insert($final_leg_insert);
-            }
-
-            Cost::insert($cost_insert);
-            Tax::insert($final_tax_insert);
-            FlightAirline::insert($final_airline_insert);
-
-            $flight_count = $flight_id;
-            for ($j = 0; $j < $i; $j++) {
-                $this->get_bag_info($flight_id);
-                $flight_count++;
-            }
-
-//		save search_id in page or cookie
-
-//		//save search_id in page or cookie
-
-
         }
 
-        return $search_id;
+        usort($airlines_list, function ($item1, $item2) {
+            if ($item2[0]["costs"]["TotalFare"] == $item1[0]["costs"]["TotalFare"]) {
+                if (isset($item1[1]) && isset($item2[1])) {
+                    return $item1[1]["costs"]['TotalFare'] <=> $item2[1]["costs"]['TotalFare'];
+                }
+            }
+
+            return $item1[0]["costs"]['TotalFare'] <=> $item2[0]["costs"]['TotalFare'];
+
+        });
+
+        $last = Carbon::now();
+
+        return ["flights" => $flights, "airlines_list" => $airlines_list, "airlines_filter_list" => $airlines_filter_list, "flight_grouped" => $flight_grouped];
+
     }
 
     public function lowfaresearchMulti($origin, $destination, $depart, $origin2, $destination2, $depart2, $class, $adl, $chl, $inf, $none_stop, $search_id, $origin3, $destination3, $depart3, $origin4, $destination4, $depart4)
@@ -1081,10 +1109,8 @@ class iranAir implements render_interface
 
     }
 
-    public function get_bag_info($flight_id)
+    public function get_bag_info($flight)
     {
-
-        $flight = Flight::find($flight_id);
         $rules = $this->bag($flight);
         $bar[0] = "";
         $bar[1] = "";
@@ -1121,30 +1147,27 @@ class iranAir implements render_interface
                 }
             }
 
-            $flight->update([
-                'bar'              => $bar[0],
-                'bar_exist'        => $bar[0] ? 1 : 0,
-                'return_bar'       => $bar[1],
-                'return_bar_exist' => $bar[1] ? 1 : 0,
-            ]);
+            $flight['bar'] = $bar[0];
+            $flight['bar_exist'] = $bar[0] ? 1 : 0;
+            $flight['return_bar'] = $bar[1];
+            $flight['return_bar_exist'] = $bar[1] ? 1 : 0;
 
-            foreach ($flight->legs as $leg) {
-                if (!$leg->is_return) {
-                    $leg->update([
-                        'leg_bar'       => $bar[0],
-                        'leg_bar_exist' => 1,
-                    ]);
+
+            foreach ($flight["legs"] as $leg) {
+                if (!$leg["is_return"]) {
+
+                    $leg['leg_bar'] = $bar[0];
+                    $leg['leg_bar_exist'] = 1;
+
                 } else {
-                    $leg->update([
-                        'leg_bar'       => $bar[1],
-                        'leg_bar_exist' => 1,
-                    ]);
+                    $leg['leg_bar'] = $bar[1];
+                    $leg['leg_bar_exist'] = 1;
                 }
 
             }
-
-
         }
+
+        return $flight;
     }
 
     public function getCondition()

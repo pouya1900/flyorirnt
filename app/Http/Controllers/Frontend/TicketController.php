@@ -878,8 +878,8 @@ class TicketController extends Controller
         }
 
         //			call revalidate  vendor
-//        $validate = $instance_render->revalidate($flight);
-        $validate=1;
+        $validate = $instance_render->revalidate($flight);
+//        $validate=1;
         if (!$validate) {
 //			error handling flight is not valid , go search result
 

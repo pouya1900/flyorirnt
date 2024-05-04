@@ -753,6 +753,10 @@ class parto implements render_interface
             $search_id = $search->id;
         }
 
+        $airlines_list = [];
+        $airlines_filter_list = [];
+        $flight_grouped = [];
+        $all_flights = [];
         if (!empty($response)) {
             global $cost_insert, $tax_insert;
 
@@ -837,7 +841,8 @@ class parto implements render_interface
 
                     $depart_return_time = $JourneyDurationPerMinute + $ConnectionTimePerMinute;
 
-                    $inserted_flight = Flight::create([
+                    $inserted_flight = [
+                        "id"                           => $i,
                         "search_id"                    => $search_id,
                         "token"                        => 0,
                         "render"                       => $this->render_code,
@@ -864,11 +869,20 @@ class parto implements render_interface
                         "depart_first_airline"         => $flight_part[0]["MarketingAirlineCode"],
                         "depart_return_time"           => $depart_return_time,
                         "multi_flight_id"              => $multi_flight_id ?? null,
-                    ]);
+                    ];
+
+                    $inserted_flight["airports1"] = Airport::where("code", $inserted_flight["depart_airport"])->first();
+                    $inserted_flight["airports2"] = Airport::where("code", $inserted_flight["arrival_airport"])->first();
+
 
                     if (!$multi_flight_id) {
-                        $multi_flight_id = $inserted_flight->id;
+                        $multi_flight_id = $inserted_flight["id"];
                     }
+
+                    $inserted_flight["legs"] = [];
+                    $inserted_flight["airlines"] = [];
+                    $inserted_flight["costs"] = [];
+                    $inserted_flight["taxes"] = [];
 
                     $j = 0;
                     foreach ($flight_part as $segment) {
@@ -879,7 +893,7 @@ class parto implements render_interface
                                 break;
                             }
                         }
-                        $inserted_flight->legs()->create([
+                        $leg = [
                             "aircraft_type"             => isset($aircraft) ? $aircraft->manufacture . ' ' . $aircraft->code : $segment["OperatingAirline"]["Equipment"],
                             "aircraft_type_description" => isset($aircraft) ? $aircraft->description : $segment["OperatingAirline"]["Equipment"],
                             "seats_remaining"           => $segment["SeatsRemaining"],
@@ -898,18 +912,22 @@ class parto implements render_interface
                             "leg_bar"                   => $this->baggage_filter($segment["Baggage"]),
                             "leg_bar_exist"             => !$segment["Baggage"] || substr($segment["Baggage"], 0, 1) == 0 ? 0 : 1,
 
-                        ]);
+                        ];
 
+                        $leg["airports1"] = Airport::where("code", $leg["leg_depart_airport"])->first();
+                        $leg["airports2"] = Airport::where("code", $leg["leg_arrival_airport"])->first();
+                        $leg["airlines"] = Airline::where("code", $leg["leg_airline_code"])->first();
 
-                        $inserted_flight->airlines()->attach($segment["MarketingAirlineCode"], [
-                            "is_return" => $segment["IsReturn"] ? 1 : 0,
-                        ]);
+                        $inserted_flight["legs"][] = $leg;
+
+                        $airline = Airline::where("code", $segment["MarketingAirlineCode"])->first();
+                        $airline->is_return = $segment["IsReturn"] ? 1 : 0;
+                        $inserted_flight["airlines"][] = $airline;
 
                         $j++;
                     }
 
 
-                    $cost_insert[$i]["flight_id"] = $inserted_flight->id;
                     $cost_insert[$i]["FareType"] = $item["AirItineraryPricingInfo"]["FareType"];
                     $cost_insert[$i]["VendorTotalFare"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["TotalFare"];
                     $cost_insert[$i]["TotalCommission"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["TotalCommission"];
@@ -933,18 +951,81 @@ class parto implements render_interface
                     $cost_insert[$i]["TotalFare"] = $calc_price->getTotal();
                     $cost_insert[$i]["TotalAgencyCommission"] = $calc_price->getTotalAgencyCommission();
 
+                    $inserted_flight = array_merge($inserted_flight, $cost_insert[$i]);
+                    $inserted_flight["taxes"] = $tax_insert[$i];
 
+                    $airline_code = $inserted_flight["ValidatingAirlineCode"];
+
+                    if (!isset($airlines_list[$airline_code])) {
+                        $airlines_list[$airline_code] = [];
+                    }
+
+                    $airline = Airline::where("code", $airline_code)->first();
+
+                    $airline_array = ["airline" => $airline, "costs" => $cost_insert[$i], "stops" => $inserted_flight["stops"], "return_stops" => $inserted_flight["return_stops"], "depart_time" => $inserted_flight["depart_time"]];
+
+                    for ($k = 0; $k <= 2; $k++) {
+                        if (!isset($airlines_list[$airline_code][$k])) {
+                            $airlines_list[$airline_code][$k] = $airline_array;
+                            break;
+                        } else {
+                            if ($airlines_list[$airline_code][$k]["stops"] > $inserted_flight["stops"]) {
+                                if (isset($airlines_list[$airline_code][$k + 1])) {
+                                    $airlines_list[$airline_code][$k + 2] = $airlines_list[$airline_code][$k + 1];
+                                }
+                                $x = $airlines_list[$airline_code][$k];
+                                $airlines_list[$airline_code][$k] = $airline_array;
+                                $airlines_list[$airline_code][$k + 1] = $x;
+                                break;
+                            } elseif ($airlines_list[$airline_code][$k]["stops"] == $inserted_flight["stops"]) {
+                                if ($airlines_list[$airline_code][$k]["costs"]["TotalFare"] > $cost_insert[$i]["TotalFare"]) {
+                                    $airlines_list[$airline_code][$k]["costs"] = $cost_insert[$i];
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!isset($airlines_filter_list[$airline_code]) || $airlines_filter_list[$airline_code]["totalFare"] > $cost_insert[$i]["TotalFare"]) {
+                        $airlines_filter_list[$airline_code] = ["airline" => $airline, "totalFare" => $cost_insert[$i]["TotalFare"]];
+                    }
+
+                    for ($k = 0; $k <= 2; $k++) {
+                        if (!isset($flight_grouped[$k])) {
+                            $flight_grouped[$k] = $inserted_flight["stops"];
+                            break;
+                        }
+                        if ($flight_grouped[$k] > $inserted_flight["stops"]) {
+                            $x = $flight_grouped[$k];
+                            $flight_grouped[$k] = $inserted_flight["stops"];
+                            $flight_grouped[$k + 1] = $x;
+                            break;
+                        }
+                        if ($flight_grouped[$k] == $inserted_flight["stops"]) {
+                            break;
+                        }
+                    }
+
+                    $all_flights[] = $inserted_flight;
                     $i++;
                 }
             }
-            if ($i > 0) {
-                Cost::insert($cost_insert);
-                Tax::insert($final_tax_insert);
-            }
-
         }
 
-        return $search_id;
+        usort($airlines_list, function ($item1, $item2) {
+            if ($item2[0]["costs"]["TotalFare"] == $item1[0]["costs"]["TotalFare"]) {
+                if (isset($item1[1]) && isset($item2[1])) {
+                    return $item1[1]["costs"]['TotalFare'] <=> $item2[1]["costs"]['TotalFare'];
+                }
+            }
+
+            return $item1[0]["costs"]['TotalFare'] <=> $item2[0]["costs"]['TotalFare'];
+
+        });
+
+        $last = Carbon::now();
+
+        return ["flights" => $all_flights, "airlines_list" => $airlines_list, "airlines_filter_list" => $airlines_filter_list, "flight_grouped" => $flight_grouped];
 
     }
 

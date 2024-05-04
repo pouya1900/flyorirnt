@@ -572,7 +572,6 @@ class FlightController extends Controller
         return response()->json([
             "status"               => 0,
             "flights"              => $flights,
-            "time"                 => $response["time"],
             "count"                => $count,
             "search_data"          => $search_data,
             "max"                  => $max,

@@ -2757,8 +2757,124 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div v-if="flight_ajax_loader" class="ajax_flight_loader_container">
+                            <div class="ajax_flight_header">
+                                <span class="ajax_flight_header_before">
+                                    {{ trs.ajax_flight_loader_text }}
+                                    <img src="images/gif/line-loader.gif" alt="loader...">
+                                </span>
+                                <span class="ajax_flight_header_after display_none">
+                                    {{ trs.ajax_flight_loader_result_text }}
+                                </span>
+                            </div>
+
+                            <div id="ajax_flight_loader">
+                                <div>
+                                    <div class="flight_container filter_class padding-0px margin-bottom-0px">
+                                        <div class="flight-post  with-hover box-shadow-hover ">
+                                            <div class="flight_post_container">
+                                                <div class="row">
+
+                                                    <div class="col-12 col-md-10">
+
+                                                        <div class="row d-md-none">
+                                                            <div class="flight_item logo_container col-4 ">
+
+                                                                <div class="flight_ajax_loader_box"></div>
+                                                            </div>
+                                                            <div class="col-4 "></div>
+                                                            <div class="flight_item col-4 deal_button_md_d">
+                                                                <div class="flight_ajax_loader_box"></div>
+
+                                                            </div>
+                                                        </div>
+                                                        <a class="details_link" data-toggle="collapse"
+                                                           role="button"
+                                                           aria-expanded="false" aria-controls="collapseExample">
+
+                                                            <div class="depart_section">
+                                                                <div class="row">
+
+                                                                    <div
+                                                                        class="flight_item logo_container col d-md-block d-none">
+                                                                        <div class="flight_ajax_loader_box"></div>
+                                                                    </div>
+                                                                    <div class="flight_item col d-md-block d-none">
+                                                                        <div class="flight_ajax_loader_box"></div>
+                                                                    </div>
+                                                                    <div class="flight_item col">
+                                                                        <div class="flight_ajax_loader_box"></div>
+                                                                    </div>
+                                                                    <div
+                                                                        class="flight_item col d-md-none sm_display_div_result">
+                                                                        <div class="flight_ajax_loader_box"></div>
+                                                                    </div>
+                                                                    <div class="flight_item col">
+                                                                        <div class="flight_ajax_loader_box"></div>
+                                                                    </div>
+                                                                    <div class="flight_item col d-md-block d-none">
+                                                                        <div
+                                                                            class="row margin-left-0px margin-right-0px">
+                                                                            <div class="flight_item col">
+                                                                                <div
+                                                                                    class="flight_ajax_loader_box"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="return_section">
+                                                                <div class="row">
+                                                                    <div
+                                                                        class="flight_item logo_container col d-md-block d-none">
+                                                                        <div class="flight_ajax_loader_box"></div>
+                                                                    </div>
+                                                                    <div class="flight_item col d-md-block d-none">
+                                                                        <div class="flight_ajax_loader_box"></div>
+                                                                    </div>
+                                                                    <div class="flight_item col">
+                                                                        <div class="flight_ajax_loader_box"></div>
+                                                                    </div>
+                                                                    <div
+                                                                        class="flight_item col d-md-none sm_display_div_result">
+                                                                        <div class="flight_ajax_loader_box"></div>
+                                                                    </div>
+                                                                    <div class="flight_item col">
+                                                                        <div class="flight_ajax_loader_box"></div>
+                                                                    </div>
+                                                                    <div class="flight_item col d-md-block d-none">
+                                                                        <div
+                                                                            class="row margin-left-0px margin-right-0px">
+                                                                            <div class="flight_item col">
+                                                                                <div
+                                                                                    class="flight_ajax_loader_box"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="col-2 d-none d-md-block deal_container">
+                                                        <div class="deal_content">
+                                                            <div class="flight_ajax_loader_box"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
-                    <div>
+                    <div v-show="this.resultQuery[1].length > 25 && this.resultQuery[0].length < this.resultQuery[1].length">
                         <div class="my_pagination" @click="paginate()">
 
                             <span>{{ trs.load_more }}</span>
@@ -3572,6 +3688,7 @@ export default {
                 axios.post(url, data, {headers})
                     .then(response => {
                         if (response.data.status === 0) {
+                            this.flight_ajax_loader--;
                             this.flights.push(...response.data.flights);
                             // console.log(response.data.time);
                             this.airlines_list = response.data.airlines_list;
@@ -3969,7 +4086,7 @@ export default {
 
                                 if (vm.confirm) {
                                     actions.enable();
-                                    vm.confirm_error=0;
+                                    vm.confirm_error = 0;
                                 } else {
                                     actions.disable();
                                 }
@@ -3981,7 +4098,7 @@ export default {
 
                         // Show a validation error if the checkbox is not checked
                         if (!vm.confirm) {
-                            vm.confirm_error=1;
+                            vm.confirm_error = 1;
                             alert("please confirm rules check box");
                             $('html, body').animate({
                                 scrollTop: parseInt($("#confirm_error").offset().top) - 200
@@ -4157,7 +4274,8 @@ export default {
             'errors': {},
             'is_error': 0,
             'confirm': 0,
-            'confirm_error': 0
+            'confirm_error': 0,
+            'flight_ajax_loader': this.ajax_render.length,
         }
     },
     computed: {
