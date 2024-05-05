@@ -1065,6 +1065,7 @@ class parto implements render_interface
         $result = curl_exec($ch);
         $response = json_decode($result, true);
         curl_close($ch);
+        dd($result);
         if ($response && $response["Success"]) {
             $response = $response["PricedItinerary"];
 
