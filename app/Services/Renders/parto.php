@@ -251,8 +251,8 @@ class parto implements render_interface
         //$this->time2     = Carbon::now();
         //$this->diff_time = Carbon::now()->diffInSeconds( $test_time1 );
 //		test for timing
-//        $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
-        $response = array_slice($response["PricedItineraries"], 0, 20);
+        $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
+//        $response = array_slice($response["PricedItineraries"], 0, 2);
         $after_parto = Carbon::now();
 
 
@@ -1041,6 +1041,7 @@ class parto implements render_interface
             "SessionId"      => $this->session,
             "FareSourceCode" => $code,
         ];
+
         if (isset($flight->costs)) {
             $total_fare = $flight->costs["VendorTotalFare"];
         } else {
