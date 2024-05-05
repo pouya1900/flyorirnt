@@ -1126,6 +1126,8 @@ class TicketController extends Controller
         $confirm_view = view('front.payment_result.confirm', compact('book', 'lang', 'file_name', 'booked', 'pdf_download', 'condition'))->render();
         $ticket_view = view('front.payment_result.confirm', compact('book', 'lang', 'file_name', 'booked', 'condition'))->render();
 
+        dd($ticket_view);
+
         require_once "script/xinvoice.php";
 
         $xinvoice = new \Xinvoice();
