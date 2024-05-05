@@ -251,8 +251,8 @@ class parto implements render_interface
         //$this->time2     = Carbon::now();
         //$this->diff_time = Carbon::now()->diffInSeconds( $test_time1 );
 //		test for timing
-        $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
-//        $response = array_slice($response["PricedItineraries"], 0, 2);
+//        $response = array_slice($response["PricedItineraries"], 0, \config('AdminVariable.flight_max_result'));
+        $response = array_slice($response["PricedItineraries"], 0, 20);
         $after_parto = Carbon::now();
 
 
@@ -1041,7 +1041,6 @@ class parto implements render_interface
             "SessionId"      => $this->session,
             "FareSourceCode" => $code,
         ];
-
         if (isset($flight->costs)) {
             $total_fare = $flight->costs["VendorTotalFare"];
         } else {
@@ -1056,7 +1055,7 @@ class parto implements render_interface
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Content - Type: application / json",
+            "Content-Type: application/json",
         ]);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -1065,7 +1064,6 @@ class parto implements render_interface
         $result = curl_exec($ch);
         $response = json_decode($result, true);
         curl_close($ch);
-        dd($result);
         if ($response && $response["Success"]) {
             $response = $response["PricedItinerary"];
 

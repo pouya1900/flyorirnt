@@ -3707,7 +3707,6 @@ export default {
                             if (!this.slider_init) {
                                 this.nouislidefilter_init();
                             }
-                            this.testRevalidate();
                         } else {
                         }
                     });
@@ -3906,8 +3905,8 @@ export default {
 
             axios.post(url, data, {headers})
                 .then(response => {
-                    if (response.data.validate === 1) {
-                        console.log(flight);
+                    if (response.data.validate === 0) {
+                        console.log("not valid");
                     }
                 });
         },
@@ -4211,11 +4210,6 @@ export default {
                     return this.trs.female;
             }
         },
-        testRevalidate() {
-            this.flights.forEach((flight) => {
-                this.revalidate(flight);
-            });
-        }
     },
     data() {
         return {
