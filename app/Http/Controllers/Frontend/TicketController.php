@@ -956,12 +956,12 @@ class TicketController extends Controller
 
 
             $file_name = $invoice_number . '.pdf';
-            $xinvoice2->setSettings("filename", " ../../../../../../public/invoices / $file_name");
+            $xinvoice2->setSettings("filename", "../../../../../../public/invoices/$file_name");
             $xinvoice2->setSettings("output", "F");
             $xinvoice2->setSettings("format", "A4");
             $xinvoice2->htmlToPDF($invoice_view);
 
-            $file_path = realpath("invoices / " . $file_name);
+            $file_path = realpath("invoices/" . $file_name);
 
             Event::dispatch(new SendEmailEvent($user_email, new invoice($lang, $file_path)));
 
@@ -1132,7 +1132,7 @@ class TicketController extends Controller
 
         $xinvoice = new \Xinvoice();
 
-        $xinvoice->setSettings("filename", " ../../../../../../public/tickets/$file_name");
+        $xinvoice->setSettings("filename", "../../../../../../public/tickets/$file_name");
         $xinvoice->setSettings("output", "F");
         $xinvoice->setSettings("format", "A4");
         $xinvoice->htmlToPDF($ticket_view);
@@ -1140,7 +1140,7 @@ class TicketController extends Controller
         if ($book_first_status == "booking" || ($book_first_status == "wait_for_ticket" && $book->status == "booked")) {
             //send email to user and admin
 
-            $file_path = realpath("tickets / " . $file_name);
+            $file_path = realpath("tickets/" . $file_name);
 
 
             Event::dispatch(new SendEmailEvent($user_email, new ticket($lang, $file_path)));
