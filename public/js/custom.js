@@ -1325,7 +1325,6 @@ jQuery(document).ready(function ($) {
         return day;
     }
 
-    $("#validate_error_modal").modal('show');
     $("#create_payment_error_modal").modal('show');
     $(".passenger_login_modal").modal('show');
 

@@ -49,6 +49,7 @@
             :failed_book_url="{{json_encode(route('failed_book'))}}"
             :cancel_payment_url="{{json_encode(route('cancel_payment'))}}"
             :paypal_id="{{json_encode($setting->payment ? env('PAYPAL_CLIENT_ID') : env('PAYPAL_TEST_CLIENT_ID'))}}"
+            :setting="{{json_encode($setting)}}"
             :filter="{{json_encode($filter)}}">
 
         </flights>

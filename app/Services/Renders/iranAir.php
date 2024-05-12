@@ -221,7 +221,6 @@ class iranAir implements render_interface
             $search = Search::create();
             $search_id = $search->id;
         }
-
 //		log test
 
 //        $log = new log();
@@ -325,10 +324,10 @@ class iranAir implements render_interface
                     "RefundMethod"                 => 0,
                     "ValidatingAirlineCode"        => $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"],
                     "flight_number"                => $itinerary_depart[0]["@attributes"]["FlightNumber"],
-                    "depart_time"                  => $itinerary_depart[0]["@attributes"]["DepartureDateTime"],
+                    "depart_time"                  => date("Y-m-d H:i:s", strtotime(substr($itinerary_depart[0]["@attributes"]["DepartureDateTime"], 0, -6))),
                     "depart_time_range"            => $depart_range,
                     "depart_airport"               => $itinerary_depart[0]["DepartureAirport"]["@attributes"]["LocationCode"],
-                    "arrival_time"                 => $itinerary_depart[$help_var]["@attributes"]["ArrivalDateTime"],
+                    "arrival_time"                 => date("Y-m-d H:i:s", strtotime(substr($itinerary_depart[$help_var]["@attributes"]["ArrivalDateTime"], 0, -6))),
                     "arrival_airport"              => $itinerary_depart[$help_var]["ArrivalAirport"]["@attributes"]["LocationCode"],
                     "stops"                        => $help_var,
                     "total_time"                   => $total_fly_time_segments_per_min,
@@ -371,9 +370,9 @@ class iranAir implements render_interface
                         "leg_flight_number"         => $segment["@attributes"]["FlightNumber"],
                         "cabin_class"               => MyHelperFunction::turn_OTA_code_to_class($segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"]),
                         "cabin_class_code"          => $segment["BookingClassAvails"]["BookingClassAvail"]["@attributes"]["ResBookDesigCode"],
-                        "leg_depart_time"           => $segment["@attributes"]["DepartureDateTime"],
+                        "leg_depart_time"           => date("Y-m-d H:i:s", strtotime(substr($segment["@attributes"]["DepartureDateTime"], 0, -6))),
                         "leg_depart_airport"        => $segment["DepartureAirport"]["@attributes"]["LocationCode"],
-                        "leg_arrival_time"          => $segment["@attributes"]["ArrivalDateTime"],
+                        "leg_arrival_time"          => date("Y-m-d H:i:s", strtotime(substr($segment["@attributes"]["ArrivalDateTime"], 0, -6))),
                         "leg_arrival_airport"       => $segment["ArrivalAirport"]["@attributes"]["LocationCode"],
                         "leg_time"                  => $total_fly_time_segments_per_min,
                         "leg_waiting"               => 0,
@@ -417,10 +416,10 @@ class iranAir implements render_interface
                         + intval(substr($itinerary_return[0]["@attributes"]["Duration"], 3, 2));
 
                     $inserted_flight["return_flight_number"] = $itinerary_return[0]["@attributes"]["FlightNumber"];
-                    $inserted_flight["return_depart_time"] = $itinerary_return[0]["@attributes"]["DepartureDateTime"];
+                    $inserted_flight["return_depart_time"] = date("Y-m-d H:i:s", strtotime(substr($itinerary_return[0]["@attributes"]["DepartureDateTime"], 0, -6)));
                     $inserted_flight["return_depart_time_range"] = $return_depart_range;
                     $inserted_flight["return_depart_airport"] = $itinerary_return[0]["DepartureAirport"]["@attributes"]["LocationCode"];
-                    $inserted_flight["return_arrival_time"] = $itinerary_return[$help_var2]["@attributes"]["ArrivalDateTime"];
+                    $inserted_flight["return_arrival_time"] = date("Y-m-d H:i:s", strtotime(substr($itinerary_return[$help_var2]["@attributes"]["ArrivalDateTime"], 0, -6)));
                     $inserted_flight["return_arrival_airport"] = $itinerary_return[$help_var2]["ArrivalAirport"]["@attributes"]["LocationCode"];
                     $inserted_flight["return_stops"] = $help_var2;
                     $inserted_flight["return_total_time"] = $total_return_fly_time_segments_per_min;
@@ -613,7 +612,6 @@ class iranAir implements render_interface
                     }
 
                 }
-
                 $cost_insert[$i]["child"] = $cost_insert[$i]["child"] ?? 0;
                 $cost_insert[$i]["infant"] = $cost_insert[$i]["infant"] ?? 0;
 
@@ -676,7 +674,6 @@ class iranAir implements render_interface
                 }
 
                 $inserted_flight = $this->get_bag_info($inserted_flight);
-
                 $flights[] = $inserted_flight;
 
                 $i++;
@@ -813,7 +810,6 @@ class iranAir implements render_interface
 
         $result = curl_exec($ch);
         curl_close($ch);
-
 
         $xml = simplexml_load_string($result);
         $json = json_encode($xml);
@@ -1156,15 +1152,15 @@ class iranAir implements render_interface
             $flight['return_bar_exist'] = $bar[1] ? 1 : 0;
 
 
-            foreach ($flight["legs"] as $leg) {
+            foreach ($flight["legs"] as $key => $leg) {
                 if (!$leg["is_return"]) {
 
-                    $leg['leg_bar'] = $bar[0];
-                    $leg['leg_bar_exist'] = 1;
+                    $flight["legs"][$key]['leg_bar'] = $bar[0];
+                    $flight["legs"][$key]['leg_bar_exist'] = 1;
 
                 } else {
-                    $leg['leg_bar'] = $bar[1];
-                    $leg['leg_bar_exist'] = 1;
+                    $flight["legs"][$key]['leg_bar'] = $bar[1];
+                    $flight["legs"][$key]['leg_bar_exist'] = 1;
                 }
 
             }

@@ -1,3 +1,4 @@
+<div id="search_bar_main_container">
 <div class="container mobile_search_bar_container">
     <div class="search_bar_data" data-toggle="collapse" data-target="#search_bar_collapse" role="button"
          aria-expanded="false"
@@ -247,3 +248,4 @@
 </div>
 
 <input type="hidden" name="lang" value="{{$lang}}">
+</div>

@@ -276,8 +276,8 @@ class FlightController extends Controller
             "destination_code_3chr" => $destination,
             "destination_country"   => $destination_airport->country,
             "destination_city"      => $destination_airport->$city_lang ?: $destination_airport->city_en,
-            "depart"                => date('y-m-d', strtotime($depart)),
-            "return"                => $return != "-" ? date('y-m-d', strtotime($return)) : "-",
+            "depart"                => date('Y-m-d', strtotime($depart)),
+            "return"                => $return != "-" ? date('Y-m-d', strtotime($return)) : "-",
             "class"                 => $class,
             "adl"                   => $adl,
             "chl"                   => $chl,
@@ -552,12 +552,8 @@ class FlightController extends Controller
 
         $response = $instance_render->lowfaresearch($origin, $destination, $depart, $return, $class, $adl, $chl, $inf, $none_stop, $search_id);
 
-
-//        $x = file_get_contents("../config/testFlight.json");
-//        $response = json_decode($x, true);
-
-
         $flights = $response["flights"];
+
         $count = count($flights);
         $search_data = [
             "none_stop" => $none_stop,

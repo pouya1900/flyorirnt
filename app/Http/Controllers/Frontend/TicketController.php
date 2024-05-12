@@ -616,6 +616,9 @@ class TicketController extends Controller
                 "is_return"                 => $leg["is_return"],
                 "leg_bar"                   => $leg["leg_bar"],
                 "leg_bar_exist"             => $leg["leg_bar_exist"],
+                "RPH"                       => $leg["RPH"] ?? null,
+                "fareRPH"                   => $leg["fareRPH"] ?? null,
+                "fare_basis_code"           => $leg["fare_basis_code"] ?? null,
             ]);
         }
 
@@ -725,7 +728,7 @@ class TicketController extends Controller
                 "status"     => "COMPLETED",
                 "method"     => "admin",
             ]);
-            $return = ["status" => 0];
+            $return = ["status" => 0, "paymentId" => "paymentByAdmin" . $book["id"], "payerId" => Auth::user()->id];
         } elseif ($method == "agency") {
 
             if (!Auth::user()->active) {
@@ -737,7 +740,7 @@ class TicketController extends Controller
                 "method"         => "agency",
                 "before_balance" => Auth::user()->balance->amount,
             ]);
-            $return = ["status" => 0];
+            $return = ["status" => 0, "paymentId" => "paymentByAgency" . $book["id"], "payerId" => Auth::user()->id];
         }
 
 
@@ -772,12 +775,12 @@ class TicketController extends Controller
         $flight_obj = $book->flights;
         $searches = $flight_obj->searches;
 
-        $paypal = new paypal();
 
         $flight = Flight::where('id', '=', $flight_id)->join('costs', 'costs.flight_id', '=', 'flights.id')->get();
         $flight = json_decode(json_encode($flight), true);
         $flight = $flight[0];
         if ($method == "paypal") {
+            $paypal = new paypal();
 
             if (in_array($payer_id, $blocked_payer)) {
                 $payment->update([
@@ -786,11 +789,11 @@ class TicketController extends Controller
                 $book->update([
                     "status" => "payment_failed",
                 ]);
-                return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token , 'test'=>1]);
+                return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test' => 1]);
             }
 
             if ($payment->status != "CREATED") {
-                return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test'=>2]);
+                return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test' => 2]);
             }
             $result = $paypal->order($payment_id);
 
@@ -806,7 +809,7 @@ class TicketController extends Controller
 
                 $this->log->payment_error(json_encode($result), 'orderDetails', $payment);
 
-                return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test'=>3]);
+                return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test' => 3]);
             }
 
             $result = $paypal->authorize($payment_id);
@@ -822,7 +825,7 @@ class TicketController extends Controller
                 ]);
 
                 $this->log->payment_error(json_encode($result), 'authorize', $payment);
-                return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test'=>4]);
+                return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test' => 4]);
 
             }
 
@@ -838,7 +841,7 @@ class TicketController extends Controller
         } elseif ($method == "agency") {
             $user = Auth::user();
             if ($payment->status != "CREATED") {
-                return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test'=>5]);
+                return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test' => 5]);
             }
 
             if ($user->balance->amount < $flight["TotalFare"] - $flight["TotalAgencyCommission"]) {
@@ -849,18 +852,18 @@ class TicketController extends Controller
                 $book->update([
                     "status" => "payment_failed",
                 ]);
-                return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test'=>6]);
+                return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test' => 6]);
             }
 
         } else {
-            return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test'=>7]);
+            return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test' => 7]);
         }
 
 
         $render_number = $flight["render"];
         $instance_render = $this->set_book_render($render_number);
         if (!$instance_render) {
-            return response()->json(["status" => 1, 'error' => 'book', 'token' => $book->token, 'test'=>8]);
+            return response()->json(["status" => 1, 'error' => 'book', 'token' => $book->token, 'test' => 8]);
         }
 
         //payment was success , go for vendor api call
@@ -869,12 +872,12 @@ class TicketController extends Controller
             $book->update([
                 "status" => "vendor_failed",
             ]);
-            return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test'=>9]);
+            return response()->json(["status" => 1, 'error' => 'payment', 'token' => $book->token, 'test' => 9]);
         }
 
 
         if ($book->status != "booking") {
-            return response()->json(["status" => 1, 'error' => 'book', 'token' => $book->token, 'test'=>10]);
+            return response()->json(["status" => 1, 'error' => 'book', 'token' => $book->token, 'test' => 10]);
         }
 
         //			call revalidate  vendor
@@ -888,7 +891,7 @@ class TicketController extends Controller
             ]);
 
             $this->void_payment($method, $payment);
-            return response()->json(["status" => 1, 'error' => 'validation', 'token' => $book->token, 'test'=>11]);
+            return response()->json(["status" => 1, 'error' => 'validation', 'token' => $book->token, 'test' => 11]);
         }
 
         //call airbook
@@ -900,7 +903,7 @@ class TicketController extends Controller
 
         if ($book_response["error"] == 1) {
             $this->void_payment($method, $payment);
-            return response()->json(["status" => 1, 'error' => 'book', 'token' => $book->token, 'test'=>12]);
+            return response()->json(["status" => 1, 'error' => 'book', 'token' => $book->token, 'test' => 12]);
         }
 
         $book_unique_id = $book_response["book_unique_id"];
@@ -971,7 +974,7 @@ class TicketController extends Controller
         $response = $this->check_booking_status($instance_render, $book, $lang, $book_first_status);
 
         if (isset($response["error"])) {
-            return response()->json(["status" => 1, 'error' => 'book', 'token' => $book->token, 'test'=>13]);
+            return response()->json(["status" => 1, 'error' => 'book', 'token' => $book->token, 'test' => 13]);
         }
 
         return response()->json(["status" => 0, 'token' => $book->token]);

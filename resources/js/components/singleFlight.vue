@@ -104,7 +104,9 @@
 
                                                             </div>
                                                             <div class="flight_item col-4 deal_button_md_d">
-                                                                <span>{{ flight.TotalFare }} €</span>
+                                                                <span>{{
+                                                                        this.my_number_format(flight.TotalFare)
+                                                                    }} €</span>
 
                                                                 <i class="fas fa-long-arrow-alt-right"></i>
                                                             </div>
@@ -151,7 +153,9 @@
                                                                         {{ flight.legs[0].aircraft_type }}
                                                                         <i class="fas fa-info-circle"></i>
                                                                         <span class="aircraft_description">
-                                                                            {{ flight.legs[0].aircraft_type_description }}
+                                                                            {{
+                                                                                flight.legs[0].aircraft_type_description
+                                                                            }}
                                                                         </span>
                                                                     </span>
                                                                     </div>
@@ -966,7 +970,7 @@
                                                             </div>
                                                             <div>
                                                                 <span class="all_details_link"
-                                                                      @click="this.bar_rule(flight.id)">
+                                                                      @click="this.bar_rule(flight)">
                                                                     <span v-if="!flight.bar_exist">
                                                                         <i><img
                                                                             src="images/icon/suitcase-solid.png"></i>
@@ -993,7 +997,7 @@
                                                             </div>
                                                             <div>
                                                                 <span class="all_details_link"
-                                                                      @click="this.ticket_rule(flight.id)">
+                                                                      @click="this.ticket_rule(flight)">
                                                                     <i class="fas fa-ticket-alt"></i>
                                                                     <span class="d-none d-md-inline">
                                                                         {{ this.trs.ticket_rules }}
@@ -1008,7 +1012,7 @@
                                                     <div class="deal_content"
                                                          :class="flight.DirectionInd!=1 ? 'return_deal_bottom' : 'single_deal_bottom'">
                                                         <div class="deal_price_total">
-                                                            <span>{{ flight.TotalFare }} €</span>
+                                                            <span>{{ this.my_number_format(flight.TotalFare) }} €</span>
                                                         </div>
 
                                                         <div v-if="flight.TotalFare!=flight.FarePerAdult"
@@ -1066,7 +1070,7 @@
                                         </div>
 
                                         <!--                                    details section-->
-                                        <div class="collapse flight_details_container" :id="'flight_details'+0">
+                                        <div class="collapse flight_details_container" id="flight_details">
                                             <!--                                    depart details-->
 
                                             <div class="details_content">
@@ -2053,7 +2057,7 @@
 
 
                                         <!--    price detail-->
-                                        <div class="collapse" :id="'price_details'+0">
+                                        <div class="collapse" id="price_details">
                                             <div class="price_container">
                                                 <div class="row">
                                                     <div class="col-12 price_table_container">
@@ -2077,42 +2081,66 @@
                                                             <tr v-if="flight.adult">
                                                                 <td>{{ this.trs.adult }}</td>
 
-                                                                <td>{{ flight.FarePerAdult }}</td>
                                                                 <td>{{
-                                                                        flight.FarePerAdult - flight.taxAdult - flight.serviceAdult
+                                                                        this.my_number_format(flight.FarePerAdult)
                                                                     }}
                                                                 </td>
-                                                                <td>{{ flight.taxAdult + flight.serviceAdult }}</td>
+                                                                <td>{{
+                                                                        this.my_number_format(flight.FarePerAdult - flight.taxAdult - flight.serviceAdult)
+                                                                    }}
+                                                                </td>
+                                                                <td>{{
+                                                                        this.my_number_format(flight.taxAdult + flight.serviceAdult)
+                                                                    }}
+                                                                </td>
 
                                                                 <td>{{ flight.adult }}</td>
-                                                                <td>{{ flight.FarePerAdult * flight.adult }}</td>
+                                                                <td>{{
+                                                                        this.my_number_format(flight.FarePerAdult * flight.adult)
+                                                                    }}
+                                                                </td>
                                                             </tr>
 
 
                                                             <tr v-if="flight.child">
                                                                 <td>{{ this.trs.child }}</td>
-                                                                <td>{{ flight.FarePerChild }}</td>
                                                                 <td>{{
-                                                                        flight.FarePerChild - flight.taxChild - flight.serviceChild
+                                                                        this.my_number_format(flight.FarePerChild)
                                                                     }}
                                                                 </td>
-                                                                <td>{{ flight.taxChild + flight.serviceChild }}</td>
+                                                                <td>{{
+                                                                        this.my_number_format(flight.FarePerChild - flight.taxChild - flight.serviceChild)
+                                                                    }}
+                                                                </td>
+                                                                <td>{{
+                                                                        this.my_number_format(flight.taxChild + flight.serviceChild)
+                                                                    }}
+                                                                </td>
 
                                                                 <td>{{ flight.child }}</td>
-                                                                <td>{{ flight.FarePerChild * flight.child }}</td>
+                                                                <td>{{
+                                                                        this.my_number_format(flight.FarePerChild * flight.child)
+                                                                    }}
+                                                                </td>
                                                             </tr>
 
 
                                                             <tr v-if="flight.infant">
                                                                 <td>{{ this.trs.infant }}</td>
-                                                                <td>{{ flight.FarePerInf }}</td>
+                                                                <td>{{ this.my_number_format(flight.FarePerInf) }}</td>
                                                                 <td>{{
-                                                                        flight.FarePerInf - flight.taxInfant - flight.serviceInfant
+                                                                        this.my_number_format(flight.FarePerInf - flight.taxInfant - flight.serviceInfant)
                                                                     }}
                                                                 </td>
-                                                                <td>{{ flight.taxInfant + flight.serviceInfant }}</td>
+                                                                <td>{{
+                                                                        this.my_number_format(flight.taxInfant + flight.serviceInfant)
+                                                                    }}
+                                                                </td>
                                                                 <td>{{ flight.infant }}</td>
-                                                                <td>{{ flight.FarePerInf * flight.infant }}</td>
+                                                                <td>{{
+                                                                        this.my_number_format(flight.FarePerInf * flight.infant)
+                                                                    }}
+                                                                </td>
                                                             </tr>
 
                                                             <tr class="total_price_tax">
@@ -2123,8 +2151,8 @@
                                                                 <td>-</td>
                                                                 <td>-</td>
                                                                 <td>{{
-                                                                        flight.FarePerAdult * flight.adult + flight.FarePerChild * flight.child + flight.FarePerInf * flight.infant
-                                                                    }}
+                                                                        this.my_number_format(flight.FarePerAdult * flight.adult + (flight.child ? flight.FarePerChild * flight.child : 0) + (flight.infant ? flight.FarePerInf * flight.infant : 0))
+                                                                    }} €
                                                                 </td>
                                                             </tr>
                                                             </tbody>
@@ -2344,7 +2372,7 @@ export default {
     created() {
     },
     directives: {},
-    props: ['lang', 'trs', 'csrf', 'air_rules_url', 'air_bag_url','flight','search_data'],
+    props: ['lang', 'trs', 'csrf', 'air_rules_url', 'air_bag_url', 'flight', 'search_data'],
     name: 'singleFlight',
     methods: {
         getDistinctAirline(array) {
@@ -2430,8 +2458,8 @@ export default {
             return [min_seats_depart, min_seats_return];
         },
         collapse(index) {
-            let flight = '#flight_details' + index;
-            let pricec = '#price_details' + index;
+            let flight = '#flight_details';
+            let price = '#price_details';
             if (this.collapse_array.includes(index)) {
                 this.collapse_array = this.collapse_array.filter(item => item !== index);
                 $(flight).collapse('hide');
@@ -2439,28 +2467,28 @@ export default {
                 this.collapse_array.push(index);
                 this.collapse_price_array = this.collapse_price_array.filter(item => item !== index);
                 $(flight).collapse('show');
-                $(pricec).collapse('hide');
+                $(price).collapse('hide');
             }
         },
         collapse_price(index) {
-            let flight = '#flight_details' + index;
-            let pricec = '#price_details' + index;
+            let flight = '#flight_details';
+            let price = '#price_details';
             if (this.collapse_price_array.includes(index)) {
                 this.collapse_price_array = this.collapse_price_array.filter(item => item !== index);
-                $(pricec).collapse('hide');
+                $(price).collapse('hide');
             } else {
                 this.collapse_price_array.push(index);
                 this.collapse_array = this.collapse_array.filter(item => item !== index);
-                $(pricec).collapse('show');
+                $(price).collapse('show');
                 $(flight).collapse('hide');
             }
         },
-        ticket_rule(id) {
+        ticket_rule(flight) {
             const headers = {
                 'X-CSRF-TOKEN': this.csrf
             };
             const data = {
-                'id': id,
+                'flight': flight,
             };
             axios.post(this.air_rules_url, data, {headers})
                 .then(response => {
@@ -2471,12 +2499,12 @@ export default {
                     }
                 });
         },
-        bar_rule(id) {
+        bar_rule(flight) {
             const headers = {
                 'X-CSRF-TOKEN': this.csrf
             };
             const data = {
-                'id': id,
+                'flight': flight,
             };
             axios.post(this.air_bag_url, data, {headers})
                 .then(response => {
@@ -2486,6 +2514,9 @@ export default {
                     } else {
                     }
                 });
+        },
+        my_number_format(number) {
+            return Intl.NumberFormat("en-US", {maximumFractionDigits: 1}).format(Number(number).toFixed(1));
         },
     },
     data() {

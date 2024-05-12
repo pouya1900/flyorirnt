@@ -1,5 +1,5 @@
 <template>
-    <div v-if="step==0">
+    <div v-show="step==0">
         <div class="flight_page_container ">
             <div class="row margin-right-0px margin-left-0px">
                 <div id="side_filter_main_container"
@@ -398,7 +398,7 @@
                                                                 <span
                                                                     class="filter_min_fare">{{ trs.from }} {{
                                                                         this.my_number_format(item.totalFare)
-                                                                    }}€
+                                                                    }} €
                                                             </span>
                                                             </label>
                                                             <span class="only_filter"
@@ -2683,7 +2683,7 @@
                                                                         }}
                                                                     </td>
 
-                                                                    <td>{{ this.my_number_format(item.adult) }}</td>
+                                                                    <td>{{ item.adult }}</td>
                                                                     <td>{{
                                                                             this.my_number_format(item.FarePerAdult * item.adult)
                                                                         }}
@@ -2706,7 +2706,7 @@
                                                                         }}
                                                                     </td>
 
-                                                                    <td>{{ this.my_number_format(item.child) }}</td>
+                                                                    <td>{{ item.child }}</td>
                                                                     <td>{{
                                                                             this.my_number_format(item.FarePerChild * item.child)
                                                                         }}
@@ -2728,7 +2728,7 @@
                                                                             this.my_number_format(item.taxInfant + item.serviceInfant)
                                                                         }}
                                                                     </td>
-                                                                    <td>{{ this.my_number_format(item.infant) }}</td>
+                                                                    <td>{{ item.infant }}</td>
                                                                     <td>{{
                                                                             this.my_number_format(item.FarePerInf * item.infant)
                                                                         }}
@@ -2743,7 +2743,7 @@
                                                                     <td>-</td>
                                                                     <td>{{
                                                                             this.my_number_format(item.FarePerAdult * item.adult + (item.child ? item.FarePerChild * item.child : 0) + (item.infant ? item.FarePerInf * item.infant : 0))
-                                                                        }}
+                                                                        }} €
                                                                     </td>
                                                                 </tr>
                                                                 </tbody>
@@ -3082,6 +3082,30 @@
         </div>
     </div>
 
+    <div v-if="step>0" class="container">
+        <div class="wizard_container">
+            <div class="office_wizard">
+                <div class="row m-0">
+                    <div class="wizard_item col">
+                        <p class="wizard_item_title wizard_item_title_done" @click="this.step > 0 ? this.step=0 : ''">
+                            <a>{{ trs.flights }}</a></p>
+                    </div>
+                    <div class="wizard_item col">
+                        <p class="wizard_item_title" @click="this.step > 1 ? this.step=1 : ''"
+                           :class="this.step==1 ? 'wizard_item_title_active' : (this.step>1 ? 'wizard_item_title_done' : '')">
+                            <a>{{ trs.passengers }}</a></p>
+                    </div>
+                    <div class="wizard_item col">
+                        <p class="wizard_item_title wizard_item_title_last"
+                           :class="this.step==2 ? 'wizard_item_title_active' : ''">
+                            <a>{{ trs.payment }}</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div v-if="step==1" class="padding-tb-40px flight_page_container">
         <div class="container">
 
@@ -3282,7 +3306,7 @@
                                                     v-model="contact_person"
                                                     id="contact_person">
 
-                                                <option v-for="(j,m) in selected_flight.adult" :value="j">
+                                                <option v-for="(j,m) in parseInt(selected_flight.adult)" :value="j">
                                                     {{ trs.adult }}
                                                     #{{
                                                         j
@@ -3380,11 +3404,21 @@
 
                     </div>
                     <div class="submit_passenger_form">
+                        <div class="row">
+                            <div class="col text-left">
+                                <button @click="step2()" type="submit">{{ trs.continue }}</button>
+                                <span v-if="this.is_error" class="error_message_form">{{
+                                        this.trs.there_are_errors_in_form
+                                    }}</span>
+                            </div>
+                            <div class="col text-right">
+                                <button @click="step=0" type="submit"><i class="fas fa-arrow-left"></i>
+                                    {{ trs.back_to_previous }}
+                                </button>
 
-                        <button @click="step2()" type="submit">{{ trs.continue }}</button>
-                        <span v-if="this.is_error" class="error_message_form">{{
-                                this.trs.there_are_errors_in_form
-                            }}</span>
+                            </div>
+                        </div>
+
 
                     </div>
 
@@ -3464,7 +3498,7 @@
                             </div>
 
                             <div class="  passenger_list_item_content">
-                                <span>{{ trs.phone }} : {{ this.phone }}</span>
+                                <span>{{ trs.phone }} : {{ this.country_dial_code + " " + this.phone }}</span>
                             </div>
 
                         </div>
@@ -3523,10 +3557,22 @@
                                     <div v-if="agency" class="agency-button-container">
                                         <div>
 
-                                            <a v-if="parseInt(agency.balance) >= parseInt(this.selected_flight.TotalFare)">{{
+                                            <a @click="pay_direct('agency')"
+                                               v-if="parseInt(agency.balance) >= parseInt(this.selected_flight.TotalFare)">{{
                                                     trs.pay_with_balance
                                                 }}</a>
                                             <span v-else class="opacity-5">{{ trs.pay_with_balance }}</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div @click="pay_direct('admin')" v-if="user && user.role==3"
+                                         class="agency-button-container">
+                                        <div>
+
+                                            <a>{{
+                                                    trs.pay_with_admin
+                                                }}</a>
                                         </div>
 
                                     </div>
@@ -3546,8 +3592,160 @@
 
             </div>
 
+            <div class="submit_passenger_form">
+                <div class="row">
+                    <div class="col text-right">
+                        <button @click="step=1" type="submit"><i class="fas fa-arrow-left"></i>
+                            {{ trs.back_to_previous }}
+                        </button>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
         </div>
     </div>
+
+    <div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+         role="dialog" aria-labelledby="RevalidateLabel" id="validate_error_modal"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg " role="document">
+            <div class="modal-content">
+                <div class="validate_modal_container">
+                    <div class="modal-body">
+
+                        <div class="title">
+                            <span>{{ trs.refresh_search_message }}</span>
+                        </div>
+
+                        <div class="description">
+                            {{ trs.validate_error }}
+                        </div>
+                    </div>
+                    <div class="modal_footer">
+                        <div>
+                            <button @click="refresh_page()" class="refresh_btn">{{ trs.refresh }}
+                            </button>
+
+                            <button @click="back_to_flights()" class="refresh_btn">{{ trs.back_to_flights }}</button>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="search_loader" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg search_loader_modal">
+            <div class="modal-content"
+                 :style="{background: 'url(images/'+setting.search_loader_img+') no-repeat center'}">
+
+                <div class="search_modal_container">
+
+                    <div class="logo"
+                         :class="'text-' + setting.logo_position_search_loader ?? 'center'">
+
+                        <img :src="'images/' + setting.logo">
+
+                    </div>
+
+                    <div class="search_loader_text">
+
+                        {{ trs.search_best_flight }}
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-4 airport">
+                            <span class="from_airport">{{ search_data.origin_code_3chr }}</span>
+                            <span class="from_airport_name">{{ search_data.origin_code }}</span>
+
+                        </div>
+
+
+                        <div class="col-4">
+                            <span class="arrow arrow1"> > </span>
+                            <span class="arrow arrow2"> > </span>
+                            <span class="arrow arrow3"> > </span>
+                        </div>
+
+
+                        <div class="col-4 airport">
+                            <span class="to_airport">{{ search_data.destination_code_3chr }}</span>
+                            <span class="to_airport_name">{{ search_data.destination_code }}</span>
+                        </div>
+
+                    </div>
+
+                    <div class="search_date">
+                        <span class="depart_date">{{ trs.depart_date }} : {{
+                                this.turn_day_of_week(search_data.depart)
+                            }} {{
+                                new Date(search_data.depart).toLocaleString('de-DE', this.date_option)
+                            }}</span>
+                        <span v-if="search_data.return" class="return_date">
+                            {{ trs.return_date }} : {{
+                                this.turn_day_of_week(search_data.return)
+                            }} {{
+                                new Date(search_data.return).toLocaleString('de-DE', this.date_option)
+                            }}
+                        </span>
+
+                    </div>
+
+                    <div class="passenger_number">
+                        <span class="passenger1">{{ trs.adult + " : " + search_data.adl }}</span>
+                        <span v-if="search_data.chl > 0" class="passenger2">{{
+                                trs.child + " : " + search_data.chl
+                            }}</span>
+                        <span v-if="search_data.inf > 0"
+                              class="passenger3">{{ trs.infant + " : " + search_data.inf }}</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="booking_loader" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+         aria-labelledby="bookingLoaderModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg search_loader_modal">
+            <div class="modal-content"
+                 :style="{background: 'url(images/'+setting.search_loader_img+') no-repeat center'}">
+
+                <div class="search_modal_container">
+
+                    <div class="logo"
+                         :class="'text-' + setting.logo_position_search_loader ?? 'center'">
+                        <img :src="'images/' + setting.logo">
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-4">
+                            <img src="images/gif/booking_loader.gif" alt="booking_loader">
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="booking_loader_text">{{ trs.your_flight_is_booking }}</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
 </template>
 
@@ -3581,14 +3779,18 @@ export default {
     },
     created() {
         this.searchFlight();
-        window.addEventListener('scroll', this.scroll);
     },
     directives: {},
     components: {
         singleFlight
     },
-    props: ['user', 'agency', 'lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'multi_search_url', 'filter', 'air_rules_url', 'air_bag_url', 'revalidate_url', 'country', 'airlines_rule_url', 'process_payment_url', 'paypal_id', 'confirm_payment_url', 'successful_book_url', 'failed_book_url', 'cancel_payment_url'],
+    props: ['user', 'agency', 'lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'multi_search_url', 'filter', 'air_rules_url', 'air_bag_url', 'revalidate_url', 'country', 'airlines_rule_url', 'process_payment_url', 'paypal_id', 'confirm_payment_url', 'successful_book_url', 'failed_book_url', 'cancel_payment_url', 'setting'],
     name: 'flights',
+    watch: {
+        step(newValue, oldValue) {
+            this.scroll();
+        },
+    },
     methods: {
         getDistinctAirline(array) {
 
@@ -3624,7 +3826,7 @@ export default {
         },
         turn_day_of_week(code) {
             let day;
-            switch (code) {
+            switch (new Date(code).getDay()) {
                 case 0:
                     day = this.trs.sunday_short;
                     break;
@@ -3691,10 +3893,9 @@ export default {
                         if (response.data.status === 0) {
                             this.flight_ajax_loader--;
                             this.flights.push(...response.data.flights);
-                            // console.log(response.data.time);
-                            this.airlines_list = response.data.airlines_list;
-                            this.flight_grouped = response.data.flight_grouped;
-                            this.airlines = response.data.airlines_filter_list;
+                            this.airlines_list.push(...response.data.airlines_list);
+                            this.flight_grouped.push(...response.data.flight_grouped);
+                            this.airlines = {...this.airlines, ...response.data.airlines_filter_list};
                             let airline_push = [];
 
                             let vm = this;
@@ -3708,8 +3909,11 @@ export default {
                                 this.nouislidefilter_init();
                             }
                         } else {
+                            this.flight_ajax_loader--;
                         }
-                    });
+                    }).catch(error => {
+                    this.flight_ajax_loader--;
+                });
 
             });
         },
@@ -3721,7 +3925,7 @@ export default {
         },
         collapse(index) {
             let flight = '#flight_details' + index;
-            let pricec = '#price_details' + index;
+            let price = '#price_details' + index;
             if (this.collapse_array.includes(index)) {
                 this.collapse_array = this.collapse_array.filter(item => item !== index);
                 $(flight).collapse('hide');
@@ -3729,19 +3933,19 @@ export default {
                 this.collapse_array.push(index);
                 this.collapse_price_array = this.collapse_price_array.filter(item => item !== index);
                 $(flight).collapse('show');
-                $(pricec).collapse('hide');
+                $(price).collapse('hide');
             }
         },
         collapse_price(index) {
             let flight = '#flight_details' + index;
-            let pricec = '#price_details' + index;
+            let price = '#price_details' + index;
             if (this.collapse_price_array.includes(index)) {
                 this.collapse_price_array = this.collapse_price_array.filter(item => item !== index);
                 $(pricec).collapse('hide');
             } else {
                 this.collapse_price_array.push(index);
                 this.collapse_array = this.collapse_array.filter(item => item !== index);
-                $(pricec).collapse('show');
+                $(price).collapse('show');
                 $(flight).collapse('hide');
             }
         },
@@ -3842,16 +4046,11 @@ export default {
             this.resetPage();
             this[widget] = [target];
         },
-        // scroll: function (e) {
-        //     if ($(".flight_page_container").height() - 280 < $(window).scrollTop()) {
-        //         var t = new Date().getTime();
-        //         if ((t - this.lastScrollUpdate) > 3000) {
-        //             this.lastScrollUpdate = t;
-        //             this.page++;
-        //         } else {
-        //         }
-        //     }
-        // },
+        scroll: function (e) {
+            $('html,body').animate({
+                scrollTop: $("#app").offset().top
+            }, 50);
+        },
         resetPage() {
             this.page = Math.min(this.page, 1);
             $('html,body').animate({
@@ -3881,6 +4080,7 @@ export default {
             this.selected_flight = flight;
             this.revalidate(flight);
             this.step = 1;
+            $("#search_bar_main_container").hide();
             for (let i = 0; i < this.getPassengersCount(); i++) {
                 this.gender[i] = "";
                 this.first_name[i] = "";
@@ -3906,20 +4106,40 @@ export default {
             axios.post(url, data, {headers})
                 .then(response => {
                     if (response.data.validate === 0) {
-                        console.log("not valid");
+                        this.revalidate_error = 1;
+                        $("#validate_error_modal").modal("show");
                     }
                 });
         },
         passenger_type(i) {
+            let code = this.passenger_type_code(i);
+
+            switch (code) {
+                case 1:
+                    return this.trs.adult;
+                case 2:
+                    return this.trs.child;
+                case 3:
+                    return this.trs.infant;
+            }
+
+        },
+        passenger_type_code(i) {
             if (this.selected_flight.adult >= i) {
-                return this.trs.adult;
+                return 1;
             } else if (this.selected_flight.child >= i - this.selected_flight.adult) {
-                return this.trs.child;
+                return 2;
             } else {
-                return this.trs.infant;
+                return 3;
             }
         },
         use_my_account_info() {
+            this.first_name[0] = this.user.f_name;
+            this.last_name[0] = this.user.l_name;
+            this.gender[0] = this.user.gender;
+            this.nationality[0] = this.user.country;
+            this.birthday[0] = new Date(this.user.birthday).toLocaleString('de-DE', this.date_option)
+
         },
         getPassengersCount() {
             return parseInt(this.selected_flight.adult) + parseInt(this.selected_flight.child) + parseInt(this.selected_flight.infant);
@@ -4076,8 +4296,12 @@ export default {
 
                     onInit: function (data, actions) {
 
-                        // Disable the buttons
-                        actions.disable();
+                        if (vm.confirm) {
+                            actions.enable();
+                            vm.confirm_error = 0;
+                        } else {
+                            actions.disable();
+                        }
 
                         // Listen for changes to the checkbox
                         document.querySelector('#confirm')
@@ -4110,41 +4334,13 @@ export default {
 
 // Set up the transaction
                     createOrder: async function (data, actions) {
-
-                        let passengers = [];
                         let error = 0;
                         let orderID = null;
-                        for (let i = 0; i < vm.getPassengersCount(); i++) {
-                            passengers[i] = {
-                                "type": vm.getPassengerType(i),
-                                "gender": vm.gender[i],
-                                "first_name": vm.first_name[i],
-                                "last_name": vm.last_name[i],
-                                "birthday": vm.birthday[i],
-                                "nationality": vm.nationality[i],
-                                "national_id_number": vm.national_id_number[i],
-                                "passport_number": vm.pass_number[i],
-                                "exp": vm.exp[i],
-                                "iss": vm.iss[i],
-                            };
-                        }
-
+                        let array = this.make_reserve_array("paypal");
                         const headers = {
                             'X-CSRF-TOKEN': vm.csrf
                         };
-                        const array = {
-                            'flight': vm.selected_flight,
-                            'passengers': passengers,
-                            'contact': {
-                                'contact_person': vm.contact_person,
-                                'contact_first_name': vm.contact_first_name,
-                                'contact_last_name': vm.contact_last_name,
-                                'country_dial_code': vm.country_dial_code,
-                                'phone': vm.phone,
-                                'email': vm.email,
-                            },
-                            'method': "paypal"
-                        };
+
                         await axios.post(vm.process_payment_url, array, {headers})
                             .then(response => {
                                 if (response.data.status) {
@@ -4165,6 +4361,8 @@ export default {
 // Finalize the transaction
                     onApprove: function (data, actions) {
 
+                        $("#booking_loader").modal("show");
+
                         const headers = {
                             'X-CSRF-TOKEN': vm.csrf
                         };
@@ -4179,7 +4377,7 @@ export default {
                         axios.post(url, array, {headers})
                             .then(response => {
                                 if (response.data.status) {
-                                    // window.location.replace(vm.failed_book_url);
+                                    window.location.replace(vm.failed_book_url + "?token=" + response.data.token + (vm.lang != "de" ? "&lang=" + vm.lang : ""));
                                 } else {
                                     window.location.replace(vm.successful_book_url + "?token=" + response.data.token + (vm.lang != "de" ? "&lang=" + vm.lang : ""));
                                 }
@@ -4199,17 +4397,119 @@ export default {
                 }).render('#paypal-button-container');
             }
         },
+        async pay_direct(method) {
+            let error = 0;
+            let payment_id = null;
+            let payer_id = null;
+            let array = this.make_reserve_array(method);
+            const headers = {
+                'X-CSRF-TOKEN': this.csrf
+            };
+
+            if (!this.disable_payment) {
+                this.disable_payment = 1;
+                await axios.post(this.process_payment_url, array, {headers})
+                    .then(response => {
+                        if (response.data.status) {
+                            error = response.data.error;
+                            this.disable_payment = 0;
+                        } else {
+                            payment_id = response.data.paymentId;
+                            payer_id = response.data.payerId;
+                        }
+                    }).catch(() => {
+                        error = 3;
+                    });
+
+                if (payment_id) {
+                    $("#booking_loader").modal("show");
+
+                    const headers = {
+                        'X-CSRF-TOKEN': this.csrf
+                    };
+
+                    let url = this.confirm_payment_url + (this.lang != "de" ? "?lang=" + this.lang : "");
+
+                    const array = {
+                        method: method,
+                        paymentId: payment_id,
+                        payerId: payer_id,
+                    };
+                    axios.post(url, array, {headers})
+                        .then(response => {
+                            if (response.data.status) {
+                                // window.location.replace(vm.failed_book_url + "?token=" + response.data.token + (vm.lang != "de" ? "&lang=" + vm.lang : ""));
+                            } else {
+                                window.location.replace(this.successful_book_url + "?token=" + response.data.token + (this.lang != "de" ? "&lang=" + this.lang : ""));
+                            }
+                        });
+                }
+            }
+        },
         turn_title(gender, n) {
-            return "a";
+            let code = this.passenger_type_code(n);
+            let title;
+            if (gender == 0 && code == 1) {
+                return this.trs.mr;
+            } else if (gender == 0) {
+                return this.trs.mstr;
+            } else if (gender == 1 && code == 1) {
+                return this.trs.mrs;
+            } else {
+                return this.trs.miss;
+            }
+
         },
         turn_gender(gender) {
-            switch (gender) {
+            switch (parseInt(gender)) {
                 case 0:
                     return this.trs.male;
                 case 1:
                     return this.trs.female;
             }
         },
+        back_to_flights() {
+            this.step = 0;
+            $("#search_bar_main_container").hide();
+            this.revalidate_error = 0;
+            $("#validate_error_modal").modal("hide");
+        },
+        refresh_page() {
+            $("#search_loader").modal("show");
+            window.location.reload();
+        },
+        make_reserve_array(method) {
+            let passengers = [];
+            let vm = this;
+            for (let i = 0; i < vm.getPassengersCount(); i++) {
+                passengers[i] = {
+                    "type": vm.getPassengerType(i),
+                    "gender": vm.gender[i],
+                    "first_name": vm.first_name[i],
+                    "last_name": vm.last_name[i],
+                    "birthday": vm.birthday[i],
+                    "nationality": vm.nationality[i],
+                    "national_id_number": vm.national_id_number[i],
+                    "passport_number": vm.pass_number[i],
+                    "exp": vm.exp[i],
+                    "iss": vm.iss[i],
+                };
+            }
+
+            return {
+                'flight': vm.selected_flight,
+                'passengers': passengers,
+                'contact': {
+                    'contact_person': vm.contact_person,
+                    'contact_first_name': vm.contact_first_name,
+                    'contact_last_name': vm.contact_last_name,
+                    'country_dial_code': vm.country_dial_code,
+                    'phone': vm.phone,
+                    'email': vm.email,
+                },
+                'method': method
+            };
+        }
     },
     data() {
         return {
@@ -4277,6 +4577,8 @@ export default {
             'confirm': 0,
             'confirm_error': 0,
             'flight_ajax_loader': this.ajax_render.length,
+            'revalidate_error': 0,
+            'disable_payment': 0,
         }
     },
     computed: {
