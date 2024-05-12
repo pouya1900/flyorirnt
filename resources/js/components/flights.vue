@@ -4336,7 +4336,7 @@ export default {
                     createOrder: async function (data, actions) {
                         let error = 0;
                         let orderID = null;
-                        let array = this.make_reserve_array("paypal");
+                        let array = vm.make_reserve_array("paypal");
                         const headers = {
                             'X-CSRF-TOKEN': vm.csrf
                         };
