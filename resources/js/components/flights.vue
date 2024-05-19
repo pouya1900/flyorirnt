@@ -625,7 +625,7 @@
 
                         <div class="flight_main_container">
                             <div id="flight_posts_content">
-                                <div v-for="(item,index) in this.resultQuery[0]"
+                                <div v-if="this.resultQuery[1].length" v-for="(item,index) in this.resultQuery[0]"
                                      :class="item.ValidatingAirlineCode=='IR' ? 'our_recommend_container' : ''">
 
                                     <div v-if="item.ValidatingAirlineCode=='IR'" class="our_recommend">
@@ -1339,7 +1339,7 @@
                                                                             multi.airports1[this.city] != "" ? multi.airports1[this.city] : multi.airports1.city_en
                                                                         }}
                                                                         -{{
-                                                                            multi.airports1.code != "" ? multiairports1.code : multi.depart_airport
+                                                                            multi.airports1.code != "" ? multi.airports1.code : multi.depart_airport
                                                                         }}
                                                                     </span>
                                                                                     <span v-else>
@@ -1515,22 +1515,22 @@
                                                         <div class="flight_details">
                                                             <div class="rules">
                                                                 <div>
-                                                                <span class="details_link" data-toggle="collapse"
-                                                                      role="button" aria-expanded="false"
-                                                                      @click="this.collapse(index)"
-                                                                      aria-controls="collapseExample">
-                                                                <span class="all_details_link">
-                                                                    <i class="fas fa-info-circle"></i>
-                                                                    <div
-                                                                        class="flight_details_detail_link display-inline"
-                                                                        :class="this.collapse_array.includes(index) ?'details_link_active' : ''">
-                                                                        <span class="d-none d-md-inline">{{
-                                                                                this.trs.details
-                                                                            }}
+                                                                    <span class="details_link" data-toggle="collapse"
+                                                                          role="button" aria-expanded="false"
+                                                                          @click="this.collapse(index)"
+                                                                          aria-controls="collapseExample">
+                                                                        <span class="all_details_link">
+                                                                            <i class="fas fa-info-circle"></i>
+                                                                            <div
+                                                                                class="flight_details_detail_link display-inline"
+                                                                                :class="this.collapse_array.includes(index) ?'details_link_active' : ''">
+                                                                                <span class="d-none d-md-inline">{{
+                                                                                        this.trs.details
+                                                                                    }}
+                                                                                </span>
+                                                                            </div>
                                                                         </span>
-                                                                    </div>
-                                                                </span>
-                                                            </span>
+                                                                    </span>
                                                                 </div>
                                                                 <div>
                                                                 <span class="price_link" data-toggle="collapse"
@@ -1570,7 +1570,7 @@
                                                                             <i v-if="!item.return_bar_exist && item.DirectionInd==2">/
                                                                                 <img
                                                                                     src="images/icon/suitcase-solid.png"></i>
-                                                                            <i v-else>{{
+                                                                            <i v-else-if="item.DirectionInd==2">{{
                                                                                     item.bar != item.return_bar && item.return_bar != "" ? "/" + item.return_bar : ""
                                                                                 }}</i>
                                                                         </span>
@@ -1630,7 +1630,7 @@
                                                                         v-if="!item.return_bar_exist && item.DirectionInd==2">
                                                                         / <i> <img src="images/icon/suitcase-solid.png"></i>
                                                                     </span>
-                                                                    <i v-else>
+                                                                    <i v-else-if="item.DirectionInd==2">
                                                                         {{
                                                                             item.bar != item.return_bar && item.return_bar != "" ? "/" + item.return_bar : ""
                                                                         }}
@@ -1668,16 +1668,16 @@
                                                         <div class="row">
 
                                                             <div class="col-10 col-md-6 details_title">
-                                                        <span class="details_title_way">
-                                                            {{
-                                                                item.DirectionInd == 4 ? this.trs.trip + '1' : this.trs.depart
-                                                            }}
-                                                        </span>
+                                                                <span class="details_title_way">
+                                                                    {{
+                                                                        item.DirectionInd == 4 ? this.trs.trip + '1' : this.trs.depart
+                                                                    }}
+                                                                </span>
                                                                 <span class="details_title_f_t">
-                                                            {{
+                                                                    {{
                                                                         (item.airports1 ? item.airports1.name : item.depart_airport) + "-" + (item.airports2 ? item.airports2.name : item.arrival_airport)
                                                                     }}
-                                                        </span>
+                                                                </span>
                                                             </div>
                                                             <div class="col-2 col-md-6 details_time">
                                                         <span>{{ parseInt(item.total_time / 60) + "h" }}{{
@@ -2335,10 +2335,10 @@
                                                             <div class="col-2 col-md-6 details_time text-right">
                                                         <span>
                                                             {{
-                                                                parseInt(item.total_time / 60) + "h"
+                                                                parseInt(multi.total_time / 60) + "h"
                                                             }}
                                                             {{
-                                                                item.total_time % 60 != 0 ? ":" + item.total_time % 60 + "'" : ""
+                                                                multi.total_time % 60 != 0 ? ":" + multi.total_time % 60 + "'" : ""
                                                             }}
                                                         </span>
                                                             </div>
@@ -2754,6 +2754,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="no_flight_text" v-else-if="!flight_ajax_loader">
+                                    <p v-if="this.flights.length">{{ trs.reset_filter_to_see_flights }}
+                                        <button @click="resetAllFilter()" class="reset_all_filter reset_all_filter_in_text">
+                                            {{ trs.reset_all_filter }}
+                                        </button>
+                                    </p>
+                                    <p v-else>{{ trs.no_flight }}</p>
                                 </div>
                             </div>
                         </div>
@@ -3243,7 +3251,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-md-6 col-lg-3">
+                                    <div v-if="selected_flight.IsPassportIssueDateMandatory"
+                                         class="col-12 col-md-6 col-lg-3">
                                         <div class="item_container">
                                             <label>{{ trs.issue_date_of_passport }} :</label>
                                             <input class="DOB_date passenger_form_element date_latin_font"
@@ -4071,7 +4080,19 @@ export default {
             this.depart_time_range = this.all_depart_time_range;
             this.return_depart_time_range = this.all_return_depart_time_range;
             this.slider.start = [this.slider.range.min, this.slider.range.max];
-            // this.slider.text = start_hour + ":" + start_min + " - " + end_hour + ":" + end_min;
+
+            var start_hour = parseInt(this.slider.range.min / 60);
+            var start_min = parseInt(this.slider.range.min % 60);
+            var end_hour = parseInt(this.slider.range.max / 60);
+            var end_min = parseInt(this.slider.range.max % 60);
+            if (start_hour < 10) start_hour = "0" + start_hour;
+            if (start_min < 10) start_min = "0" + start_min;
+            if (end_hour < 10) end_hour = "0" + end_hour;
+            if (end_min < 10) end_min = "0" + end_min;
+            this.slider.text = start_hour + ":" + start_min + " - " + end_hour + ":" + end_min;
+
+            this.rangeSlider.noUiSlider.set(this.slider.start);
+
         },
         my_number_format(number) {
             return Intl.NumberFormat("en-US", {maximumFractionDigits: 1}).format(Number(number).toFixed(1));

@@ -1038,8 +1038,10 @@ class FlightController extends Controller
             "multi"        => $search_json,
         ]);
 
+        $country = Country::all();
+        $user = Auth::user();
 
-        return response(view('front.flight.flightsvue', compact('lang', 'search_data', 'ajax_render', 'filter')));
+        return response(view('front.flight.flightsvue', compact('lang', 'search_data', 'ajax_render', 'filter', 'user', 'country')));
 
 
     }
@@ -1075,23 +1077,14 @@ class FlightController extends Controller
 
 //		choose render from database
         $instance_render = $this->set_render($render_number);
-
 //		choose render from database
 
-        $search_id = $instance_render->lowfaresearchMulti($origin1, $destination1, $depart1, $origin2, $destination2, $depart2, $class, $adl, $chl, $inf, $none_stop, $search_id, $origin3, $destination3, $depart3, $origin4, $destination4, $depart4);
-
-//        $search_id = 536;
-
-        $response = $this->search_flight($search_id, 0, [], 0, 500, 0, $render_number);
-
-        $airlines_list = Airline::filter_airline_list($search_id);
-        $airlines_list = json_decode(json_encode($airlines_list), true);
-
-        $airlines_list = $this->sort_airline($airlines_list);
+        $response = $instance_render->lowfaresearchMulti($origin1, $destination1, $depart1, $origin2, $destination2, $depart2, $class, $adl, $chl, $inf, $none_stop, $search_id, $origin3, $destination3, $depart3, $origin4, $destination4, $depart4);
 
 
-        $flight = $response["flight"];
-        $count = $response["count"];
+        $flights = $response["flights"];
+
+        $count = count($flights);
         $search_data = [
             "none_stop" => $none_stop,
             "render"    => $render_number,
@@ -1100,21 +1093,17 @@ class FlightController extends Controller
             "chl"       => $chl,
             "inf"       => $inf,
         ];
-        $max = $response["max"];
-        $flight_grouped = $response["flight_grouped"];
-        $return_flight_grouped = $response["return_flight_grouped"];
-        $airlines = Airline::filter_airline($search_id);
-        $airlines = json_decode(json_encode($airlines), true);
+        $max = 30;
 
         return response()->json([
-            "status"         => 0,
-            "flights"        => $flight,
-            "count"          => $count,
-            "search_data"    => $search_data,
-            "max"            => $max,
-            "airlines_list"  => $airlines_list,
-            "flight_grouped" => $flight_grouped,
-            "airlines"       => $airlines,
+            "status"               => 0,
+            "flights"              => $flights,
+            "count"                => $count,
+            "search_data"          => $search_data,
+            "max"                  => $max,
+            "airlines_list"        => $response["airlines_list"],
+            "flight_grouped"       => $response["flight_grouped"],
+            "airlines_filter_list" => $response["airlines_filter_list"],
         ]);
 
 

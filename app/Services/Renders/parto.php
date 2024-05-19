@@ -740,7 +740,6 @@ class parto implements render_interface
 
         $response = json_decode($result, true);
         curl_close($ch);
-
 //		test for timing
         //$this->time2     = Carbon::now();
         //$this->diff_time = Carbon::now()->diffInSeconds( $test_time1 );
@@ -808,8 +807,8 @@ class parto implements render_interface
                 if ($item["ValidatingAirlineCode"] == "W5") {
                     continue;
                 }
-
                 $multi_flight_id = null;
+                $multi_flight_parent = null;
                 foreach ($flights as $key => $flight_part) {
                     $help_var2 = sizeof($flight_part) - 1;
 
@@ -875,10 +874,6 @@ class parto implements render_interface
                     $inserted_flight["airports2"] = Airport::where("code", $inserted_flight["arrival_airport"])->first();
 
 
-                    if (!$multi_flight_id) {
-                        $multi_flight_id = $inserted_flight["id"];
-                    }
-
                     $inserted_flight["legs"] = [];
                     $inserted_flight["airlines"] = [];
                     $inserted_flight["costs"] = [];
@@ -907,8 +902,8 @@ class parto implements render_interface
                             "leg_time"                  => $segment["JourneyDurationPerMinute"],
                             "leg_waiting"               => $segment["ConnectionTimePerMinute"],
                             "leg_airline_code"          => $segment["MarketingAirlineCode"],
-                            "is_charter"                => $segment["IsCharter"],
-                            "is_return"                 => $segment["IsReturn"],
+                            "is_charter"                => $segment["IsCharter"] ?1 : 0,
+                            "is_return"                 => $segment["IsReturn"] ? 1 : 0,
                             "leg_bar"                   => $this->baggage_filter($segment["Baggage"]),
                             "leg_bar_exist"             => !$segment["Baggage"] || substr($segment["Baggage"], 0, 1) == 0 ? 0 : 1,
 
@@ -935,7 +930,7 @@ class parto implements render_interface
                     $cost_insert[$i]["ServiceTax"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["ServiceTax"];
                     $cost_insert[$i]["Currency"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["Currency"];
 
-                    $calc_price = $this->price_type($item, $calc_price, 0, $i, $inserted_flight->id);
+                    $calc_price = $this->price_type($item, $calc_price, 0, $i, $inserted_flight["id"]);
 
 
                     if (isset($item["AirItineraryPricingInfo"]["PtcFareBreakdown"][1])) {
@@ -962,7 +957,7 @@ class parto implements render_interface
 
                     $airline = Airline::where("code", $airline_code)->first();
 
-                    $airline_array = ["airline" => $airline, "costs" => $cost_insert[$i], "stops" => $inserted_flight["stops"], "return_stops" => $inserted_flight["return_stops"], "depart_time" => $inserted_flight["depart_time"]];
+                    $airline_array = ["airline" => $airline, "costs" => $cost_insert[$i], "stops" => $inserted_flight["stops"], "depart_time" => $inserted_flight["depart_time"]];
 
                     for ($k = 0; $k <= 2; $k++) {
                         if (!isset($airlines_list[$airline_code][$k])) {
@@ -1006,12 +1001,21 @@ class parto implements render_interface
                         }
                     }
 
-                    $all_flights[] = $inserted_flight;
+                    if (is_null($multi_flight_id)) {
+                        $multi_flight_id = $inserted_flight["id"];
+                        $multi_flight_parent = $inserted_flight;
+                    } else {
+                        if (!isset($multi_flight_parent["multi_flights"])) {
+                            $multi_flight_parent["multi_flights"] = [];
+                        }
+                        $multi_flight_parent["multi_flights"][] = $inserted_flight;
+                    }
+
                     $i++;
                 }
+                $all_flights[] = $multi_flight_parent;
             }
         }
-
         usort($airlines_list, function ($item1, $item2) {
             if ($item2[0]["costs"]["TotalFare"] == $item1[0]["costs"]["TotalFare"]) {
                 if (isset($item1[1]) && isset($item2[1])) {

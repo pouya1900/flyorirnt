@@ -757,7 +757,7 @@
                                                                             multi.airports1[this.city] != "" ? multi.airports1[this.city] : multi.airports1.city_en
                                                                         }}
                                                                         -{{
-                                                                            multi.airports1.code != "" ? multiairports1.code : multi.depart_airport
+                                                                            multi.airports1.code != "" ? multi.airports1.code : multi.depart_airport
                                                                         }}
                                                                     </span>
                                                                                 <span v-else>
@@ -988,7 +988,7 @@
                                                                             <i v-if="!flight.return_bar_exist && flight.DirectionInd==2">/
                                                                                 <img
                                                                                     src="images/icon/suitcase-solid.png"></i>
-                                                                            <i v-else>{{
+                                                                            <i v-else-if="flight.DirectionInd==2">{{
                                                                                     flight.bar != flight.return_bar && flight.return_bar != "" ? "/" + flight.return_bar : ""
                                                                                 }}</i>
                                                                         </span>
@@ -1041,7 +1041,7 @@
                                                                         v-if="!flight.return_bar_exist && flight.DirectionInd==2">
                                                                         / <i> <img src="images/icon/suitcase-solid.png"></i>
                                                                     </span>
-                                                                    <i v-else>
+                                                                    <i v-else-if="flight.DirectionInd==2">
                                                                         {{
                                                                             flight.bar != flight.return_bar && flight.return_bar != "" ? "/" + flight.return_bar : ""
                                                                         }}
@@ -1746,10 +1746,10 @@
                                                         <div class="col-2 col-md-6 details_time text-right">
                                                         <span>
                                                             {{
-                                                                parseInt(flight.total_time / 60) + "h"
+                                                                parseInt(multi.total_time / 60) + "h"
                                                             }}
                                                             {{
-                                                                flight.total_time % 60 != 0 ? ":" + flight.total_time % 60 + "'" : ""
+                                                                multi.total_time % 60 != 0 ? ":" + multi.total_time % 60 + "'" : ""
                                                             }}
                                                         </span>
                                                         </div>

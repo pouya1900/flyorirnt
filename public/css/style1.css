@@ -30201,8 +30201,19 @@ table.full-width_important {
     font-size: 14px;
 }
 
+.reset_all_filter_in_text {
+    width: fit-content;
+}
 
- /*wizard*/
+.no_flight_text {
+    font-size: 14px;
+    text-align: center;
+    padding: 15px;
+    background: #efefef;
+    margin-top: 20px;
+}
+
+/*wizard*/
 .wizard_container {
     padding: 20px;
 }
@@ -30210,7 +30221,6 @@ table.full-width_important {
 .wizard_item {
     position: relative;
 }
-
 
 
 .wizard_item_title {
