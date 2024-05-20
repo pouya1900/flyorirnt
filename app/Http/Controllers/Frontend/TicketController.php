@@ -579,20 +579,20 @@ class TicketController extends Controller
             "class"                        => $flight["class"],
             "class_code"                   => $flight["class_code"],
             "depart_first_airline"         => $flight["depart_first_airline"],
-            "return_flight_number"         => $flight["return_flight_number"],
-            "return_depart_time"           => $flight["return_depart_time"],
-            "return_depart_time_range"     => $flight["return_depart_time_range"],
-            "return_depart_airport"        => $flight["return_depart_airport"],
-            "return_arrival_time"          => $flight["return_arrival_time"],
-            "return_arrival_airport"       => $flight["return_arrival_airport"],
-            "return_stops"                 => $flight["return_stops"],
-            "return_total_time"            => $flight["return_total_time"],
-            "return_total_waiting"         => $flight["return_total_waiting"],
-            "return_bar"                   => $flight["return_bar"],
-            "return_bar_exist"             => $flight["return_bar_exist"],
-            "return_class"                 => $flight["return_class"],
-            "return_class_code"            => $flight["return_class_code"],
-            "return_first_airline"         => $flight["return_first_airline"],
+            "return_flight_number"         => $flight["return_flight_number"] ?? null,
+            "return_depart_time"           => $flight["return_depart_time"] ?? null,
+            "return_depart_time_range"     => $flight["return_depart_time_range"] ?? null,
+            "return_depart_airport"        => $flight["return_depart_airport"] ?? null,
+            "return_arrival_time"          => $flight["return_arrival_time"] ?? null,
+            "return_arrival_airport"       => $flight["return_arrival_airport"] ?? null,
+            "return_stops"                 => $flight["return_stops"] ?? null,
+            "return_total_time"            => $flight["return_total_time"] ?? null,
+            "return_total_waiting"         => $flight["return_total_waiting"] ?? null,
+            "return_bar"                   => $flight["return_bar"] ?? null,
+            "return_bar_exist"             => $flight["return_bar_exist"] ?? 0,
+            "return_class"                 => $flight["return_class"] ?? null,
+            "return_class_code"            => $flight["return_class_code"] ?? null,
+            "return_first_airline"         => $flight["return_first_airline"] ?? null,
             "depart_return_time"           => $flight["depart_return_time"],
         ]);
 
@@ -624,6 +624,85 @@ class TicketController extends Controller
 
         foreach ($flight["airlines"] as $airline) {
             $flight_object->airlines()->attach($airline["code"], ["is_return" => $airline["is_return"]]);
+        }
+
+        if (isset($flight["multi_flights"]) && $flight["multi_flights"]) {
+            foreach ($flight["multi_flights"] as $multi) {
+
+                $multi_object = Flight::create([
+                    "search_id"                    => $multi["search_id"],
+                    "token"                        => $multi["token"],
+                    "render"                       => $multi["render"],
+                    "FareSourceCode"               => $multi["FareSourceCode"],
+                    "IsPassportMandatory"          => $multi["IsPassportMandatory"],
+                    "IsPassportIssueDateMandatory" => $multi["IsPassportIssueDateMandatory"],
+                    "IsPassportNumberMandatory"    => $multi["IsPassportNumberMandatory"],
+                    "DirectionInd"                 => $multi["DirectionInd"],
+                    "RefundMethod"                 => $multi["RefundMethod"],
+                    "ValidatingAirlineCode"        => $multi["ValidatingAirlineCode"],
+                    "flight_number"                => $multi["flight_number"],
+                    "depart_time"                  => $multi["depart_time"],
+                    "depart_time_range"            => $multi["depart_time_range"],
+                    "depart_airport"               => $multi["depart_airport"],
+                    "arrival_time"                 => $multi["arrival_time"],
+                    "arrival_airport"              => $multi["arrival_airport"],
+                    "stops"                        => $multi["stops"],
+                    "total_time"                   => $multi["total_time"],
+                    "total_waiting"                => $multi["total_waiting"],
+                    "bar"                          => $multi["bar"],
+                    "bar_exist"                    => $multi["bar_exist"],
+                    "class"                        => $multi["class"],
+                    "class_code"                   => $multi["class_code"],
+                    "depart_first_airline"         => $multi["depart_first_airline"],
+                    "return_flight_number"         => $multi["return_flight_number"] ?? null,
+                    "return_depart_time"           => $multi["return_depart_time"] ?? null,
+                    "return_depart_time_range"     => $multi["return_depart_time_range"] ?? null,
+                    "return_depart_airport"        => $multi["return_depart_airport"] ?? null,
+                    "return_arrival_time"          => $multi["return_arrival_time"] ?? null,
+                    "return_arrival_airport"       => $multi["return_arrival_airport"] ?? null,
+                    "return_stops"                 => $multi["return_stops"] ?? null,
+                    "return_total_time"            => $multi["return_total_time"] ?? null,
+                    "return_total_waiting"         => $multi["return_total_waiting"] ?? null,
+                    "return_bar"                   => $multi["return_bar"] ?? null,
+                    "return_bar_exist"             => $multi["return_bar_exist"] ?? 0,
+                    "return_class"                 => $multi["return_class"] ?? null,
+                    "return_class_code"            => $multi["return_class_code"] ?? null,
+                    "return_first_airline"         => $multi["return_first_airline"] ?? null,
+                    "depart_return_time"           => $multi["depart_return_time"],
+                    "multi_flight_id"              => $flight_object->id,
+                ]);
+
+
+                foreach ($multi["legs"] as $leg) {
+                    Leg::create([
+                        "flight_id"                 => $multi_object->id,
+                        "aircraft_type"             => $leg["aircraft_type"],
+                        "aircraft_type_description" => $leg["aircraft_type_description"],
+                        "seats_remaining"           => $leg["seats_remaining"],
+                        "leg_flight_number"         => $leg["leg_flight_number"],
+                        "cabin_class"               => $leg["cabin_class"],
+                        "cabin_class_code"          => $leg["cabin_class_code"],
+                        "leg_depart_time"           => $leg["leg_depart_time"],
+                        "leg_depart_airport"        => $leg["leg_depart_airport"],
+                        "leg_arrival_time"          => $leg["leg_arrival_time"],
+                        "leg_arrival_airport"       => $leg["leg_arrival_airport"],
+                        "leg_time"                  => $leg["leg_time"],
+                        "leg_waiting"               => $leg["leg_waiting"],
+                        "leg_airline_code"          => $leg["leg_airline_code"],
+                        "is_charter"                => $leg["is_charter"],
+                        "is_return"                 => $leg["is_return"],
+                        "leg_bar"                   => $leg["leg_bar"],
+                        "leg_bar_exist"             => $leg["leg_bar_exist"],
+                        "RPH"                       => $leg["RPH"] ?? null,
+                        "fareRPH"                   => $leg["fareRPH"] ?? null,
+                        "fare_basis_code"           => $leg["fare_basis_code"] ?? null,
+                    ]);
+                }
+
+                foreach ($multi["airlines"] as $airline) {
+                    $multi_object->airlines()->attach($airline["code"], ["is_return" => $airline["is_return"]]);
+                }
+            }
         }
 
         $flight_object->costs()->create([
