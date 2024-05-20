@@ -64,7 +64,8 @@
             <div class="into_line">
                 <div class="ticket_flight_content">
 
-                    <table class="table table-bordered {{!isset($pdf_download) || !$pdf_download ? "full-width_important" : ""}}">
+                    <table
+                        class="table table-bordered {{!isset($pdf_download) || !$pdf_download ? "full-width_important" : ""}}">
 
                         <tr>
                             <td class="ticket_bold_section">@lang('trs.passenger_name')</td>
@@ -131,32 +132,32 @@
 
                             <tr>
                                 <td>@lang('trs.departure'): <span
-                                            class="ticket_bold_section">{{$flight->airports1->name}}</span>
+                                        class="ticket_bold_section">{{$flight->airports1->name}}</span>
                                     ({{$flight->airports1->code}}
                                     ,{{$flight->airports1->$city ? : $flight->airports1->city_en}}
                                     ,{{$flight->airports1->$country ? : $flight->airports1->country_en}})
                                 </td>
                                 <td>@lang('trs.date'): <span
-                                            class="ticket_bold_section">{{date('d.m.Y',strtotime($flight->leg_depart_time))}}</span>
+                                        class="ticket_bold_section">{{date('d.m.Y',strtotime($flight->leg_depart_time))}}</span>
                                 </td>
                                 <td>@lang('trs.time'): <span
-                                            class="ticket_bold_section">{{date('H:i',strtotime($flight->leg_depart_time))}}</span>
+                                        class="ticket_bold_section">{{date('H:i',strtotime($flight->leg_depart_time))}}</span>
                                 </td>
                                 {{--                                    <td>Departure Terminal: I</td>--}}
                             </tr>
 
                             <tr>
                                 <td>@lang('trs.arrival'): <span
-                                            class="ticket_bold_section">{{$flight->airports2->name}}</span>
+                                        class="ticket_bold_section">{{$flight->airports2->name}}</span>
                                     ({{$flight->airports2->code}}
                                     ,{{$flight->airports2->$city ? : $flight->airports2->city_en}}
                                     ,{{$flight->airports2->$country ? : $flight->airports2->country_en}})
                                 </td>
                                 <td>@lang('trs.date'): <span
-                                            class="ticket_bold_section">{{date('d.m.Y',strtotime($flight->leg_arrival_time))}}</span>
+                                        class="ticket_bold_section">{{date('d.m.Y',strtotime($flight->leg_arrival_time))}}</span>
                                 </td>
                                 <td>@lang('trs.time'): <span
-                                            class="ticket_bold_section">{{date('H:i',strtotime($flight->leg_arrival_time))}}</span>
+                                        class="ticket_bold_section">{{date('H:i',strtotime($flight->leg_arrival_time))}}</span>
                                 </td>
                                 {{--                                    <td>Departure Terminal: I</td>--}}
                             </tr>
@@ -164,6 +165,76 @@
                             {{--                    </div>--}}
 
                         @endforeach
+
+
+                        @if ($book->flights->multi_flights)
+                            @foreach($book->flights->multi_flights as $multi)
+                                @foreach($multi->legs as $flight)
+
+                                    {{--                    <div class="ticket_flight_container">--}}
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="ticket_flight_direction"><span>{{$flight->leg_depart_airport}} To {{$flight->leg_arrival_airport}}  | @lang('trs.flight_number'):{{$flight->leg_flight_number}}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>@lang('trs.airline')</td>
+                                        <td>@lang('trs.flight_number') / @lang('trs.aircraft_type')</td>
+                                        <td>@lang('trs.cabin')</td>
+                                        <td>@lang('trs.bar')</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ticket_bold_section"><img class="ticket_flight_logo"
+                                                                             src="images/{{$flight->airlines->image}}">{{$flight->airlines->name}}
+                                        </td>
+                                        <td class="ticket_bold_section">{{$flight->leg_flight_number}}
+                                            / {{$flight->aircraft_type}}</td>
+                                        <td class="ticket_bold_section">{{\App\Services\MyHelperFunction::turn_class($flight->cabin_class)}} </td>
+                                        <td class="ticket_bold_section">{{$flight->leg_bar}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>@lang('trs.departure'): <span
+                                                class="ticket_bold_section">{{$flight->airports1->name}}</span>
+                                            ({{$flight->airports1->code}}
+                                            ,{{$flight->airports1->$city ? : $flight->airports1->city_en}}
+                                            ,{{$flight->airports1->$country ? : $flight->airports1->country_en}})
+                                        </td>
+                                        <td>@lang('trs.date'): <span
+                                                class="ticket_bold_section">{{date('d.m.Y',strtotime($flight->leg_depart_time))}}</span>
+                                        </td>
+                                        <td>@lang('trs.time'): <span
+                                                class="ticket_bold_section">{{date('H:i',strtotime($flight->leg_depart_time))}}</span>
+                                        </td>
+                                        {{--                                    <td>Departure Terminal: I</td>--}}
+                                    </tr>
+
+                                    <tr>
+                                        <td>@lang('trs.arrival'): <span
+                                                class="ticket_bold_section">{{$flight->airports2->name}}</span>
+                                            ({{$flight->airports2->code}}
+                                            ,{{$flight->airports2->$city ? : $flight->airports2->city_en}}
+                                            ,{{$flight->airports2->$country ? : $flight->airports2->country_en}})
+                                        </td>
+                                        <td>@lang('trs.date'): <span
+                                                class="ticket_bold_section">{{date('d.m.Y',strtotime($flight->leg_arrival_time))}}</span>
+                                        </td>
+                                        <td>@lang('trs.time'): <span
+                                                class="ticket_bold_section">{{date('H:i',strtotime($flight->leg_arrival_time))}}</span>
+                                        </td>
+                                        {{--                                    <td>Departure Terminal: I</td>--}}
+                                    </tr>
+                                    </tbody>
+                                    {{--                    </div>--}}
+
+                                @endforeach
+                            @endforeach
+                        @endif
+
                     </table>
 
                 </div>
