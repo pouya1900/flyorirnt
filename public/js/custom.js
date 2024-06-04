@@ -843,9 +843,10 @@ jQuery(document).ready(function ($) {
 
     // if ($('input[name="page"]').val() == "flight") {
     //     nouislidefilter_init();
-    // } else if ($('input[name="page"]').val() == "home") {
-    //     nouislidefilter_homepage_init();
-    // }
+    // } else
+    if ($('input[name="page"]').val() == "home") {
+        nouislidefilter_homepage_init();
+    }
 
 
     var is_none_stop = $("input[name='is_none_stop']").val();

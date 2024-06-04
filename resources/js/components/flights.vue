@@ -3043,7 +3043,7 @@
                         <div v-if="bagRules.iran_air">
                             <div class="rules_direction">
                             <span>
-                                {{ bagRules.FareRuleText.depart[0] }} - {{ rules.FareRuleText.depart[1] }}
+                                {{ bagRules.FareRuleText.depart[0] }} - {{ bagRules.FareRuleText.depart[1] }}
                             </span>
                             </div>
                             <table class="table table-striped">
