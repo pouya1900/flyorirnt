@@ -3051,7 +3051,7 @@
                                 <tbody>
                                 <tr>
                                     <td>
-                                        {{ rules.iran_air[0] }}
+                                        {{ bagRules.iran_air[0] }}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -3068,7 +3068,7 @@
                                     <tbody>
                                     <tr>
                                         <td>
-                                            {{ rules.iran_air[0] }}
+                                            {{ bagRules.iran_air[0] }}
                                         </td>
                                     </tr>
 
