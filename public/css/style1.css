@@ -29455,9 +29455,7 @@ rounded .country .capital {
 }
 
 .deal_button_md_d a i {
-    font-size: 20px;
     margin-left: 5px;
-
 }
 
 
@@ -29465,9 +29463,12 @@ rounded .country .capital {
     padding: 4px 8px;
     background: #1db8c1;
     border-radius: 5px;
-    color: #fff;
+    color: #fff !important;
 }
 
+.deal_button_md_d_select {
+    font-size: 16px;
+}
 
 .profile_page_container .profile .profile_body .item i {
     margin-left: 5px;

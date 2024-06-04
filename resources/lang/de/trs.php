@@ -391,13 +391,14 @@ return [
     "show_filter_result"               => "Zurück zu den Ergebnissen",
 
     "ads_flight_iframe_header" => "
+	Flugtickets nach Teheran-Preise für Direktflüge nach Teheran, z.B:<br>
 	<a href='https://flyorient.de/' target='_blank'><span style='font-size:18px;'>www.flyorient.de</span>
 	<img src='images/settings/logo.png' width=160px>
 	<span style='font-family:verdana;color:blue;font-size:20px;'>
 	  : پرواز مستقیم به تهران با ایران ایر . نمونه قیمت ها
 	  </span>
 	</a>
-
+<!--
     <table align='center' dir='rtl' border='1' bordercolor='#fff' width='90%'>
        <tr align='right'>
         <td style='background-color:#B0B0B0' width='18%'>&nbsp; از کلن :</td>
@@ -412,7 +413,7 @@ return [
 		<td style='background-color:#C0C0C0'>&nbsp;شنبه ها</td>
       </tr>
     </table>
-
+-->
 ",
     "online_ticket_not_active" => "<span style=\"font-size:18px; color:#008888\">Leider ist zur Zeit Online Buchen nicht möglich. Bitte Kontaktieren Sie Support:<br>
 email: <b>info@flyorient.de</b><br>

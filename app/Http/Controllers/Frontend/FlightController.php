@@ -216,7 +216,7 @@ class FlightController extends Controller
             return redirect()->back();
         }
 
-        if ($destination_airport->country != "IR" && $ajax_render) {
+        if ($destination_airport->country != "IR" && $origin_airport->country != "IR" && $ajax_render) {
 
             foreach ($ajax_render as $key => $value) {
                 if ($value == Setting::iranAir) {
@@ -742,7 +742,6 @@ class FlightController extends Controller
         return $grouped_airline_list;
 
     }
-
 
     public function iframe_result()
     {

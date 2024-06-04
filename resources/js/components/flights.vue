@@ -690,7 +690,7 @@
                                                                         this.my_number_format(item.TotalFare)
                                                                     }} € </span>
                                                                     <a @click="step1(item)">
-                                                                        <span> {{ this.trs.deal }}</span>
+                                                                        <span class="deal_button_md_d_select"> {{ this.trs.deal }}</span>
 
                                                                     </a>
                                                                 </div>

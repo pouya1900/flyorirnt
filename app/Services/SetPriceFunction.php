@@ -70,19 +70,35 @@ class SetPriceFunction
         //SRA: Fix margin: ----------------------
         $mwst = 0;
         if ($airline == "IR") {
-            if ($vendorPrice>900)      $margin = ($type == 0) ? 20 : 15;
-            else if ($vendorPrice>700) $margin = ($type == 0) ? 20 : 15;
-            else if ($vendorPrice>600) $margin = ($type == 0) ? 20 : 15;
+            if ($vendorPrice>900)      $margin = ($type == 0) ? 21 : 15;
+            else if ($vendorPrice>700) $margin = ($type == 0) ? 21 : 15;
+            else if ($vendorPrice>600) $margin = ($type == 0) ? 21 : 15;
             else if ($vendorPrice>500) $margin = ($type == 0) ? 22 : 15;
             else $margin = ($type == 0) ? 23 : 17;
             //$margin = ($type == 0) ? 20 : 15; //IranAir: 22:16
-            if ($vendor=="parto") $margin +=10;
+            if ($vendor=="parto") $margin +=20;
         } else {
-            $margin = ($type == 0) ? 25 : 18;
+            if ($vendorPrice<100)$margin = ($type == 0) ? 25 : 18;
+            $margin = ($type == 0) ? 35 : 28;
         }
         //---------------------------------------
         if ($type > 0) $payPal_fix = 0; // no fix paypal fee for children
         $EndPrice = ($vendorPrice + $payPal_fix + (1 + $mwst) * $margin) / (1 - $payPal_rate);
+        //*************************************************
+        // if online paypal disable for parto;
+        if  ($vendor=="parto")
+        {
+            if ($type == 0)  //adult
+            {
+                $margin  = 50;
+            }
+            else
+            {
+                $margin  = 45;
+            }
+            $EndPrice = $vendorPrice + $margin;
+        }
+        //*************************************************
         $EndPrice = round($EndPrice + 0.2);
         $paypal_fee = $EndPrice * $payPal_rate + $payPal_fix;
         $margin = ($EndPrice - $vendorPrice - $paypal_fee) / (1 + $mwst);
