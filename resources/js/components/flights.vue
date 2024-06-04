@@ -690,7 +690,9 @@
                                                                         this.my_number_format(item.TotalFare)
                                                                     }} € </span>
                                                                     <a @click="step1(item)">
-                                                                        <span class="deal_button_md_d_select"> {{ this.trs.deal }}</span>
+                                                                        <span class="deal_button_md_d_select"> {{
+                                                                                this.trs.deal
+                                                                            }}</span>
 
                                                                     </a>
                                                                 </div>
@@ -2757,7 +2759,8 @@
                                 </div>
                                 <div class="no_flight_text" v-else-if="!flight_ajax_loader">
                                     <p v-if="this.flights.length">{{ trs.reset_filter_to_see_flights }}
-                                        <button @click="resetAllFilter()" class="reset_all_filter reset_all_filter_in_text">
+                                        <button @click="resetAllFilter()"
+                                                class="reset_all_filter reset_all_filter_in_text">
                                             {{ trs.reset_all_filter }}
                                         </button>
                                     </p>
@@ -2951,19 +2954,19 @@
 
                         <div v-else-if="rules.FareRuleText">
                             <div class="rules_direction">
-                            <span>
-                                {{ rules.FareRuleText.depart[0] }} - {{ rules.FareRuleText.depart[1] }}
-                            </span>
+                                <span>
+                                    {{ rules.FareRuleText.depart[0] }} - {{ rules.FareRuleText.depart[1] }}
+                                </span>
                             </div>
-                            {{ rules.FareRuleText.Description[0] }}
+                            <div v-html="rules.FareRuleText.Description[0]"></div>
 
                             <div v-if="rules.FareRuleText.Description[1]">
                                 <div class="rules_direction">
-                            <span>
-                                {{ rules.FareRuleText.return[0] }} - {{ rules.FareRuleText.return[1] }}
-                            </span>
+                                    <span>
+                                        {{ rules.FareRuleText.return[0] }} - {{ rules.FareRuleText.return[1] }}
+                                    </span>
                                 </div>
-                                {{ rules.FareRuleText.Description[1] }}
+                                <div v-html="rules.FareRuleText.Description[1]"></div>
                             </div>
                         </div>
                     </div>
