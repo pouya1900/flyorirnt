@@ -330,6 +330,11 @@ jQuery(document).ready(function ($) {
         let multi_date_order_validation = 1;
 
         if (search_type == "M") {
+
+             adl = parseInt(value["adl_m"]);
+             chl = parseInt(value["chl_m"]);
+             inf = parseInt(value["inf_m"]);
+
             let count = $(".add_multi").data('count');
             if (!parseInt(validation["origin1"]) || !parseInt(validation["destination1"]) || !parseInt(validation["origin2"]) || !parseInt(validation["destination2"]) || (count >= 3 && (!parseInt(validation["origin3"]) || !parseInt(validation["destination3"]))) || (count >= 4 && (!parseInt(validation["origin4"]) || !parseInt(validation["destination4"])))) {
                 multi_validation = 0;

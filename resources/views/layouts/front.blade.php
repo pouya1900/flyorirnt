@@ -60,7 +60,7 @@
 
     @else
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/style1.css">
+        <link rel="stylesheet" href="css/style1.min.css">
 
     @endif
     <link rel="stylesheet" href="css/test_style.css">
@@ -152,7 +152,7 @@
 
 
 <script type="text/javascript" src="js/sticky-sidebar.min.js"></script>
-<script type="text/javascript" src="js/custom.js?ver=16"></script>
+<script type="text/javascript" src="js/custom12411.min.js?"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/popper.min.js"></script>

@@ -492,7 +492,7 @@
                                                                 <div class="count_h_up count_btn">+</div>
                                                                 <input type="text" class="count_number" readonly
                                                                        value="1"
-                                                                       data-min="1" data-max="9" id="adl" name="adl">
+                                                                       data-min="1" data-max="9" id="adl_m" name="adl_m">
                                                                 <div class="count_h_down count_btn">-</div>
 
                                                             </div>
@@ -512,7 +512,7 @@
                                                                 <div class="count_h_up count_btn">+</div>
                                                                 <input type="text" class="count_number" readonly
                                                                        value="0"
-                                                                       data-min="0" data-max="8" id="chl" name="chl">
+                                                                       data-min="0" data-max="8" id="chl_m" name="chl_m">
                                                                 <div class="count_h_down count_btn">-</div>
 
                                                             </div>
@@ -532,7 +532,7 @@
                                                                 <div class="count_h_up count_btn">+</div>
                                                                 <input type="text" class="count_number" readonly
                                                                        value="0"
-                                                                       data-min="0" data-max="8" id="inf" name="inf">
+                                                                       data-min="0" data-max="8" id="inf_m" name="inf_m">
                                                                 <div class="count_h_down count_btn">-</div>
 
                                                             </div>
