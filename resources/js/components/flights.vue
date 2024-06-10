@@ -4616,7 +4616,9 @@ export default {
                     && (item.DirectionInd != 2 || this.return_depart_time_range.includes(String(item.return_depart_time_range)))
                     && this.ValidatingAirlineCode.includes(item.ValidatingAirlineCode)
                     && ((this.slider.start[0] <= item.total_waiting
-                        && this.slider.start[1] >= item.total_waiting) || item.total_waiting == 0);
+                        && this.slider.start[1] >= item.total_waiting) || item.total_waiting == 0)
+                    && ((this.slider.start[0] <= item.return_total_waiting
+                        && this.slider.start[1] >= item.return_total_waiting) || item.return_total_waiting == 0);
 
                 if (item.DirectionInd == 4) {
                     let vm = this;
