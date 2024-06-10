@@ -90,11 +90,13 @@ class SetPriceFunction
         {
             if ($type == 0)  //adult
             {
-                $margin  = 50;
+                //$margin  = 45;
+                $margin = ($airline == "EK") ? 36:47;
             }
             else
             {
-                $margin  = 45;
+                //$margin  = 35;
+                $margin = ($airline == "EK") ? 30:35;
             }
             $EndPrice = $vendorPrice + $margin;
         }
