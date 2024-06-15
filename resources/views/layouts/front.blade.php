@@ -24,9 +24,11 @@
     <meta name="googlebot" content="index follow">
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="keywords"
-          content="booking , flugticket , travel , flight , hotel , flug , پرواز , بلیط , هواپیما , رزرو">
+          content="Flugtickets, günstige Flüge, Online-Buchung, Flugangebote, Last-Minute-Flüge, Billigflüge, Flugreisen, Flugtickets buchen , booking, travel, flight, پرواز ,رزرو بلیط , هواپیما ">
     <meta name="description"
-          content="Flüge nach Teheran,Flüge nach Teheran mit Iran Air,Flights to Tehran,Flights to Tehran with Iran Air,پرواز به ایران,پرواز به ایران با ایران ایر">
+          content="Buchen Sie günstige Flugtickets online! Entdecken Sie weltweite Flüge, Sonderangebote und exklusive Rabatte auf unserer benutzerfreundlichen Website. Jetzt buchen und sparen!">
+    <meta property="og:description"
+          content="Buchen Sie günstige Flugtickets online! Entdecken Sie weltweite Flüge, Sonderangebote und exklusive Rabatte auf unserer benutzerfreundlichen Website. Jetzt buchen und sparen!">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token()  }}">
     <!-- Google Fonts -->

@@ -36,13 +36,37 @@ class Irr
         <OriginLocation LocationCode="' . $data["OriginDestinationInformations"][0]["OriginLocationCode"] . '"/>
         <DestinationLocation LocationCode="' . $data["OriginDestinationInformations"][0]["DestinationLocationCode"] . '"/>
     </OriginDestinationInformation>';
-        if (isset($data["OriginDestinationInformations"][1])) {
+        if ($data["TravelPreference"]["AirTripType"] == "Return") {
             $req .= '
     <OriginDestinationInformation>
         <DepartureDateTime>' . $data["OriginDestinationInformations"][1]["DepartureDateTime"] . '</DepartureDateTime>
         <OriginLocation LocationCode="' . $data["OriginDestinationInformations"][1]["OriginLocationCode"] . '"/>
         <DestinationLocation LocationCode="' . $data["OriginDestinationInformations"][1]["DestinationLocationCode"] . '"/>
     </OriginDestinationInformation>';
+        }
+        if ($data["TravelPreference"]["AirTripType"] == "Multi") {
+            $req .= '
+    <OriginDestinationInformation>
+        <DepartureDateTime>' . $data["OriginDestinationInformations"][1]["DepartureDateTime"] . '</DepartureDateTime>
+        <OriginLocation LocationCode="' . $data["OriginDestinationInformations"][1]["OriginLocationCode"] . '"/>
+        <DestinationLocation LocationCode="' . $data["OriginDestinationInformations"][1]["DestinationLocationCode"] . '"/>
+    </OriginDestinationInformation>';
+            if (isset($data["OriginDestinationInformations"][2])) {
+                $req .= '
+    <OriginDestinationInformation>
+        <DepartureDateTime>' . $data["OriginDestinationInformations"][2]["DepartureDateTime"] . '</DepartureDateTime>
+        <OriginLocation LocationCode="' . $data["OriginDestinationInformations"][2]["OriginLocationCode"] . '"/>
+        <DestinationLocation LocationCode="' . $data["OriginDestinationInformations"][2]["DestinationLocationCode"] . '"/>
+    </OriginDestinationInformation>';
+            }
+            if (isset($data["OriginDestinationInformations"][3])) {
+                $req .= '
+    <OriginDestinationInformation>
+        <DepartureDateTime>' . $data["OriginDestinationInformations"][3]["DepartureDateTime"] . '</DepartureDateTime>
+        <OriginLocation LocationCode="' . $data["OriginDestinationInformations"][3]["OriginLocationCode"] . '"/>
+        <DestinationLocation LocationCode="' . $data["OriginDestinationInformations"][3]["DestinationLocationCode"] . '"/>
+    </OriginDestinationInformation>';
+            }
         }
         $req .= '
     <TravelPreferences >

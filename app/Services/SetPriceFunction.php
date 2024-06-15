@@ -68,8 +68,10 @@ class SetPriceFunction
             $margin = $min_margin;
         }
         //SRA: Fix margin: ----------------------
-        $mwst = 0;
-        if ($airline == "IR") {
+        $mwst = 0;		
+        if ($airline == "IR") 
+		{
+			/* old calculation:
             if ($vendorPrice>900)      $margin = ($type == 0) ? 21 : 15;
             else if ($vendorPrice>700) $margin = ($type == 0) ? 21 : 15;
             else if ($vendorPrice>600) $margin = ($type == 0) ? 21 : 15;
@@ -77,7 +79,10 @@ class SetPriceFunction
             else $margin = ($type == 0) ? 23 : 17;
             //$margin = ($type == 0) ? 20 : 15; //IranAir: 22:16
             if ($vendor=="parto") $margin +=20;
-        } else {
+			*/
+        } 
+		else 
+		{
             if ($vendorPrice<100)$margin = ($type == 0) ? 25 : 18;
             $margin = ($type == 0) ? 35 : 28;
         }
@@ -86,21 +91,23 @@ class SetPriceFunction
         $EndPrice = ($vendorPrice + $payPal_fix + (1 + $mwst) * $margin) / (1 - $payPal_rate);
         //*************************************************
         // if online paypal disable for parto;
-        if  ($vendor=="parto")
+		if  ($vendor=="parto")
         {
             if ($type == 0)  //adult
             {
-                //$margin  = 45;
-				$margin = ($airline == "EK") ? 36:47;
+                $margin  = 55;
+                //$margin = ($airline == "EK") ? 48:47;
             }
             else
             {
-                //$margin  = 35;
-				$margin = ($airline == "EK") ? 30:35;
+                $margin  = 45;
+                //$margin = ($airline == "EK") ? 38:35;
             }
             $EndPrice = $vendorPrice + $margin;
         }
         //*************************************************
+        if ($airline == "IR")
+		{
         $EndPrice = round($EndPrice + 0.2);
         $paypal_fee = $EndPrice * $payPal_rate + $payPal_fix;
         $margin = ($EndPrice - $vendorPrice - $paypal_fee) / (1 + $mwst);
@@ -113,6 +120,11 @@ class SetPriceFunction
             $EndPrice += $price_addition_infant;
         }
 
+        }
+		else
+		{
+        }
+			
         if ($config["no_change"] == 1 || ($setting->pure_price && Auth::user() && Auth::user()->role == 3)) $EndPrice = $price;
         $this->setPrice($EndPrice, $type);
         return $EndPrice;

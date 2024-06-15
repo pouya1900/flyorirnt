@@ -127,7 +127,7 @@ return [
     "passenger_type"                                => "Passagiertyp",
     "date_of_birth"                                 => "Geburtsdatum",
     "nationality"                                   => "Staatsangehörigkeit",
-    "expiry_date"                                   => "Verfallsdatum",
+    "expiry_date"                                   => "Gültig bis:",
     "contact_detail"                                => "Kontaktdetail",
     "phone"                                         => "Telefon",
     "confirm_rules"                                 => "Ich habe die <a target='_blank' href=\"/AGB\"> AGB </a> gelesen und akzeptiere diese und möchte diesen Flug buchen",
@@ -303,9 +303,10 @@ return [
 
 //	site setting translation
     "tab_title"                        => "Fly Orient- Online Flugticket Buchen",
-    "top_bar_left_text_"               => "Fly Orient- Online Flugticket Buchen",
-    "top_bar_left_text"                => "<span style='color:white;font-size:14px;'>Fly Orient- Online Flugticket Buchen</span> &nbsp;&nbsp;&nbsp; WhatsApp: <img width='28px' src='https://flyorient.de/images/icon/WhatsApp.png'/>
+    "top_bar_left_text__"              => "<span style='color:white;font-size:14px;'>Fly Orient- Online Flugticket Buchen</span> &nbsp;&nbsp;&nbsp; WhatsApp: <img width='28px' src='https://flyorient.de/images/icon/WhatsApp.png'/>
 	<a style='color:#ffffff; font-size:14px;' target='_blank' href='https://wa.me/+4917661875479'>+49-176-618 75 479</a>",
+    "top_bar_left_text"                => "<span style='color:white;font-size:15px;'>Entdecken Sie die Welt – Tolle Flugpreise für Sie !</span> ",
+
     //	day of week
     "sunday_short"                     => "So.",
     "monday_short"                     => "Mo.",

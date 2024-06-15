@@ -878,3 +878,14 @@ response :
 --------------------------------------
 --------------------------------------
 --------------------------------------
+11:50 2024-06-11 : 
+service : AirBook
+flight : TK1672.....CGN->IKA......2024-06-28 10:25:00->2024-06-28 22:05:00
+return :IKA->CGN......2024-07-12 12:25:00->2024-07-12 18:50:00
+request : 
+{"FareSourceCode":"666562636436323965623333346161656266383762306161306337376132343926333826393237313630343630","ClientUniqueId":"2817G963J23754547","TravelerInfo":{"PhoneNumber":"+491733797285","Email":"info@igm-chemicals.de","AirTravelers":[{"DateOfBirth":"1960-11-17","Gender":0,"PassengerType":1,"PassengerName":{"PassengerFirstName":"Ramiz","PassengerMiddleName":null,"PassengerLastName":"Panahi-Far","PassengerTitle":"Mr"},"Passport":{"Country":"DE","ExpiryDate":"2031-03-29","IssueDate":"2021-03-30","PassportNumber":"C73KX9XK0"},"NationalId":"","Nationality":"DE","SeatPreference":0,"MealPreference":0}]}}
+response : 
+{"Success":false,"TktTimeLimit":"0001-01-01T00:00:00","Category":null,"Status":null,"UniqueId":null,"Error":{"Id":"Err0107052","Message":"PassengerName is not valid"},"PriceChange":false}
+--------------------------------------
+--------------------------------------
+--------------------------------------

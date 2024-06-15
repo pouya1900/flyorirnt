@@ -842,8 +842,10 @@ class FlightController extends Controller
 
 
         $month = [];
-        for ($i = $first_month; $i <= $first_month + 4; $i++) {
-            $month[] = $this->get_month($i);
+        if ($ads->count()) {
+            for ($i = $first_month; $i <= $first_month + 4; $i++) {
+                $month[] = $this->get_month($i);
+            }
         }
         return view('front.iframe.flights', compact('data', 'month', 'first_month'));
 
@@ -853,46 +855,20 @@ class FlightController extends Controller
     public function get_month($number)
     {
         if ($number > 12) $number -= 12;
-        switch ($number) {
-            case 1:
-                $month = "Januar";
-                break;
-            case 2:
-                $month = "Februar";
-                break;
-            case 3:
-                $month = "März";
-                break;
-            case 4:
-                $month = "April";
-                break;
-            case 5:
-                $month = "Mai";
-                break;
-            case 6:
-                $month = "Juni";
-                break;
-            case 7:
-                $month = "Juli";
-                break;
-            case 8:
-                $month = "August";
-                break;
-            case 9:
-                $month = "September";
-                break;
-            case 10:
-                $month = "Oktober";
-                break;
-            case 11:
-                $month = "November";
-                break;
-            case 12:
-                $month = "Dezember";
-                break;
-        }
-
-        return $month;
+        return match ($number) {
+            1 => "Januar",
+            2 => "Februar",
+            3 => "März",
+            4 => "April",
+            5 => "Mai",
+            6 => "Juni",
+            7 => "Juli",
+            8 => "August",
+            9 => "September",
+            10 => "Oktober",
+            11 => "November",
+            12 => "Dezember",
+        };
     }
 
     public function multi(Request $request, $origin1, $destination1, $depart1, $origin2, $destination2, $depart2, $class, $adl, $chl, $inf, $none_stop, $origin3 = null, $destination3 = null, $depart3 = null, $origin4 = null, $destination4 = null, $depart4 = null)

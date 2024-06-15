@@ -110,7 +110,7 @@ return [
     "mstr"                                          => "Mstr.",
     "birthday"                                      => "Birthday",
     "country"                                       => "Country",
-    "expiry_date_of_passport"                       => "Expiry Date of passport",
+    "expiry_date_of_passport"                       => "Date of expiry:",
     "issue_date_of_passport"                        => "Issue Date of passport",
     "national_id_number"                            => "National ID Number",
     "contact_info"                                  => "Contact Info",
@@ -303,9 +303,9 @@ return [
 
 //	site setting translation
     "tab_title"                        => "Fly Orient- Online Flight Ticket Booking",
-    "top_bar_left_text_"               => "Fly Orient- Online Flight Ticket Booking",
-    "top_bar_left_text"                => "<span style='color:white;font-size:14px;'>Fly Orient- Online Flight Ticket Booking</span> &nbsp;&nbsp;&nbsp; WhatsApp: <img width='28px' src='https://flyorient.de/images/icon/WhatsApp.png'/>
+    "top_bar_left_text__"              => "<span style='color:white;font-size:14px;'>Fly Orient- Online Flight Ticket Booking</span> &nbsp;&nbsp;&nbsp; WhatsApp: <img width='28px' src='https://flyorient.de/images/icon/WhatsApp.png'/>
 	<a style='color:#ffffff; font-size:14px;' target='_blank' href='https://wa.me/+4917661875479'>+49-176-618 75 479</a>",
+    "top_bar_left_text"                => "<span style='color:white;font-size:15px;'>Discover the world – Great flight prices for you !</span> ",
 
 //	day of week
     "sunday_short"                     => "Su.",

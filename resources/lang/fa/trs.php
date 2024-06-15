@@ -305,9 +305,7 @@ return [
 
 //	site setting translation
     "tab_title"                                     => "Fly Orient- Online Flight Ticket Reservation",
-    "top_bar_left_text__"                           => "Fly Orient- Online Flight Ticket Booking",
-    "top_bar_left_text"                             => "<span style='color:white;font-size:14px;'>Fly Orient- Online Flight Ticket Booking</span> &nbsp;&nbsp;&nbsp; WhatsApp: <img width='36px' src='https://flyorient.de/images/icon/WhatsApp.png'/>
-	<a style='color:#ffffff; font-size:16px;' target='_blank' href='https://wa.me/+4917661875479'>+49-176-618 75 479</a>",
+    "top_bar_left_text"                             => "<span style='color:white;font-size:14px;'>دنیا را اکتشاف کنید - قیمت پرواز عالی برای شما</span>",
 
     //	day of week
     "sunday_short"                                  => "Su.",

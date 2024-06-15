@@ -45,47 +45,55 @@ class ProcessFlight implements ShouldQueue
      */
     public function handle()
     {
-        $instance_render = new Render(new iranAir(Setting::iranAir));
+        try {
+            $instance_render = new Render(new iranAir(Setting::iranAir_demo));
 
 
-        $search_id = $instance_render->lowfaresearch($this->airport, "IKA", date('Y-m-d', strtotime($this->depart)), date('Y-m-d', strtotime($this->return)), "economy", 1, 0, 0, 0);
+            $response = $instance_render->lowfaresearch($this->airport, "IKA", date('Y-m-d', strtotime($this->depart)), date('Y-m-d', strtotime($this->return)), "economy", 1, 0, 0, 0);
 
-        $ads_search = Ads_search::where("origin", $this->airport)->where("month", $this->depart->month)->first();
+            $ads_search = Ads_search::where("origin", $this->airport)->where("month", $this->depart->month)->first();
 
-        $flight = Flight::where("search_id", $search_id)->first();
+            $flights = $response["flights"];
 
-        if (!$flight) return;
-
-        $data = [
-            'origin'      => $this->airport,
-            'destination' => "IKA",
-            'class'       => 'economy',
-            'adl'         => 1,
-            'chl'         => 0,
-            'inf'         => 0,
-            'depart'      => date('d.m.Y', strtotime($flight->depart_time)),
-            'return'      => date('d.m.Y', strtotime($flight->return_depart_time)),
-            'none_stop'   => 0,
-        ];
-
-        if ($ads_search) {
-            if ($ads_search->price > $flight->costs->TotalFare) {
-                $ads_search->update([
-                    "depart"      => $flight->depart_time,
-                    "return"      => $flight->return_depart_time,
-                    "search_link" => route('flights', $data),
-                    "price"       => $flight->costs->TotalFare,]);
+            if (is_array($flights) && count($flights)) {
+                $flight = $flights[0];
+            } else {
+                return;
             }
-        } else {
-            Ads_search::create([
-                "origin"      => $this->airport,
-                "destination" => "IKA",
-                "depart"      => $flight->depart_time,
-                "return"      => $flight->return_depart_time,
-                "month"       => $this->depart->month,
-                "search_link" => route('flights', $data),
-                "price"       => $flight->costs->TotalFare,
-            ]);
+
+            $data = [
+                'origin'      => $this->airport,
+                'destination' => "IKA",
+                'class'       => 'economy',
+                'adl'         => 1,
+                'chl'         => 0,
+                'inf'         => 0,
+                'depart'      => date('d.m.Y', strtotime($flight["depart_time"])),
+                'return'      => date('d.m.Y', strtotime($flight["return_depart_time"])),
+                'none_stop'   => 0,
+            ];
+
+            if ($ads_search) {
+                if ($ads_search->price > $flight["TotalFare"]) {
+                    $ads_search->update([
+                        "depart"      => $flight["depart_time"],
+                        "return"      => $flight["return_depart_time"],
+                        "search_link" => route('flights', $data),
+                        "price"       => $flight["TotalFare"],
+                    ]);
+                }
+            } else {
+                Ads_search::create([
+                    "origin"      => $this->airport,
+                    "destination" => "IKA",
+                    "depart"      => $flight["depart_time"],
+                    "return"      => $flight["return_depart_time"],
+                    "month"       => $this->depart->month,
+                    "search_link" => route('flights', $data),
+                    "price"       => $flight["TotalFare"],
+                ]);
+            }
+        } catch (\Exception $e) {
         }
 
     }
