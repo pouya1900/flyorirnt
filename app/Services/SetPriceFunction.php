@@ -68,10 +68,10 @@ class SetPriceFunction
             $margin = $min_margin;
         }
         //SRA: Fix margin: ----------------------
-        $mwst = 0;		
-        if ($airline == "IR") 
-		{
-			/* old calculation:
+        $mwst = 0;
+        if ($airline == "IR")
+        {
+            /* old calculation:
             if ($vendorPrice>900)      $margin = ($type == 0) ? 21 : 15;
             else if ($vendorPrice>700) $margin = ($type == 0) ? 21 : 15;
             else if ($vendorPrice>600) $margin = ($type == 0) ? 21 : 15;
@@ -79,10 +79,10 @@ class SetPriceFunction
             else $margin = ($type == 0) ? 23 : 17;
             //$margin = ($type == 0) ? 20 : 15; //IranAir: 22:16
             if ($vendor=="parto") $margin +=20;
-			*/
-        } 
-		else 
-		{
+            */
+        }
+        else
+        {
             if ($vendorPrice<100)$margin = ($type == 0) ? 25 : 18;
             $margin = ($type == 0) ? 35 : 28;
         }
@@ -90,7 +90,7 @@ class SetPriceFunction
         if ($type > 0) $payPal_fix = 0; // no fix paypal fee for children
         $EndPrice = ($vendorPrice + $payPal_fix + (1 + $mwst) * $margin) / (1 - $payPal_rate);
         //*************************************************
-		if  ($vendor=="parto")
+        if  ($vendor=="parto")
         {
             if ($type == 0)  //adult
             {
@@ -106,28 +106,28 @@ class SetPriceFunction
         }
         //*************************************************
         if ($airline == "IR")
-		{
-        	$EndPrice = $vendorPrice;
-		}
-		else
-		{
-        	$EndPrice = round($EndPrice + 0.2);
-        	$paypal_fee = $EndPrice * $payPal_rate + $payPal_fix;
-        	$margin = ($EndPrice - $vendorPrice - $paypal_fee) / (1 + $mwst);
-        	$tax = $margin * $mwst;
-        	if ($type == 0) 
-			{
-            	$EndPrice += $price_addition_adult;
-        	} 
-			elseif ($type == 1) 
-			{
-            	$EndPrice += $price_addition_child;
-        	} 
-			else 
-			{
-            	$EndPrice += $price_addition_infant;
-        	}
-		}
+        {
+            $EndPrice = $vendorPrice;
+        }
+        else
+        {
+            $EndPrice = round($EndPrice + 0.2);
+            $paypal_fee = $EndPrice * $payPal_rate + $payPal_fix;
+            $margin = ($EndPrice - $vendorPrice - $paypal_fee) / (1 + $mwst);
+            $tax = $margin * $mwst;
+            if ($type == 0)
+            {
+                $EndPrice += $price_addition_adult;
+            }
+            elseif ($type == 1)
+            {
+                $EndPrice += $price_addition_child;
+            }
+            else
+            {
+                $EndPrice += $price_addition_infant;
+            }
+        }
         if ($config["no_change"] == 1 || ($setting->pure_price && Auth::user() && Auth::user()->role == 3)) $EndPrice = $price;
         $this->setPrice($EndPrice, $type);
         return $EndPrice;
