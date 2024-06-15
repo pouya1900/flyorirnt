@@ -90,7 +90,6 @@ class SetPriceFunction
         if ($type > 0) $payPal_fix = 0; // no fix paypal fee for children
         $EndPrice = ($vendorPrice + $payPal_fix + (1 + $mwst) * $margin) / (1 - $payPal_rate);
         //*************************************************
-        // if online paypal disable for parto;
 		if  ($vendor=="parto")
         {
             if ($type == 0)  //adult
@@ -108,23 +107,27 @@ class SetPriceFunction
         //*************************************************
         if ($airline == "IR")
 		{
-        $EndPrice = round($EndPrice + 0.2);
-        $paypal_fee = $EndPrice * $payPal_rate + $payPal_fix;
-        $margin = ($EndPrice - $vendorPrice - $paypal_fee) / (1 + $mwst);
-        $tax = $margin * $mwst;
-        if ($type == 0) {
-            $EndPrice += $price_addition_adult;
-        } elseif ($type == 1) {
-            $EndPrice += $price_addition_child;
-        } else {
-            $EndPrice += $price_addition_infant;
-        }
-
-        }
+        	$EndPrice = $vendorPrice;
+		}
 		else
 		{
-        }
-			
+        	$EndPrice = round($EndPrice + 0.2);
+        	$paypal_fee = $EndPrice * $payPal_rate + $payPal_fix;
+        	$margin = ($EndPrice - $vendorPrice - $paypal_fee) / (1 + $mwst);
+        	$tax = $margin * $mwst;
+        	if ($type == 0) 
+			{
+            	$EndPrice += $price_addition_adult;
+        	} 
+			elseif ($type == 1) 
+			{
+            	$EndPrice += $price_addition_child;
+        	} 
+			else 
+			{
+            	$EndPrice += $price_addition_infant;
+        	}
+		}
         if ($config["no_change"] == 1 || ($setting->pure_price && Auth::user() && Auth::user()->role == 3)) $EndPrice = $price;
         $this->setPrice($EndPrice, $type);
         return $EndPrice;
