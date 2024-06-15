@@ -311,7 +311,16 @@ class FlightController extends Controller
 
         $user = Auth::user();
 
-        return response(view('front.flight.flightsvue', compact('lang', 'search_data', 'ajax_render', 'filter', 'country', 'user')));
+        if ($user->role == User::agency) {
+            $user->balance = $user->balance;
+        }
+
+        $offline_ticket_parto = 0;
+        if ($setting->offline_ticket && (!Auth::check() || Auth::user()->role != User::admin)) {
+            $offline_ticket_parto = 1;
+        }
+
+        return response(view('front.flight.flightsvue', compact('lang', 'search_data', 'ajax_render', 'filter', 'country', 'user', 'offline_ticket_parto')));
 
     }
 
@@ -1016,7 +1025,17 @@ class FlightController extends Controller
         $country = Country::all();
         $user = Auth::user();
 
-        return response(view('front.flight.flightsvue', compact('lang', 'search_data', 'ajax_render', 'filter', 'user', 'country')));
+
+        if ($user->role == User::agency) {
+            $user->balance = $user->balance;
+        }
+
+        $offline_ticket_parto = 0;
+        if ($setting->offline_ticket && (!Auth::check() || Auth::user()->role != User::admin)) {
+            $offline_ticket_parto = 1;
+        }
+
+        return response(view('front.flight.flightsvue', compact('lang', 'search_data', 'ajax_render', 'filter', 'user', 'country', 'offline_ticket_parto')));
 
 
     }

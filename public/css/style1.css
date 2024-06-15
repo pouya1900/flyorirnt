@@ -30310,3 +30310,7 @@ table.full-width_important {
     font-size: 18px;
     color: #fff;
 }
+
+.deal_button_md_d_offline , .deal_button_offline {
+    background: #7d7e7e !important;
+}
