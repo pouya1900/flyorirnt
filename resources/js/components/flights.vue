@@ -689,11 +689,15 @@
                                                                 <span>{{
                                                                         this.my_number_format(item.TotalFare)
                                                                     }} € </span>
-                                                                    <a @click="step1(item)">
+                                                                    <a v-if="this.offline_ticket_parto && item.render==1" class="deal_button_md_d_offline">
+                                                                        <span class="deal_button_md_d_select"> {{
+                                                                                this.trs.offline
+                                                                            }}</span>
+                                                                    </a>
+                                                                    <a v-else @click="step1(item)">
                                                                         <span class="deal_button_md_d_select"> {{
                                                                                 this.trs.deal
                                                                             }}</span>
-
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1608,8 +1612,10 @@
                                                             }} € {{ this.trs["p.a"] }}</span>
                                                             </div>
 
-
-                                                            <a @click="step1(item)">
+                                                            <a v-if="this.offline_ticket_parto && item.render==1">
+                                                                <div class="deal_button deal_button_offline">{{ this.trs.offline }}</div>
+                                                            </a>
+                                                            <a v-else @click="step1(item)">
                                                                 <div class="deal_button">{{ this.trs.deal }}</div>
                                                             </a>
 
@@ -3570,7 +3576,7 @@
                                         <div>
 
                                             <a @click="pay_direct('agency')"
-                                               v-if="parseInt(agency.balance) >= parseInt(this.selected_flight.TotalFare)">{{
+                                               v-if="parseInt(agency.balance.amount) >= parseInt(this.selected_flight.TotalFare)">{{
                                                     trs.pay_with_balance
                                                 }}</a>
                                             <span v-else class="opacity-5">{{ trs.pay_with_balance }}</span>
@@ -3796,7 +3802,7 @@ export default {
     components: {
         singleFlight
     },
-    props: ['user', 'agency', 'lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'multi_search_url', 'filter', 'air_rules_url', 'air_bag_url', 'revalidate_url', 'country', 'airlines_rule_url', 'process_payment_url', 'paypal_id', 'confirm_payment_url', 'successful_book_url', 'failed_book_url', 'cancel_payment_url', 'setting'],
+    props: ['user', 'agency', 'lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'multi_search_url', 'filter', 'air_rules_url', 'air_bag_url', 'revalidate_url', 'country', 'airlines_rule_url', 'process_payment_url', 'paypal_id', 'confirm_payment_url', 'successful_book_url', 'failed_book_url', 'cancel_payment_url', 'setting', 'offline_ticket_parto'],
     name: 'flights',
     watch: {
         step(newValue, oldValue) {

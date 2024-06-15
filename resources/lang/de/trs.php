@@ -467,5 +467,6 @@ WhatsApp: <b>+49-176-618 75 479</b></span>",
     "pay_with_admin"                               => "Mit Administrator bezahlen",
     "reset_filter_to_see_flights"                  => "Einige Flüge, die Ihren Suchkriterien entsprechen, wurden herausgefiltert. Bitte setzen Sie die Filter zurück, um alle verfügbaren Flüge anzuzeigen.",
     "no_flight"                                    => "Entschuldigung, es gibt keine Flüge, die Ihren Suchkriterien entsprechen.",
+    "offline"                                      => "offline",
 
 ];

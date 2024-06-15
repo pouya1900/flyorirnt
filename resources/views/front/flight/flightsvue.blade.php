@@ -50,6 +50,8 @@
             :cancel_payment_url="{{json_encode(route('cancel_payment'))}}"
             :paypal_id="{{json_encode($setting->payment ? env('PAYPAL_CLIENT_ID') : env('PAYPAL_TEST_CLIENT_ID'))}}"
             :setting="{{json_encode($setting)}}"
+            :offline_ticket_parto="{{json_encode($offline_ticket_parto)}}"
+            :agency="{{$user && $user->role==\App\User::agency ? $user : null}}"
             :filter="{{json_encode($filter)}}">
 
         </flights>
