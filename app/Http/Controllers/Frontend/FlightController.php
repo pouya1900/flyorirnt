@@ -1026,7 +1026,7 @@ class FlightController extends Controller
         $user = Auth::user();
 
 
-        if ($user->role == User::agency) {
+        if ($user && $user->role == User::agency) {
             $user->balance = $user->balance;
         }
 
