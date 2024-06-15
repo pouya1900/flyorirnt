@@ -4104,7 +4104,7 @@ export default {
 
         },
         my_number_format(number) {
-            return Intl.NumberFormat("en-US", {maximumFractionDigits: 1}).format(Number(number).toFixed(1));
+            return Intl.NumberFormat("en-US", {maximumFractionDigits: 2}).format(Number(number).toFixed(2));
         },
         step1(flight) {
             this.selected_flight = flight;
