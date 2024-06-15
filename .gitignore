@@ -13,3 +13,11 @@
 #yarn-error.log
 #/.idea
 #/.vscode
+/app/Http/Controllers/Frontend/script/logs
+/public/webServiceErrors.txt
+/public/paymentServiceError.txt
+worker.log
+worker.log.*
+/public/tickets
+/public/invoices
+/resources/lang
