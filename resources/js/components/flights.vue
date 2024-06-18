@@ -1608,7 +1608,7 @@
                                                             <div v-if="item.TotalFare!=item.FarePerAdult"
                                                                  class="deal_price_detail">
                                                         <span>{{
-                                                                Math.round(item.FarePerAdult)
+                                                                this.my_number_format(item.FarePerAdult)
                                                             }} € {{ this.trs["p.a"] }}</span>
                                                             </div>
 
@@ -3959,7 +3959,7 @@ export default {
             let price = '#price_details' + index;
             if (this.collapse_price_array.includes(index)) {
                 this.collapse_price_array = this.collapse_price_array.filter(item => item !== index);
-                $(pricec).collapse('hide');
+                $(price).collapse('hide');
             } else {
                 this.collapse_price_array.push(index);
                 this.collapse_array = this.collapse_array.filter(item => item !== index);
@@ -4104,7 +4104,7 @@ export default {
 
         },
         my_number_format(number) {
-            return Intl.NumberFormat("en-US", {maximumFractionDigits: 2}).format(Number(number).toFixed(2));
+            return Intl.NumberFormat("de-DE", {maximumFractionDigits: 2}).format(Number(number).toFixed(2));
         },
         step1(flight) {
             this.selected_flight = flight;

@@ -34,7 +34,7 @@
                         @endwhile
                         <td class="text-center iframe_flight">
                             <a target="_blank" href={{$row2->search_link}}>
-                                <div>{{$row2->price}} €</div>
+                                <div>{{number_format($row2->price,2,",",".")}} €</div>
                                 <div style="font-size: 13px">{{date('d.m',strtotime($row2->depart))}}
                                     - {{date('d.m',strtotime($row2->return))}}</div>
                             </a>
