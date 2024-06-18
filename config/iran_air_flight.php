@@ -1,33 +1,33 @@
 <?php
 
-//monday : 0
-//thursday  : 1
-//wednesday : 2
-//tuesday : 3
-//friday : 4
-//saturday : 5
-//sunday : 6
+//sunday : 0
+//monday : 1
+//thursday  : 2
+//wednesday : 3
+//tuesday : 4
+//friday : 5
+//saturday : 6
 
 $array = [
     [
         "airport" => "FRA",  //Frankfurt
-        "depart"  => [2, 5],
-        "return"  => [2, 5],
+        "depart"  => [3, 6],
+        "return"  => [3, 6],
     ],
     [
         "airport" => "HAM",  //Hamburg
-        "depart"  => [0, 3],
-        "return"  => [0, 3],
+        "depart"  => [1, 4],
+        "return"  => [1, 4],
     ],
     [
         "airport" => "CGN",  //Köln
-        "depart"  => [1,4],
-        "return"  => [1,4],
+        "depart"  => [2,5],
+        "return"  => [2,5],
     ],
     [
         "airport" => "VIE",  //Wien
-        "depart"  => [5],
-        "return"  => [5],
+        "depart"  => [6],
+        "return"  => [6],
     ],
 ];
 
