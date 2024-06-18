@@ -334,7 +334,7 @@
 
 
                                         <!-- waiting time search -->
-                                        <div v-if="!search_data.none_stop" class="widget">
+                                        <div v-show="!search_data.none_stop" class="widget">
                                             <div class="widget_content">
                                                 <div class="widget-sub-title">
                                                     <span>{{ trs.waiting_time }}</span>
@@ -689,7 +689,8 @@
                                                                 <span>{{
                                                                         this.my_number_format(item.TotalFare)
                                                                     }} € </span>
-                                                                    <a v-if="this.offline_ticket_parto && item.render==1" class="deal_button_md_d_offline">
+                                                                    <a v-if="this.offline_ticket_parto && item.render==1"
+                                                                       class="deal_button_md_d_offline">
                                                                         <span class="deal_button_md_d_select"> {{
                                                                                 this.trs.offline
                                                                             }}</span>
@@ -1613,7 +1614,9 @@
                                                             </div>
 
                                                             <a v-if="this.offline_ticket_parto && item.render==1">
-                                                                <div class="deal_button deal_button_offline">{{ this.trs.offline }}</div>
+                                                                <div class="deal_button deal_button_offline">
+                                                                    {{ this.trs.offline }}
+                                                                </div>
                                                             </a>
                                                             <a v-else @click="step1(item)">
                                                                 <div class="deal_button">{{ this.trs.deal }}</div>
@@ -2775,7 +2778,7 @@
                             </div>
                         </div>
 
-                        <div v-if="flight_ajax_loader" class="ajax_flight_loader_container">
+                        <div v-if="flight_ajax_loader>0" class="ajax_flight_loader_container">
                             <div class="ajax_flight_header">
                                 <span class="ajax_flight_header_before">
                                     {{ trs.ajax_flight_loader_text }}
@@ -3893,7 +3896,6 @@ export default {
         },
         searchFlight() {
             this.ajax_render.forEach((render) => {
-
                 const headers = {
                     'X-CSRF-TOKEN': this.csrf
                 };
@@ -3932,7 +3934,6 @@ export default {
                     }).catch(error => {
                     this.flight_ajax_loader--;
                 });
-
             });
         },
         airline_counter1Add() {
