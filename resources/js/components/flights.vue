@@ -3250,8 +3250,9 @@
                                     </div>
 
 
-                                    <div v-if="selected_flight.IsPassportMandatory"
-                                         class="col-12 col-md-6 col-lg-3">
+                                    <div
+                                        v-if="selected_flight.IsPassportMandatory && selected_flight.IsPassportMandatory!='0' && selected_flight.IsPassportMandatory!='false'"
+                                        class="col-12 col-md-6 col-lg-3">
                                         <div class="item_container">
                                             <label>{{ trs.expiry_date_of_passport }} :</label>
                                             <input class="EXP_date passenger_form_element date_latin_font"
@@ -3263,8 +3264,9 @@
                                         </div>
                                     </div>
 
-                                    <div v-if="selected_flight.IsPassportIssueDateMandatory"
-                                         class="col-12 col-md-6 col-lg-3">
+                                    <div
+                                        v-if="selected_flight.IsPassportIssueDateMandatory && selected_flight.IsPassportIssueDateMandatory!='false' && selected_flight.IsPassportIssueDateMandatory!='0'"
+                                        class="col-12 col-md-6 col-lg-3">
                                         <div class="item_container">
                                             <label>{{ trs.issue_date_of_passport }} :</label>
                                             <input class="DOB_date passenger_form_element date_latin_font"
@@ -3276,8 +3278,9 @@
                                         </div>
                                     </div>
 
-                                    <div v-if="selected_flight.IsPassportNumberMandatory"
-                                         class="col-12 col-md-6 col-lg-3">
+                                    <div
+                                        v-if="selected_flight.IsPassportNumberMandatory && selected_flight.IsPassportNumberMandatory!='0' && selected_flight.IsPassportNumberMandatory!='false'"
+                                        class="col-12 col-md-6 col-lg-3">
                                         <div class="item_container">
                                             <label>{{ trs.pass_number }} :</label>
                                             <input class="passenger_form_element" type="text"
@@ -3913,6 +3916,7 @@ export default {
                         if (response.data.status === 0) {
                             this.flight_ajax_loader--;
                             this.flights.push(...response.data.flights);
+                            console.log(this.flights);
                             this.airlines_list.push(...response.data.airlines_list);
                             this.flight_grouped.push(...response.data.flight_grouped);
                             this.airlines = {...this.airlines, ...response.data.airlines_filter_list};
