@@ -250,20 +250,20 @@
                     <table>
                         <tr>
                             <td>@lang('trs.adult_base_price_per_each'):</td>
-                            <td class="ticket_bold_section">{{round($book->flights->costs->FarePerAdult)}} €</td>
+                            <td class="ticket_bold_section">{{$book->flights->costs->FarePerAdult}} €</td>
                         </tr>
 
                         @if ($book->flights->costs->child)
                             <tr>
                                 <td>@lang('trs.child_base_price_per_each'):</td>
-                                <td class="ticket_bold_section">{{round($book->flights->costs->FarePerChild)}} €</td>
+                                <td class="ticket_bold_section">{{$book->flights->costs->FarePerChild}} €</td>
                             </tr>
                         @endif
 
                         @if ($book->flights->costs->infant)
                             <tr>
                                 <td>@lang('trs.infant_base_price_per_each'):</td>
-                                <td class="ticket_bold_section">{{round($book->flights->costs->FarePerInf)}} €</td>
+                                <td class="ticket_bold_section">{{$book->flights->costs->FarePerInf}} €</td>
                             </tr>
                         @endif
 

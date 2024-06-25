@@ -4252,14 +4252,14 @@ export default {
                         this.errors.pass_number[i] = this.trs.its_required;
                         error = 1;
                     }
-                    if (this.selected_flight.IsPassportMandatory) {
+                    if (this.selected_flight.IsPassportMandatory && this.selected_flight.IsPassportMandatory != '0' && this.selected_flight.IsPassportMandatory != 'false') {
                         if (!this.exp[i]) {
                             this.errors.exp[i] = this.trs.its_required;
                             error = 1;
                         }
                     }
 
-                    if (this.selected_flight.IsPassportIssueDateMandatory) {
+                    if (this.selected_flight.IsPassportIssueDateMandatory && this.selected_flight.IsPassportIssueDateMandatory != 'false' && this.selected_flight.IsPassportIssueDateMandatory != '0') {
                         if (!this.iss[i]) {
                             this.errors.iss[i] = this.trs.its_required;
                             error = 1;
@@ -4629,7 +4629,7 @@ export default {
                     && ((this.slider.start[0] <= item.total_waiting
                         && this.slider.start[1] >= item.total_waiting) || item.total_waiting == 0)
                     && ((this.slider.start[0] <= item.return_total_waiting
-                        && this.slider.start[1] >= item.return_total_waiting) || item.return_total_waiting == 0);
+                        && this.slider.start[1] >= item.return_total_waiting) || item.return_total_waiting == 0 || item.return_total_waiting == null);
 
                 if (item.DirectionInd == 4) {
                     let vm = this;
