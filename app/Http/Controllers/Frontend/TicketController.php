@@ -811,6 +811,8 @@ class TicketController extends Controller
         } elseif ($method == "agency") {
 
             if (!Auth::user()->active) {
+                $return = ["status" => 1];
+                return response()->json($return);
             }
             $book->payments()->create([
                 "payment_id"     => "paymentByAgency" . $book["id"],
