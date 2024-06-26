@@ -3916,7 +3916,6 @@ export default {
                         if (response.data.status === 0) {
                             this.flight_ajax_loader--;
                             this.flights.push(...response.data.flights);
-                            console.log(this.flights);
                             this.airlines_list.push(...response.data.airlines_list);
                             this.flight_grouped.push(...response.data.flight_grouped);
                             this.airlines = {...this.airlines, ...response.data.airlines_filter_list};
@@ -3929,9 +3928,7 @@ export default {
                             this.ValidatingAirlineCode.push(...airline_push);
                             this.all_ValidatingAirlineCode = this.ValidatingAirlineCode;
                             this.slider.range.max = Math.max(response.data.max, this.slider.range.max);
-                            if (!this.slider_init) {
-                                this.nouislidefilter_init();
-                            }
+                            this.nouislidefilter_init();
                         } else {
                             this.flight_ajax_loader--;
                         }
@@ -4022,8 +4019,12 @@ export default {
             }
         },
         nouislidefilter_init() {
-            this.slider_init = 1;
             this.rangeSlider = document.getElementById("slide_filter1");
+
+            if (this.slider_init) {
+                this.rangeSlider.noUiSlider.destroy();
+            }
+            this.slider_init = 1;
             noUiSlider.create(this.rangeSlider, {
                 start: this.slider.start,
                 direction: this.slider.direction,
@@ -4578,7 +4579,7 @@ export default {
                 connect: true,
                 step: 30,
                 range: {
-                    'min': 0, 'max': 1200
+                    'min': 0, 'max': this.filter['wait1'] ? this.filter['wait1'] : 120
                 },
                 text: ""
             },
