@@ -268,6 +268,7 @@ class parto implements render_interface
         $flight_grouped = [];
         $flights = [];
 
+        $max_total_waiting = 0;
         if (!empty($response)) {
             global $cost_insert, $tax_insert;
 
@@ -371,6 +372,7 @@ class parto implements render_interface
                     "depart_first_airline"         => $item["OriginDestinationOptions"][0]["FlightSegments"][0]["MarketingAirlineCode"],
                 ];
 
+                $max_total_waiting = max($max_total_waiting, $item["OriginDestinationOptions"][0]["ConnectionTimePerMinute"]);
                 $depart_return_time = $item["OriginDestinationOptions"][0]["JourneyDurationPerMinute"] + $item["OriginDestinationOptions"][0]["ConnectionTimePerMinute"];
 
                 $insert_array["airports1"] = Airport::where("code", $insert_array["depart_airport"])->first();
@@ -411,7 +413,7 @@ class parto implements render_interface
                     $insert_array["return_class_code"] = $item["OriginDestinationOptions"][1]["FlightSegments"][0]["ResBookDesigCode"];
                     $insert_array["return_first_airline"] = $item["OriginDestinationOptions"][1]["FlightSegments"][0]["MarketingAirlineCode"];
 
-
+                    $max_total_waiting = max($max_total_waiting, $item["OriginDestinationOptions"][1]["ConnectionTimePerMinute"]);
                     $insert_array["airports3"] = Airport::where("code", $insert_array["return_depart_airport"])->first();
                     $insert_array["airports4"] = Airport::where("code", $insert_array["return_arrival_airport"])->first();
 
@@ -626,7 +628,7 @@ class parto implements render_interface
 
         $last = Carbon::now();
 
-        return ["flights" => $flights, "airlines_list" => $airlines_list, "airlines_filter_list" => $airlines_filter_list, "flight_grouped" => $flight_grouped, "time" => [$start, $after_parto, $last]];
+        return ["flights" => $flights, "airlines_list" => $airlines_list, "airlines_filter_list" => $airlines_filter_list, "flight_grouped" => $flight_grouped, "time" => [$start, $after_parto, $last], 'max_total_waiting' => $max_total_waiting];
 
     }
 

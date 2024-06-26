@@ -572,14 +572,13 @@ class FlightController extends Controller
             "chl"       => $chl,
             "inf"       => $inf,
         ];
-        $max = 30;
 
         return response()->json([
             "status"               => 0,
             "flights"              => $flights,
             "count"                => $count,
             "search_data"          => $search_data,
-            "max"                  => $max,
+            "max"                  => $response["max_total_waiting"] ?? 1200,
             "airlines_list"        => $response["airlines_list"],
             "flight_grouped"       => $response["flight_grouped"],
             "airlines_filter_list" => $response["airlines_filter_list"],
