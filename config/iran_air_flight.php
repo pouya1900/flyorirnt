@@ -29,6 +29,17 @@ $array = [
         "depart"  => [6],
         "return"  => [6],
     ],
+    [
+        "airport" => "CDG",  //Paris
+        "depart"  => [2,5],
+        "return"  => [2,5],
+    ],
+    [
+        "airport" => "LHR",  //London
+        "depart"  => [2,4,0],
+        "return"  => [2,4,0],
+    ],
+
 ];
 
 return $array;
