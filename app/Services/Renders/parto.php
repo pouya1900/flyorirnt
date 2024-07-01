@@ -564,24 +564,26 @@ class parto implements render_interface
 
                 $airline_array = ["airline" => $airline, "costs" => $cost_insert[$i], "stops" => $inserted_flight["stops"], "return_stops" => $inserted_flight["return_stops"], "depart_time" => $inserted_flight["depart_time"]];
 
-                for ($k = 0; $k <= 2; $k++) {
-                    if (!isset($airlines_list[$airline_code][$k])) {
-                        $airlines_list[$airline_code][$k] = $airline_array;
-                        break;
-                    } else {
-                        if ($airlines_list[$airline_code][$k]["stops"] > $inserted_flight["stops"]) {
-                            if (isset($airlines_list[$airline_code][$k + 1])) {
-                                $airlines_list[$airline_code][$k + 2] = $airlines_list[$airline_code][$k + 1];
-                            }
-                            $x = $airlines_list[$airline_code][$k];
+                if ($inserted_flight["stops"] == $inserted_flight["return_stops"]) {
+                    for ($k = 0; $k <= 2; $k++) {
+                        if (!isset($airlines_list[$airline_code][$k])) {
                             $airlines_list[$airline_code][$k] = $airline_array;
-                            $airlines_list[$airline_code][$k + 1] = $x;
                             break;
-                        } elseif ($airlines_list[$airline_code][$k]["stops"] == $inserted_flight["stops"]) {
-                            if ($airlines_list[$airline_code][$k]["costs"]["TotalFare"] > $cost_insert[$i]["TotalFare"]) {
-                                $airlines_list[$airline_code][$k]["costs"] = $cost_insert[$i];
+                        } else {
+                            if ($airlines_list[$airline_code][$k]["stops"] > $inserted_flight["stops"]) {
+                                if (isset($airlines_list[$airline_code][$k + 1])) {
+                                    $airlines_list[$airline_code][$k + 2] = $airlines_list[$airline_code][$k + 1];
+                                }
+                                $x = $airlines_list[$airline_code][$k];
+                                $airlines_list[$airline_code][$k] = $airline_array;
+                                $airlines_list[$airline_code][$k + 1] = $x;
+                                break;
+                            } elseif ($airlines_list[$airline_code][$k]["stops"] == $inserted_flight["stops"]) {
+                                if ($airlines_list[$airline_code][$k]["costs"]["TotalFare"] > $cost_insert[$i]["TotalFare"]) {
+                                    $airlines_list[$airline_code][$k]["costs"] = $cost_insert[$i];
+                                }
+                                break;
                             }
-                            break;
                         }
                     }
                 }
@@ -589,23 +591,24 @@ class parto implements render_interface
                 if (!isset($airlines_filter_list[$airline_code]) || $airlines_filter_list[$airline_code]["totalFare"] > $cost_insert[$i]["TotalFare"]) {
                     $airlines_filter_list[$airline_code] = ["airline" => $airline, "totalFare" => $cost_insert[$i]["TotalFare"]];
                 }
+                if ($inserted_flight["stops"] == $inserted_flight["return_stops"]) {
 
-                for ($k = 0; $k <= 2; $k++) {
-                    if (!isset($flight_grouped[$k])) {
-                        $flight_grouped[$k] = $inserted_flight["stops"];
-                        break;
-                    }
-                    if ($flight_grouped[$k] > $inserted_flight["stops"]) {
-                        $x = $flight_grouped[$k];
-                        $flight_grouped[$k] = $inserted_flight["stops"];
-                        $flight_grouped[$k + 1] = $x;
-                        break;
-                    }
-                    if ($flight_grouped[$k] == $inserted_flight["stops"]) {
-                        break;
+                    for ($k = 0; $k <= 2; $k++) {
+                        if (!isset($flight_grouped[$k])) {
+                            $flight_grouped[$k] = $inserted_flight["stops"];
+                            break;
+                        }
+                        if ($flight_grouped[$k] > $inserted_flight["stops"]) {
+                            $x = $flight_grouped[$k];
+                            $flight_grouped[$k] = $inserted_flight["stops"];
+                            $flight_grouped[$k + 1] = $x;
+                            break;
+                        }
+                        if ($flight_grouped[$k] == $inserted_flight["stops"]) {
+                            break;
+                        }
                     }
                 }
-
 
                 $flights[] = $inserted_flight;
                 $i++;
