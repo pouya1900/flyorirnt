@@ -823,7 +823,7 @@
                                                                             <div v-if="min_seat_calculate(item.legs)[0]"
                                                                                  class="flight_seats_price_deal">
                                                                         <span
-                                                                            :class="min_seat_calculate(item.legs)[0]==search_data.adl+search_data.chl ? 'text-red' :'' ">
+                                                                            :class="min_seat_calculate(item.legs)[0]==parseInt(search_data.adl)+parseInt(search_data.chl) ? 'text-red' :'' ">
                                                                         <img src="images/icon/flight-seat.png"
                                                                              class="flight_seat_image"> {{
                                                                                 min_seat_calculate(item.legs)[0]
@@ -898,7 +898,7 @@
                                                                                     v-if="min_seat_calculate(item.legs)[0]"
                                                                                     class="flight_seats_price_deal">
                                                                             <span
-                                                                                :class="min_seat_calculate(item.legs)[0]==search_data.adl+search_data.chl ? 'text-red' :'' ">
+                                                                                :class="min_seat_calculate(item.legs)[0]==parseInt(search_data.adl)+parseInt(search_data.chl) ? 'text-red' :'' ">
                                                                                 <img src="images/icon/flight-seat.png"
                                                                                      class="flight_seat_image">
                                                                                 {{
@@ -1113,7 +1113,7 @@
                                                                                     v-if="min_seat_calculate(item.legs)[1]"
                                                                                     class="flight_seats_price_deal">
                                                                             <span
-                                                                                :class="min_seat_calculate(item.legs)[1]==search_data.adl+search_data.chl ? 'text-red' :'' ">
+                                                                                :class="min_seat_calculate(item.legs)[1]==parseInt(search_data.adl)+parseInt(search_data.chl) ? 'text-red' :'' ">
                                                                                 <img src="images/icon/flight-seat.png"
                                                                                      class="flight_seat_image">
                                                                                 {{
@@ -1191,7 +1191,7 @@
                                                                                         v-if="min_seat_calculate(item.legs)[1]"
                                                                                         class="flight_seats_price_deal">
                                                                             <span
-                                                                                :class="min_seat_calculate(item.legs)[1]==search_data.adl+search_data.chl ? 'text-red' :'' ">
+                                                                                :class="min_seat_calculate(item.legs)[1]==parseInt(search_data.adl)+parseInt(search_data.chl) ? 'text-red' :'' ">
                                                                                 <img src="images/icon/flight-seat.png"
                                                                                      class="flight_seat_image">
                                                                                 {{
@@ -1405,7 +1405,7 @@
                                                                                         v-if="min_seat_calculate(multi.legs)[0]"
                                                                                         class="flight_seats_price_deal">
                                                                             <span
-                                                                                :class="min_seat_calculate(multi.legs)[0]==search_data.adl+search_data.chl ? 'text-red' :'' ">
+                                                                                :class="min_seat_calculate(multi.legs)[0]==parseInt(search_data.adl)+parseInt(search_data.chl) ? 'text-red' :'' ">
                                                                                 <img src="images/icon/flight-seat.png"
                                                                                      class="flight_seat_image">
                                                                                 {{
@@ -1483,7 +1483,7 @@
                                                                                             v-if="min_seat_calculate(multi.legs)[0]"
                                                                                             class="flight_seats_price_deal">
                                                                             <span
-                                                                                :class="min_seat_calculate(multi.legs)[0]==search_data.adl+search_data.chl ? 'text-red' :'' ">
+                                                                                :class="min_seat_calculate(multi.legs)[0]==parseInt(search_data.adl)+parseInt(search_data.chl) ? 'text-red' :'' ">
                                                                                 <img src="images/icon/flight-seat.png"
                                                                                      class="flight_seat_image">
                                                                                 {{
