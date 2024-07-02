@@ -3571,9 +3571,11 @@
                             <div class="row">
 
                                 <div class="col-4 payment_cell payment_price">
-                        <span>
-                            {{ this.selected_flight.TotalFare }} {{ this.selected_flight.Currency }}
-                        </span>
+                                    <span>
+                                        {{
+                                            this.my_number_format(this.selected_flight.TotalFare)
+                                        }} {{ this.selected_flight.Currency }}
+                                    </span>
                                 </div>
 
                                 <div class="col-8 payment_cell">
