@@ -556,15 +556,15 @@ class parto implements render_interface
 
                 $airline_code = $inserted_flight["ValidatingAirlineCode"];
 
-                if (!isset($airlines_list[$airline_code])) {
-                    $airlines_list[$airline_code] = [];
-                }
 
                 $airline = Airline::where("code", $airline_code)->first();
 
                 $airline_array = ["airline" => $airline, "costs" => $cost_insert[$i], "stops" => $inserted_flight["stops"], "return_stops" => $inserted_flight["return_stops"], "depart_time" => $inserted_flight["depart_time"]];
 
                 if ($inserted_flight["stops"] == $inserted_flight["return_stops"]) {
+                    if (!isset($airlines_list[$airline_code])) {
+                        $airlines_list[$airline_code] = [];
+                    }
                     for ($k = 0; $k <= 2; $k++) {
                         if (!isset($airlines_list[$airline_code][$k])) {
                             $airlines_list[$airline_code][$k] = $airline_array;
