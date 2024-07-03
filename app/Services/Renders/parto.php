@@ -618,17 +618,18 @@ class parto implements render_interface
 
 //        dd($airlines_list);
 
-        usort($airlines_list, function ($item1, $item2) {
-            if ($item2[0]["costs"]["TotalFare"] == $item1[0]["costs"]["TotalFare"]) {
-                if (isset($item1[1]) && isset($item2[1])) {
-                    return $item1[1]["costs"]['TotalFare'] <=> $item2[1]["costs"]['TotalFare'];
+        if ($airlines_list) {
+            usort($airlines_list, function ($item1, $item2) {
+                if ($item2[0]["costs"]["TotalFare"] == $item1[0]["costs"]["TotalFare"]) {
+                    if (isset($item1[1]) && isset($item2[1])) {
+                        return $item1[1]["costs"]['TotalFare'] <=> $item2[1]["costs"]['TotalFare'];
+                    }
                 }
-            }
 
-            return $item1[0]["costs"]['TotalFare'] <=> $item2[0]["costs"]['TotalFare'];
+                return $item1[0]["costs"]['TotalFare'] <=> $item2[0]["costs"]['TotalFare'];
 
-        });
-
+            });
+        }
         $last = Carbon::now();
 
         return ["flights" => $flights, "airlines_list" => $airlines_list, "airlines_filter_list" => $airlines_filter_list, "flight_grouped" => $flight_grouped, "time" => [$start, $after_parto, $last], 'max_total_waiting' => $max_total_waiting];
