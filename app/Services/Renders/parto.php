@@ -616,9 +616,8 @@ class parto implements render_interface
 
         }
 
-//        dd($airlines_list);
 
-        if ($airlines_list) {
+        if (count($airlines_list) > 1) {
             usort($airlines_list, function ($item1, $item2) {
                 if ($item2[0]["costs"]["TotalFare"] == $item1[0]["costs"]["TotalFare"]) {
                     if (isset($item1[1]) && isset($item2[1])) {
