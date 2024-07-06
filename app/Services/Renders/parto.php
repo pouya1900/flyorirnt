@@ -591,7 +591,7 @@ class parto implements render_interface
                 if (!isset($airlines_filter_list[$airline_code]) || $airlines_filter_list[$airline_code]["totalFare"] > $cost_insert[$i]["TotalFare"]) {
                     $airlines_filter_list[$airline_code] = ["airline" => $airline, "totalFare" => $cost_insert[$i]["TotalFare"]];
                 }
-                if ($inserted_flight["stops"] == $inserted_flight["return_stops"]) {
+                if ($inserted_flight["stops"] == $inserted_flight["return_stops"] || $inserted_flight["return_stops"] == null) {
 
                     for ($k = 0; $k <= 2; $k++) {
                         if (!isset($flight_grouped[$k])) {
