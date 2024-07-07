@@ -529,7 +529,7 @@ class iranAir implements render_interface
                 $cost_insert[$i]["TotalTax"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["TotalFare"]["@attributes"]["Amount"] - $item["AirItineraryPricingInfo"]["ItinTotalFare"]["BaseFare"]["@attributes"]["Amount"];
                 $cost_insert[$i]["ServiceTax"] = 0;
                 $cost_insert[$i]["Currency"] = $item["AirItineraryPricingInfo"]["ItinTotalFare"]["TotalFare"]["@attributes"]["CurrencyCode"];
-                $cost_insert[$i]["FarePerAdult"] = $calc_price->index($PTC_FareBreakdown[0]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 0, $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"], 'iran_air'); //total fare per adult
+                $cost_insert[$i]["FarePerAdult"] = $calc_price->index($PTC_FareBreakdown[0]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 0, $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"], 'iran_air', $inserted_flight["depart_airport"], $inserted_flight["arrival_airport"]); //total fare per adult
                 $cost_insert[$i]["serviceAdult"] = $cost_insert[$i]["FarePerAdult"] - $PTC_FareBreakdown[0]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"] - $price_addition_adult; //service fee per adult
                 $cost_insert[$i]["adult"] = $PTC_FareBreakdown[0]["PassengerTypeQuantity"]["@attributes"]["Quantity"]; //number of adult
                 $cost_insert[$i]["AgencyCommissionAdult"] = $commission_adult;
@@ -558,7 +558,7 @@ class iranAir implements render_interface
                 if (isset($PTC_FareBreakdown[1])) {
 
                     if ($PTC_FareBreakdown[1]["PassengerTypeQuantity"]["@attributes"]["Code"] == "CHD") {
-                        $cost_insert[$i]["FarePerChild"] = $calc_price->index($PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 1, $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"], 'iran_air'); //per child
+                        $cost_insert[$i]["FarePerChild"] = $calc_price->index($PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 1, $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"], 'iran_air', $inserted_flight["depart_airport"], $inserted_flight["arrival_airport"]); //per child
                         $cost_insert[$i]["serviceChild"] = $cost_insert[$i]["FarePerChild"] - $PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"] - $price_addition_child; //service fee per child
                         $cost_insert[$i]["child"] = $PTC_FareBreakdown[1]["PassengerTypeQuantity"]["@attributes"]["Quantity"]; //number of child
                         $calc_price->setCount($cost_insert[$i]["child"], 1);
@@ -566,7 +566,7 @@ class iranAir implements render_interface
                         $cost_insert[$i]["AgencyCommissionChild"] = $commission_child;
                         $tax_type = 1;
                     } else {
-                        $cost_insert[$i]["FarePerInf"] = $calc_price->index($PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 2, $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"], 'iran_air'); //per inf
+                        $cost_insert[$i]["FarePerInf"] = $calc_price->index($PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 2, $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"], 'iran_air', $inserted_flight["depart_airport"], $inserted_flight["arrival_airport"]); //per inf
                         $cost_insert[$i]["serviceInfant"] = $cost_insert[$i]["FarePerInf"] - $PTC_FareBreakdown[1]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"] - $price_addition_infant; //service fee per inf
                         $cost_insert[$i]["infant"] = $PTC_FareBreakdown[1]["PassengerTypeQuantity"]["@attributes"]["Quantity"]; //number of inf
                         $calc_price->setCount($cost_insert[$i]["infant"], 2);
@@ -593,7 +593,7 @@ class iranAir implements render_interface
                     }
                     if (isset($PTC_FareBreakdown[2])) {
 
-                        $cost_insert[$i]["FarePerInf"] = $calc_price->index($PTC_FareBreakdown[2]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 2, $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"], 'iran_air'); //per inf
+                        $cost_insert[$i]["FarePerInf"] = $calc_price->index($PTC_FareBreakdown[2]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"], 2, $itinerary_depart[0]["OperatingAirline"]["@attributes"]["Code"], 'iran_air', $inserted_flight["depart_airport"], $inserted_flight["arrival_airport"]); //per inf
                         $cost_insert[$i]["serviceInfant"] = $cost_insert[$i]["FarePerInf"] - $PTC_FareBreakdown[2]["PassengerFare"]["TotalFare"]["@attributes"]["Amount"] - $price_addition_infant; //service fee per inf
                         $cost_insert[$i]["infant"] = $PTC_FareBreakdown[2]["PassengerTypeQuantity"]["@attributes"]["Quantity"]; //number of inf
                         $calc_price->setCount($cost_insert[$i]["infant"], 2);
@@ -809,7 +809,6 @@ class iranAir implements render_interface
         $xml = simplexml_load_string($result);
         $json = json_encode($xml);
         $response = json_decode($json, true);
-        dd($response);
 //		test for timing
         //$this->time2     = Carbon::now();
         //$this->diff_time = Carbon::now()->diffInSeconds( $test_time1 );
