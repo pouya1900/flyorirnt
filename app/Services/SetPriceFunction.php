@@ -25,7 +25,7 @@ class SetPriceFunction
 
 //vendor parto and iran_air
 
-    public function index($price, $type, $airline = "", $vendor = "")
+    public function index($price, $type, $airline = "", $vendor = "", $depart_airport = null, $arrival_airport = null)
     {
 
         $price_addition_adult = 0;
@@ -94,20 +94,33 @@ class SetPriceFunction
         {
             if ($type == 0)  //adult
             {
-				if ($airline == "QR") $margin = 82;
-				else if ($airline == "EK") $margin = 65;
-				else $margin = 55;
+                if ($airline == "QR") $margin = 82;
+                else if ($airline == "EK") $margin = 65;
+                else $margin = 55;
                 //$margin = ($airline == "EK") ? 48:47;
             }
             else
             {
-				if ($airline == "QR") $margin = 70;
-				else if ($airline == "EK") $margin = 53;
-				else $margin = 48;
+                if ($airline == "QR") $margin = 70;
+                else if ($airline == "EK") $margin = 53;
+                else $margin = 48;
                 //$margin = ($airline == "EK") ? 38:35;
             }
             $EndPrice = $vendorPrice + $margin;
         }
+
+
+//        check depart and arrival airport ***************
+        if ($depart_airport == "IKA") {
+
+        }
+
+        if ($arrival_airport == "IKA") {
+
+        }
+//        check depart and arrival airport ***************
+
+
         //*************************************************
         if ($airline == "IR")
         {
