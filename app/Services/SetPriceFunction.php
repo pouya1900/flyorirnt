@@ -67,67 +67,32 @@ class SetPriceFunction
         if ($margin < $min_margin) {
             $margin = $min_margin;
         }
-        //SRA: Fix margin: ----------------------
         $mwst = 0;
-        if ($airline == "IR")
-        {
-            /* old calculation:
-            if ($vendorPrice>900)      $margin = ($type == 0) ? 21 : 15;
-            else if ($vendorPrice>700) $margin = ($type == 0) ? 21 : 15;
-            else if ($vendorPrice>600) $margin = ($type == 0) ? 21 : 15;
-            else if ($vendorPrice>500) $margin = ($type == 0) ? 22 : 15;
-            else $margin = ($type == 0) ? 23 : 17;
-            //$margin = ($type == 0) ? 20 : 15; //IranAir: 22:16
-            if ($vendor=="parto") $margin +=20;
-            */
-        }
-        else
-        {
-            if ($vendorPrice<100)$margin = ($type == 0) ? 25 : 18;
-            $margin = ($type == 0) ? 35 : 28;
-        }
-        //---------------------------------------
-        if ($type > 0) $payPal_fix = 0; // no fix paypal fee for children
-        $EndPrice = ($vendorPrice + $payPal_fix + (1 + $mwst) * $margin) / (1 - $payPal_rate);
-        //*************************************************
+		/*
         if  ($vendor=="parto")
-        {
-            if ($type == 0)  //adult
-            {
-                if ($airline == "QR") $margin = 82;
-                else if ($airline == "EK") $margin = 65;
-                else $margin = 55;
-                //$margin = ($airline == "EK") ? 48:47;
+		{
+			if ($depart_airport == "IKA") 
+			{
+				$margin = ($type == 0) ? 120: 110;
             }
-            else
-            {
-                if ($airline == "QR") $margin = 70;
-                else if ($airline == "EK") $margin = 53;
-                else $margin = 48;
-                //$margin = ($airline == "EK") ? 38:35;
+			else 
+			{
+				if ($airline == "QR") $margin = ($type == 0) ? 70 : 50;
+				if ($airline == "EK") $margin = ($type == 0) ? 60 : 50;
             }
-            $EndPrice = $vendorPrice + $margin;
-        }
-
-
-//        check depart and arrival airport ***************
-        if ($depart_airport == "IKA") {
-
-        }
-
-        if ($arrival_airport == "IKA") {
-
-        }
-//        check depart and arrival airport ***************
-
-
-        //*************************************************
-        if ($airline == "IR")
+    	    if ($type > 0) $payPal_fix = 0; // no fix paypal fee for children
+        	$EndPrice = ($vendorPrice + $payPal_fix + (1 + $mwst) * $margin) / (1 - $payPal_rate);
+		}
+		*/
+    //*************************************************
+        if ($vendor=="iran_air")
         {
             $EndPrice = $vendorPrice;
         }
-        else
+        else if ($vendor=="parto")
         {
+			/*
+			$EndPrice = $vendorPrice + $margin;
             $EndPrice = round($EndPrice + 0.2);
             $paypal_fee = $EndPrice * $payPal_rate + $payPal_fix;
             $margin = ($EndPrice - $vendorPrice - $paypal_fee) / (1 + $mwst);
@@ -144,6 +109,18 @@ class SetPriceFunction
             {
                 $EndPrice += $price_addition_infant;
             }
+			*/
+			//$EndPrice = round($vendorPrice + 120);
+			if ($depart_airport == "IKA" || $depart_airport == "SYZ" || 
+				$depart_airport == "MHD" || $depart_airport == "IFN") 
+			{
+				$EndPrice = $vendorPrice + 120;
+			}
+			else
+			{
+				$EndPrice = $vendorPrice + 45;
+			}
+			$EndPrice = round($EndPrice);
         }
         if ($config["no_change"] == 1 || ($setting->pure_price && Auth::user() && Auth::user()->role == 3)) $EndPrice = $price;
         $this->setPrice($EndPrice, $type);
