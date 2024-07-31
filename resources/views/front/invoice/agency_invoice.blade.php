@@ -169,15 +169,15 @@
                                     <td>{{$passenger->ticket_number ? : $book->ticket_number}}</td>
 
                                     @if($passenger->type==1)
-                                        <td>{{round($book->flights->costs->FarePerAdult - $book->flights->costs->AgencyCommissionAdult)}}
+                                        <td>{{$book->flights->costs->FarePerAdult - $book->flights->costs->AgencyCommissionAdult}}
                                             €
                                         </td>
                                     @elseif($passenger->type==2)
-                                        <td>{{round($book->flights->costs->FarePerChild - $book->flights->costs->AgencyCommissionChild)}}
+                                        <td>{{$book->flights->costs->FarePerChild - $book->flights->costs->AgencyCommissionChild}}
                                             €
                                         </td>
                                     @else
-                                        <td>{{round($book->flights->costs->FarePerInf - $book->flights->costs->AgencyCommissionInfant)}}
+                                        <td>{{$book->flights->costs->FarePerInf - $book->flights->costs->AgencyCommissionInfant}}
                                             €
                                         </td>
                                     @endif
@@ -198,7 +198,7 @@
                     <table>
                         <tr>
                             <td>@lang('trs.total_price')</td>
-                            <td class="ticket_bold_section">{{round($book->flights->costs->TotalFare - $book->flights->costs->TotalAgencyCommission)}}
+                            <td class="ticket_bold_section">{{$book->flights->costs->TotalFare - $book->flights->costs->TotalAgencyCommission}}
                                 €
                             </td>
                         </tr>
@@ -210,7 +210,7 @@
 
             <div class="ticket_section_container">
                 <div class="invoice_payment">
-                    <p>{{trans('trs.invoice_payment_text',['amount'=>round($book->flights->costs->TotalFare - $book->flights->costs->TotalAgencyCommission)])}}</p>
+                    <p>{{trans('trs.invoice_payment_text',['amount'=>$book->flights->costs->TotalFare - $book->flights->costs->TotalAgencyCommission])}}</p>
                     <p>Postbank Dortmund</p>
                     <p>@lang('trs.account_holder'): Dr. Rezai Afshar, Saeed</p>
                     <p>IBAN: DE55 4401 0046 0732 6504 64</p>
