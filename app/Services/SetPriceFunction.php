@@ -111,17 +111,33 @@ class SetPriceFunction
             }
 			*/
 			//$EndPrice = round($vendorPrice + 120);
-			if ($depart_airport == "IKA" || $depart_airport == "SYZ" || 
+			if ($depart_airport == "IKA" || $depart_airport == "SYZ" || $depart_airport == "TBZ" || 
 				$depart_airport == "MHD" || $depart_airport == "IFN") 
 			{
 				$EndPrice = $vendorPrice + 120;
 			}
 			else
 			{
-				$EndPrice = $vendorPrice + 45;
+				$EndPrice = $vendorPrice;
+				if ($airline == "LH") $EndPrice += ($type == 0) ? 50 : 45;
+				else if ($airline == "OS") $EndPrice += ($type == 0) ? 60 : 55;
+				else $EndPrice +=45;
 			}
 			$EndPrice = round($EndPrice);
         }
+		if ($type == 0)
+        {
+            $EndPrice += $price_addition_adult;
+        }
+        elseif ($type == 1)
+        {
+            $EndPrice += $price_addition_child;
+        }
+        else
+        {
+            $EndPrice += $price_addition_infant;
+        }
+		
         if ($config["no_change"] == 1 || ($setting->pure_price && Auth::user() && Auth::user()->role == 3)) $EndPrice = $price;
         $this->setPrice($EndPrice, $type);
         return $EndPrice;
