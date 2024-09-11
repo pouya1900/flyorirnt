@@ -114,7 +114,8 @@ class SetPriceFunction
 			if ($depart_airport == "IKA" || $depart_airport == "SYZ" || $depart_airport == "TBZ" || 
 				$depart_airport == "MHD" || $depart_airport == "IFN") 
 			{
-				$EndPrice = $vendorPrice + 120;
+				$EndPrice = $vendorPrice + 125;
+				if ($airline == "TK") $EndPrice += ($type == 0) ? 30 : 30;
 			}
 			else
 			{

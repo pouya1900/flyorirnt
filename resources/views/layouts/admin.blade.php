@@ -19,6 +19,7 @@
     {{--    fav icon--}}
     <link rel="icon" href="images/{{$setting->favicon}}" type="image/gif" sizes="16x16">
 
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
 
     <!-- CSS Files -->

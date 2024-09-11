@@ -117,8 +117,27 @@ class HomeController extends Controller
 
             $user = json_decode(json_encode($user), true);
 
+            $flight = $book->flights;
 
-            return view('admin.ticket.search_user_result', compact('user', 'lang'));
+            $research_data =
+                [
+                    "link"             => $flight->searches->link,
+                    'origin'           => $flight->searches->origin_code,
+                    "destination"      => $flight->searches->destination_code,
+                    "origin_name"      => $flight->searches->origin_name,
+                    "destination_name" => $flight->searches->destination_name,
+                    "adl"              => $flight->searches->adult,
+                    "chl"              => $flight->searches->child,
+                    "inf"              => $flight->searches->infant,
+                    "depart_date"      => date('d.m.Y', strtotime($flight->depart_time)),
+                    "return_date"      => "",
+                ];
+
+            if ($flight["return_depart_time"]) {
+                $research_data["return_date"] = date('d.m.Y', strtotime($flight["return_depart_time"]));
+            }
+
+            return view('admin.ticket.search_user_result', compact('user', 'lang', 'research_data'));
         }
 
     }

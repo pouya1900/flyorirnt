@@ -129,7 +129,7 @@
                                     </div>
 
 
-                                    @include('front.partials.flight',['key'=>$i,'flight'=>$book["flights"]])
+                                    @include('front.partials.flight',['key'=>$i,'flight'=>$book["flights"],'research_data'=>$research_data])
                                 </div>
                                 <!-- /.box-body -->
                             </div>
