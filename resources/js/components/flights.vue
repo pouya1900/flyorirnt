@@ -689,7 +689,7 @@
                                                                 <span>{{
                                                                         this.my_number_format(item.TotalFare)
                                                                     }} € </span>
-                                                                    <a v-if="this.offline_ticket_parto && item.render==1"
+                                                                    <a v-if="(this.offline_ticket_parto && item.render==1) || (this.offline_ticket_ia && item.render==4)"
                                                                        class="deal_button_md_d_offline">
                                                                         <span class="deal_button_md_d_select"> {{
                                                                                 this.trs.offline
@@ -1613,7 +1613,7 @@
                                                             }} € {{ this.trs["p.a"] }}</span>
                                                             </div>
 
-                                                            <a v-if="this.offline_ticket_parto && item.render==1">
+                                                            <a v-if="(this.offline_ticket_parto && item.render==1) || (this.offline_ticket_ia && item.render==4)">
                                                                 <div class="deal_button deal_button_offline">
                                                                     {{ this.trs.offline }}
                                                                 </div>
@@ -3810,7 +3810,7 @@ export default {
     components: {
         singleFlight
     },
-    props: ['user', 'agency', 'lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'multi_search_url', 'filter', 'air_rules_url', 'air_bag_url', 'revalidate_url', 'country', 'airlines_rule_url', 'process_payment_url', 'paypal_id', 'confirm_payment_url', 'successful_book_url', 'failed_book_url', 'cancel_payment_url', 'setting', 'offline_ticket_parto'],
+    props: ['user', 'agency', 'lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'multi_search_url', 'filter', 'air_rules_url', 'air_bag_url', 'revalidate_url', 'country', 'airlines_rule_url', 'process_payment_url', 'paypal_id', 'confirm_payment_url', 'successful_book_url', 'failed_book_url', 'cancel_payment_url', 'setting', 'offline_ticket_parto', 'offline_ticket_ia'],
     name: 'flights',
     watch: {
         step(newValue, oldValue) {

@@ -51,6 +51,7 @@
             :paypal_id="{{json_encode($setting->payment ? env('PAYPAL_CLIENT_ID') : env('PAYPAL_TEST_CLIENT_ID'))}}"
             :setting="{{json_encode($setting)}}"
             :offline_ticket_parto="{{json_encode($offline_ticket_parto)}}"
+            :offline_ticket_ia="{{json_encode($offline_ticket_ia)}}"
             :agency="{{json_encode($user && $user->role==\App\User::agency && $user->active ? $user : null)}}"
             :filter="{{json_encode($filter)}}">
 

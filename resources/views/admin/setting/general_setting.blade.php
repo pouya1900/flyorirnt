@@ -361,6 +361,15 @@
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
+                                <div>
+                                    <label for="offline_ticket_ia">online payment disable for iran air
+                                        : </label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="offline_ticket_ia"
+                                               name="offline_ticket_ia" {{$setting->offline_ticket_ia ? "checked" : ""}}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
 
                                 <div>
                                     <label for="offline_ticket">disable payment and issue ticket for admin

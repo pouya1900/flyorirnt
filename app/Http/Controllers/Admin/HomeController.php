@@ -282,6 +282,10 @@ class HomeController extends Controller
         $offline_ticket = 0;
         if ($request->has("offline_ticket")) $offline_ticket = 1;
 
+        $offline_ticket_ia = 0;
+        if ($request->has("offline_ticket_ia")) $offline_ticket_ia = 1;
+
+
         $no_payment_admin = 0;
         if ($request->has("no_payment_admin")) $no_payment_admin = 1;
 
@@ -291,6 +295,7 @@ class HomeController extends Controller
             'test_one_euro'           => $test_one_euro,
             'test_one_euro_with_book' => $test_one_euro_with_book,
             'offline_ticket'          => $offline_ticket,
+            'offline_ticket_ia'       => $offline_ticket_ia,
             'no_payment_admin'        => $no_payment_admin,
         ]);
 

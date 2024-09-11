@@ -320,7 +320,13 @@ class FlightController extends Controller
             $offline_ticket_parto = 1;
         }
 
-        return response(view('front.flight.flightsvue', compact('lang', 'search_data', 'ajax_render', 'filter', 'country', 'user', 'offline_ticket_parto')));
+        $offline_ticket_ia = 0;
+        if ($setting->offline_ticket_ia && (!Auth::check() || Auth::user()->role != User::admin)) {
+            $offline_ticket_ia = 1;
+        }
+
+
+        return response(view('front.flight.flightsvue', compact('lang', 'search_data', 'ajax_render', 'filter', 'country', 'user', 'offline_ticket_parto','offline_ticket_ia')));
 
     }
 
