@@ -824,6 +824,7 @@ class TicketController extends Controller
             $return = ["status" => 0, "paymentId" => "paymentByAgency" . $book["id"], "payerId" => Auth::user()->id];
         }
 
+        $return["book_token"] = $book->token;
 
         return response()->json($return);
 
@@ -1107,16 +1108,18 @@ class TicketController extends Controller
 
     }
 
-    public function cancel_payment(Request $request, $book_token)
+    public function cancel_payment(Request $request)
     {
         ini_set('max_execution_time', 120);
 
         $lang = App::getLocale();
 
+        $book_token = $request->input("token");
+        $orderID = $request->input("orderID");
 
         $book = Book::where('token', 'like', $book_token)->first();
 
-        $payment = Payment::where('book_id', '=', $book->id)->first();
+        $payment = Payment::where('book_id', '=', $book->id)->where("payment_id", $orderID)->first();
         $research_data = [
             "link"             => $book->flights->searches->link,
             'origin'           => $book->flights->searches->origin_code,
@@ -1129,12 +1132,11 @@ class TicketController extends Controller
             "depart_date"      => date('d.m.Y', strtotime($book->flights->depart_time)),
             "return_date"      => "",
         ];
+        if ($book->flights->depart_time) {
+            $research_data["return_date"] = date('d.m.Y', strtotime($book->flights->depart_time));
+        }
 
-        if (($book->status == "booking" || $book->status == "payment_cancelled") && ($payment->status == "CREATED" || $payment->status == "CANCELLED")) {
-            if ($book->flights->depart_time) {
-                $research_data["return_date"] = date('d.m.Y', strtotime($book->flights->depart_time));
-            }
-
+        if ($payment && ($book->status == "booking" || $book->status == "payment_cancelled") && ($payment->status == "CREATED" || $payment->status == "CANCELLED")) {
 
             $payment->update(["status" => "CANCELLED"]);
 

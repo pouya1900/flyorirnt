@@ -4385,6 +4385,8 @@ export default {
                                     error = response.data.error;
                                 } else {
                                     orderID = response.data.orderID;
+                                    vm.book_token = response.data.book_token;
+                                    vm.order_id_paypal = orderID;
                                 }
                             }).catch(() => {
                                 error = 3;
@@ -4422,7 +4424,7 @@ export default {
                             });
                     },
                     onCancel: function (data) {
-                        window.location.replace(vm.cancel_payment_url);
+                        window.location.replace(vm.cancel_payment_url + "?token=" + vm.book_token + "&orderID=" + vm.order_id_paypal);
                     },
                     style: {
                         color: 'gold',
@@ -4617,6 +4619,8 @@ export default {
             'flight_ajax_loader': this.ajax_render.length,
             'revalidate_error': 0,
             'disable_payment': 0,
+            'book_token': "",
+            'order_id_paypal': ""
         }
     },
     computed: {
