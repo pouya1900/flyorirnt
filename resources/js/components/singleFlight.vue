@@ -2516,7 +2516,7 @@ export default {
                 });
         },
         my_number_format(number) {
-            return Intl.NumberFormat("en-US", {maximumFractionDigits: 1}).format(Number(number).toFixed(1));
+            return Intl.NumberFormat("de-DE", {maximumFractionDigits: 1}).format(Number(number).toFixed(1));
         },
     },
     data() {
