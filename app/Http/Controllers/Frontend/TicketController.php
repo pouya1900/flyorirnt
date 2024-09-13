@@ -1117,7 +1117,7 @@ class TicketController extends Controller
         $book_token = $request->input("token");
         $orderID = $request->input("orderID");
 
-        $book = Book::where('token', 'like', $book_token)->first();
+        $book = Book::where('token', $book_token)->first();
         $research_data = null;
         if ($book) {
 
