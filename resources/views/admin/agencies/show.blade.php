@@ -147,13 +147,13 @@
                                         <a>{{ $invoice_number }}</a>
                                     </td>
                                     <td>
-                                        <a>{{ $book->payments->before_balance - $book->payments->after_balance}}</a>
+                                        <a>{{ number_format($book->payments->before_balance - $book->payments->after_balance,2,',','.')}}</a>
                                     </td>
                                     <td>
-                                        <a>{{ $book->payments->before_balance }}</a>
+                                        <a>{{ number_format($book->payments->before_balance,2,',','.') }}</a>
                                     </td>
                                     <td>
-                                        <a>{{ $book->payments->after_balance }}</a>
+                                        <a>{{ number_format($book->payments->after_balance,2,',','.') }}</a>
                                     </td>
 
                                     <td>
