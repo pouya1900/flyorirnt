@@ -1118,33 +1118,36 @@ class TicketController extends Controller
         $orderID = $request->input("orderID");
 
         $book = Book::where('token', 'like', $book_token)->first();
+        $research_data = null;
+        if ($book) {
 
-        $payment = Payment::where('book_id', '=', $book->id)->where("payment_id", $orderID)->first();
-        $research_data = [
-            "link"             => $book->flights->searches->link,
-            'origin'           => $book->flights->searches->origin_code,
-            "destination"      => $book->flights->searches->destination_code,
-            "origin_name"      => $book->flights->searches->origin_name,
-            "destination_name" => $book->flights->searches->destination_name,
-            "adl"              => $book->flights->searches->adult,
-            "chl"              => $book->flights->searches->child,
-            "inf"              => $book->flights->searches->infant,
-            "depart_date"      => date('d.m.Y', strtotime($book->flights->depart_time)),
-            "return_date"      => "",
-        ];
-        if ($book->flights->depart_time) {
-            $research_data["return_date"] = date('d.m.Y', strtotime($book->flights->depart_time));
-        }
+            $payment = Payment::where('book_id', '=', $book->id)->where("payment_id", $orderID)->first();
+            $research_data = [
+                "link"             => $book->flights->searches->link,
+                'origin'           => $book->flights->searches->origin_code,
+                "destination"      => $book->flights->searches->destination_code,
+                "origin_name"      => $book->flights->searches->origin_name,
+                "destination_name" => $book->flights->searches->destination_name,
+                "adl"              => $book->flights->searches->adult,
+                "chl"              => $book->flights->searches->child,
+                "inf"              => $book->flights->searches->infant,
+                "depart_date"      => date('d.m.Y', strtotime($book->flights->depart_time)),
+                "return_date"      => "",
+            ];
+            if ($book->flights->depart_time) {
+                $research_data["return_date"] = date('d.m.Y', strtotime($book->flights->depart_time));
+            }
 
-        if ($payment && ($book->status == "booking" || $book->status == "payment_cancelled") && ($payment->status == "CREATED" || $payment->status == "CANCELLED")) {
+            if ($payment && ($book->status == "booking" || $book->status == "payment_cancelled") && ($payment->status == "CREATED" || $payment->status == "CANCELLED")) {
 
-            $payment->update(["status" => "CANCELLED"]);
+                $payment->update(["status" => "CANCELLED"]);
 
-            $book->update([
-                "status" => "payment_cancelled",
-            ]);
+                $book->update([
+                    "status" => "payment_cancelled",
+                ]);
 
-            return view('front.payment_result.cancel', compact('lang', 'research_data'));
+                return view('front.payment_result.cancel', compact('lang', 'research_data'));
+            }
         }
 
         return view('front.payment_result.cancel', compact('lang', 'research_data'));
