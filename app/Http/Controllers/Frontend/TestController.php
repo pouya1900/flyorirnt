@@ -19,20 +19,20 @@ class TestController extends Controller
     public function test()
     {
 
-//        Event::dispatch(new SendEmailEvent("poyyarahvar@yahoo.com", new reset("en", "https://flyorient.de/test")));
+        Event::dispatch(new SendEmailEvent("info@flyorient.de", new reset("en", "https://flyorient.de/test")));
 
 
-        $to = "poyyarahvar@yahoo.com";
-
-        $subject = "Subject of the Email";
-        $message = "Hello, this is a test email from php mail in flyorient.de";
-        $headers = "From: info@flyorient.de";
-
-        if (mail($to, $subject, $message, $headers)) {
-            echo "Email sent successfully! ".$headers;
-        } else {
-            echo "Email sending failed.";
-        }
+//        $to = "info@flyorient.de";
+//
+//        $subject = "Subject of the Email";
+//        $message = "Hello, this is a test email from php mail in flyorient.de";
+//        $headers = "From: booking@flyorient.de";
+//
+//        if (mail($to, $subject, $message, $headers)) {
+//            echo "Email sent successfully! ".$headers;
+//        } else {
+//            echo "Email sending failed.";
+//        }
 
 //        $a=Mail::raw('This is a test email', function ($message) {
 //            $message->to('poyyarahvar@gmail.com')
