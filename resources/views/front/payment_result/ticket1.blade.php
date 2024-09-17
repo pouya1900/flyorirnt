@@ -79,7 +79,7 @@
                             <tr>
                                 <td>{{\App\Services\MyHelperFunction::turn_title($passenger->gender,$passenger->type)." ".$passenger->first_name." ".$passenger->middle_name."".$passenger->last_name}}</td>
                                 <td>{{$passenger->countries->$country}}</td>
-                                <td class="date_latin_font">{{$passenger["birthday"] ? date('d-m-Y',strtotime($passenger["birthday"])) : ""}}</td>
+                                <td class="date_latin_font">{{$passenger["birthday"] ? date('d.m.Y',strtotime($passenger["birthday"])) : ""}}</td>
                                 <td>{{$passenger->ticket_number ? : $book->ticket_number}}</td>
                                 <td>{{$passenger->passport_number ? : $passenger->national_id}}</td>
                             </tr>
@@ -250,20 +250,26 @@
                     <table>
                         <tr>
                             <td>@lang('trs.adult_base_price_per_each'):</td>
-                            <td class="ticket_bold_section">{{$book->flights->costs->FarePerAdult}} €</td>
+                            <td class="ticket_bold_section">{{number_format($book->flights->costs->FarePerAdult,2,',','.')}}
+                                €
+                            </td>
                         </tr>
 
                         @if ($book->flights->costs->child)
                             <tr>
                                 <td>@lang('trs.child_base_price_per_each'):</td>
-                                <td class="ticket_bold_section">{{$book->flights->costs->FarePerChild}} €</td>
+                                <td class="ticket_bold_section">{{number_format($book->flights->costs->FarePerChild,2,',','.')}}
+                                    €
+                                </td>
                             </tr>
                         @endif
 
                         @if ($book->flights->costs->infant)
                             <tr>
                                 <td>@lang('trs.infant_base_price_per_each'):</td>
-                                <td class="ticket_bold_section">{{$book->flights->costs->FarePerInf}} €</td>
+                                <td class="ticket_bold_section">{{number_format($book->flights->costs->FarePerInf,2,',','.')}}
+                                    €
+                                </td>
                             </tr>
                         @endif
 

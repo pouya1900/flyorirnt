@@ -33,7 +33,7 @@
                                     <td>
                                         <a href="{{route('admin.search_user_result',['id'=>$user->id])}}">{{ $user->f_name }}</a>
                                     </td>
-                                    <td>{{ $user->balance->amount }}</td>
+                                    <td>{{ number_format($user->balance->amount,2,',','.') }}</td>
                                     <td>{{ $user->created_at }}</td>
                                     <td class="text-center">
                                         <a class="btn btn-primary" href="{{route('admin.agency.show',$user->id)}}"

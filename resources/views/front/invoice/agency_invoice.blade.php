@@ -169,15 +169,15 @@
                                     <td>{{$passenger->ticket_number ? : $book->ticket_number}}</td>
 
                                     @if($passenger->type==1)
-                                        <td>{{$book->flights->costs->FarePerAdult - $book->flights->costs->AgencyCommissionAdult}}
+                                        <td>{{number_format($book->flights->costs->FarePerAdult - $book->flights->costs->AgencyCommissionAdult,2,',','.')}}
                                             €
                                         </td>
                                     @elseif($passenger->type==2)
-                                        <td>{{$book->flights->costs->FarePerChild - $book->flights->costs->AgencyCommissionChild}}
+                                        <td>{{number_format($book->flights->costs->FarePerChild - $book->flights->costs->AgencyCommissionChild,2,',','.')}}
                                             €
                                         </td>
                                     @else
-                                        <td>{{$book->flights->costs->FarePerInf - $book->flights->costs->AgencyCommissionInfant}}
+                                        <td>{{number_format($book->flights->costs->FarePerInf - $book->flights->costs->AgencyCommissionInfant,2,',','.')}}
                                             €
                                         </td>
                                     @endif
@@ -198,7 +198,7 @@
                     <table>
                         <tr>
                             <td>@lang('trs.total_price')</td>
-                            <td class="ticket_bold_section">{{$book->flights->costs->TotalFare - $book->flights->costs->TotalAgencyCommission}}
+                            <td class="ticket_bold_section">{{number_format($book->flights->costs->TotalFare - $book->flights->costs->TotalAgencyCommission,2,',','.')}}
                                 €
                             </td>
                         </tr>
