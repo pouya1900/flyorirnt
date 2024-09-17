@@ -471,7 +471,7 @@
                                                 <span @click="selectFlight(0,item[0].airline.code)"
                                                       class="airline_list_filter"
                                                       v-if="item[0].stops == 0">{{
-                                                        (item[0].costs.TotalFare)
+                                                        this.my_number_format(item[0].costs.TotalFare)
                                                     }}</span>
                                                     <span v-else>-</span>
                                                 </td>
@@ -487,12 +487,12 @@
                                                 <span @click="selectFlight(1,item[0].airline.code)"
                                                       class="airline_list_filter"
                                                       v-if="item[0].stops == 1">{{
-                                                        (item[0].costs.TotalFare)
+                                                        this.my_number_format(item[0].costs.TotalFare)
                                                     }}</span>
                                                     <span @click="selectFlight(1,item[1].airline.code)"
                                                           class="airline_list_filter"
                                                           v-else-if="item[1] && item[1].stops == 1">{{
-                                                            (item[1].costs.TotalFare)
+                                                            this.my_number_format(item[1].costs.TotalFare)
                                                         }}</span>
                                                     <span v-else>-</span>
                                                 </td>
@@ -511,17 +511,17 @@
                                                 <span @click="selectFlight(2,item[0].airline.code)"
                                                       class="airline_list_filter"
                                                       v-if="item[0].stops == 2">{{
-                                                        (item[0].costs.TotalFare)
+                                                        this.my_number_format(item[0].costs.TotalFare)
                                                     }}</span>
                                                     <span @click="selectFlight(2,item[1].airline.code)"
                                                           class="airline_list_filter"
                                                           v-else-if="item[1] && item[1].stops == 2">{{
-                                                            (item[1].costs.TotalFare)
+                                                            this.my_number_format(item[1].costs.TotalFare)
                                                         }}</span>
                                                     <span @click="selectFlight(2,item[2].airline.code)"
                                                           class="airline_list_filter"
                                                           v-else-if="item[2]">{{
-                                                            (item[2].costs.TotalFare)
+                                                            this.my_number_format(item[2].costs.TotalFare)
                                                         }}</span>
                                                     <span v-else>-</span>
                                                 </td>
