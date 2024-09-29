@@ -12,7 +12,9 @@
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "laravel/ui": "^4.2"
+        "laravel/ui": "^4.2",
+        "mailjet/laravel-mailjet": "^3.0",
+        "symfony/http-client": "^6.0"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^1.0",

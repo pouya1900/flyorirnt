@@ -1234,7 +1234,7 @@ class TicketController extends Controller
 
             $setting = Setting::get()->first();
 
-            Event::dispatch(new SendEmailEvent($setting["email"], new ticket_sup($lang, $file_path)));
+            Event::dispatch(new SendEmailEvent("booking.flyorient@gmail.com", new ticket_sup($lang, $file_path)));
 
         }
 

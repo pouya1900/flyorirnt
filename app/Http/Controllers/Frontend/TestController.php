@@ -19,7 +19,7 @@ class TestController extends Controller
     public function test()
     {
 
-        Event::dispatch(new SendEmailEvent("info@flyorient.de", new reset("en", "https://flyorient.de/test")));
+        Event::dispatch(new SendEmailEvent("booking.flyorient@gmail.com", new reset("en", "https://flyorient.de/test")));
 
 
 //        $to = "info@flyorient.de";
