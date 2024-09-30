@@ -1320,75 +1320,79 @@ class iranAir implements render_interface
     public function book($flight, $payment)
     {
 
-        $book = $payment->books;
+        try {
+            $book = $payment->books;
 
-        $book_unique_id = $book->UniqueId;
-        $book_id = $book->id;
-        $flight_id = $flight["id"];
-        $payment_id = $payment->id;
+            $book_unique_id = $book->UniqueId;
+            $book_id = $book->id;
+            $flight_id = $flight["id"];
+            $payment_id = $payment->id;
 
-        $return = [
-            "book_unique_id" => $book_unique_id,
-            "error"          => 0,
-        ];
+            $return = [
+                "book_unique_id" => $book_unique_id,
+                "error"          => 0,
+            ];
 
 
-        if (!$book_unique_id) {
+            if (!$book_unique_id) {
 
-            $res = $this->airbook($payment_id);
+                $res = $this->airbook($payment_id);
 
-            $response = $res["response"];
+                $response = $res["response"];
 
-            if (isset($response["errors"]) || !isset($response["AirReservation"])) {
-                //error handling
+                if (isset($response["errors"]) || !isset($response["AirReservation"])) {
+                    //error handling
 
-                $book->update([
-                    "status" => "vendor_failed",
-                ]);
+                    $book->update([
+                        "status" => "vendor_failed",
+                    ]);
 
-                $this->log->api_error($res["request"], json_encode($response), "AirBook", $flight);
+                    $this->log->api_error($res["request"], json_encode($response), "AirBook", $flight);
 
 
 //show error message code
-                if (env('APP_DEBUG')) {
-                    echo "a";
-                    dd($response);
-                }
+                    if (env('APP_DEBUG')) {
+                        echo "a";
+                        dd($response);
+                    }
 
 //end error
-                $return["error"] = 1;
+                    $return["error"] = 1;
 
-                return $return;
+                    return $return;
 
-            }
+                }
 
-            $book_unique_id = $response["AirReservation"]["BookingReferenceID"]["@attributes"]["ID"];
-            $return["book_unique_id"] = $book_unique_id;
-            $book->update([
-                "UniqueId" => $book_unique_id,
-                "status"   => "booked",
-            ]);
-            Flight::where('id', '=', $flight_id)->update(["status" => "booked"]);
-
-            $ticketing = $response["AirReservation"]["Ticketing"];
-            if (!is_array($response["AirReservation"]["Ticketing"]) || !isset($response["AirReservation"]["Ticketing"][0])) {
-                $hlp[0] = $response["AirReservation"]["Ticketing"];
-                $ticketing = $hlp;
-            }
-            $i = 0;
-            foreach ($book->passengers as $passenger) {
-
-                Passenger::where('id', '=', $passenger->id)->update([
-                    "ticket_number" => $ticketing[$i]["@attributes"]["TicketDocumentNbr"],
+                $book_unique_id = $response["AirReservation"]["BookingReferenceID"]["@attributes"]["ID"];
+                $return["book_unique_id"] = $book_unique_id;
+                $book->update([
+                    "UniqueId" => $book_unique_id,
+                    "status"   => "booked",
                 ]);
-                $i++;
+                Flight::where('id', '=', $flight_id)->update(["status" => "booked"]);
+
+                $ticketing = $response["AirReservation"]["Ticketing"];
+                if (!is_array($response["AirReservation"]["Ticketing"]) || !isset($response["AirReservation"]["Ticketing"][0])) {
+                    $hlp[0] = $response["AirReservation"]["Ticketing"];
+                    $ticketing = $hlp;
+                }
+                $i = 0;
+                foreach ($book->passengers as $passenger) {
+
+                    Passenger::where('id', '=', $passenger->id)->update([
+                        "ticket_number" => $ticketing[$i]["@attributes"]["TicketDocumentNbr"],
+                    ]);
+                    $i++;
+                }
+
+
             }
 
-
+            return $return;
+        } catch (\Exception) {
+            $return["error"] = 1;
+            return $return;
         }
-
-        return $return;
-
     }
 
     public function airbook($payment_id)

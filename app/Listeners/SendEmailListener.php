@@ -27,6 +27,10 @@ class SendEmailListener
      */
     public function handle(SendEmailEvent $event)
     {
-        Mail::to($event->email)->send($event->email_class);
+        try {
+            Mail::to($event->email)->send($event->email_class);
+        } catch (\Exception) {
+            return;
+        }
     }
 }

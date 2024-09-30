@@ -4213,8 +4213,18 @@ export default {
                     error = 1;
                 }
 
+                if (!this.isEnglishAndSpaces(this.first_name[i])) {
+                    this.errors.first_name[i] = this.trs.its_not_english;
+                    error = 1;
+                }
+
                 if (!this.last_name[i]) {
                     this.errors.last_name[i] = this.trs.its_required;
+                    error = 1;
+                }
+
+                if (!this.isEnglishAndSpaces(this.last_name[i])) {
+                    this.errors.last_name[i] = this.trs.its_not_english;
                     error = 1;
                 }
 
@@ -4281,13 +4291,27 @@ export default {
                     this.errors.contact_first_name = this.trs.its_required;
                     error = 1;
                 }
+
+                if (!this.isEnglishAndSpaces(this.contact_first_name)) {
+                    this.errors.contact_first_name = this.trs.its_not_english;
+                    error = 1;
+                }
                 if (!this.contact_last_name) {
                     this.errors.contact_last_name = this.trs.its_required;
+                    error = 1;
+                }
+                if (!this.isEnglishAndSpaces(this.contact_last_name)) {
+                    this.errors.contact_last_name = this.trs.its_not_english;
                     error = 1;
                 }
             }
             if (!this.country_dial_code || !this.phone) {
                 this.errors.phone = this.trs.its_required;
+                error = 1;
+            }
+
+            if (this.phone.charAt(0) == "0") {
+                this.errors.phone = this.trs.its_not_zero;
                 error = 1;
             }
 
@@ -4302,6 +4326,11 @@ export default {
                 this.step = 2;
                 this.payment_call();
             }
+        },
+        isEnglishAndSpaces(input) {
+            // Regular expression to match English letters and spaces
+            const regex = /^[A-Za-z\s]+$/;
+            return regex.test(input);
         },
         getPassengerType(i) {
             // i starts from 0
@@ -4421,7 +4450,9 @@ export default {
                                 } else {
                                     window.location.replace(vm.successful_book_url + "?token=" + response.data.token + (vm.lang != "de" ? "&lang=" + vm.lang : ""));
                                 }
-                            });
+                            }).catch(function (error) {
+                            window.location.replace(vm.failed_book_url + "?token=" + response.data.token + (vm.lang != "de" ? "&lang=" + vm.lang : ""));
+                        })
                     },
                     onCancel: function (data) {
                         window.location.replace(vm.cancel_payment_url + "?token=" + vm.book_token + "&orderID=" + vm.order_id_paypal);
