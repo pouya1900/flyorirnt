@@ -472,5 +472,7 @@ WhatsApp: <b>+49-176-618 75 479</b></span>",
     "reset_filter_to_see_flights"                  => "Some flights matching your search criteria have been filtered out. Please reset the filters to view all available flights.",
     "no_flight"                                    => "Sorry, there are no flights matching your search criteria.",
     "offline"                                      => "offline",
+	"its_not_english"                              => "Letters and space only",
+	"its_not_zero"                                 => "It cannot start with zero"
 
     ];
