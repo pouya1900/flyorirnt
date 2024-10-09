@@ -3404,6 +3404,41 @@
                                             </div>
                                             <span v-if="errors.phone"
                                                   class="error_alert">{{ errors.phone }}</span>
+                                        </div>
+                                        <div class="item_container">
+                                            <label>{{ trs.optional_phone_number }} :</label>
+                                            <div class="row ltr_persian">
+                                                <div class="col-6 input-group mb-3 dial_code_container ">
+
+                                                    <select class="custom-select arranger_dial_code"
+                                                            name="country_dial_code_optional"
+                                                            v-model="country_dial_code_optional"
+                                                            id="country_dial_code_optional">
+                                                        <option>country</option>
+                                                        <option v-for="item in country" :value="item.dial_code"
+                                                                :selected="item.code== 'DE' ? true : false">
+                                                            {{
+                                                                item[country_lang] != "" ? item[country_lang] : item.country_en
+                                                            }}
+                                                        </option>
+
+                                                    </select>
+                                                    <div class="input-group-prepend">
+                                                        <label class="input-group-text"
+                                                               for="country_dial_code_optional">{{
+                                                                this.country_dial_code_optional
+                                                            }}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 dial_country_container ">
+
+                                                    <input class="passenger_form_element" type="text"
+                                                           name="phone_optional"
+                                                           :placeholder="trs.Phone_number" v-model="phone_optional">
+                                                </div>
+                                            </div>
+                                            <span v-if="errors.phone_optional"
+                                                  class="error_alert">{{ errors.phone_optional }}</span>
                                             <p>{{ trs.enter_contact }}</p>
                                         </div>
                                     </div>
@@ -3419,6 +3454,13 @@
                                             <span v-if="errors.email"
                                                   class="error_alert">{{ errors.email }}</span>
                                             <p>{{ trs.login_and_see_history }}</p>
+                                        </div>
+                                    </div>
+                                    <div v-if="user && user.role==3" class="col-12 col-md-6 col-lg-4">
+                                        <div class="item_container">
+                                            <label>{{ trs.email_optional }} :</label>
+                                            <input class="passenger_form_element" type="email" name="contact_email"
+                                                   :placeholder="trs.email" v-model="contact_email">
                                         </div>
                                     </div>
 
@@ -4199,6 +4241,7 @@ export default {
             this.errors.contact_first_name = null;
             this.errors.contact_last_name = null;
             this.errors.phone = null;
+            this.errors.phone_optional = null;
             this.errors.email = null;
             for (let i = 0; i < this.getPassengersCount(); i++) {
                 this.changeDate(i);
@@ -4237,21 +4280,26 @@ export default {
                     this.errors.birthday[i] = this.trs.its_required;
                     error = 1;
                 } else {
-                    let twelve = new Date(new Date().setFullYear(new Date().getFullYear() - 12));
-                    let two = new Date(new Date().setFullYear(new Date().getFullYear() - 2));
+                    if (!this.validateDateFormat(this.birthday[i])) {
+                        this.errors.birthday[i] = this.trs.its_not_date;
+                        error = 1;
+                    } else {
+                        let twelve = new Date(new Date().setFullYear(new Date().getFullYear() - 12));
+                        let two = new Date(new Date().setFullYear(new Date().getFullYear() - 2));
 
-                    let h = this.birthday[i].split(".");
+                        let h = this.birthday[i].split(".");
 
-                    let dob = new Date(+h[2], h[1] - 1, +h[0]);
-                    if (this.getPassengerType(i) == 1 && dob > twelve) {
-                        this.errors.birthday[i] = this.trs.adt_dob_error;
-                        error = 1;
-                    } else if (this.getPassengerType(i) == 2 && dob > two && dob < twelve) {
-                        this.errors.birthday[i] = this.trs.chl_dob_error;
-                        error = 1;
-                    } else if (this.getPassengerType(i) == 3 && dob < two) {
-                        this.errors.birthday[i] = this.trs.inf_dob_error;
-                        error = 1;
+                        let dob = new Date(+h[2], h[1] - 1, +h[0]);
+                        if (this.getPassengerType(i) == 1 && dob > twelve) {
+                            this.errors.birthday[i] = this.trs.adt_dob_error;
+                            error = 1;
+                        } else if (this.getPassengerType(i) == 2 && dob > two && dob < twelve) {
+                            this.errors.birthday[i] = this.trs.chl_dob_error;
+                            error = 1;
+                        } else if (this.getPassengerType(i) == 3 && dob < two) {
+                            this.errors.birthday[i] = this.trs.inf_dob_error;
+                            error = 1;
+                        }
                     }
                 }
 
@@ -4269,6 +4317,11 @@ export default {
                         if (!this.exp[i]) {
                             this.errors.exp[i] = this.trs.its_required;
                             error = 1;
+                        } else {
+                            if (!this.validateDateFormat(this.exp[i])) {
+                                this.errors.exp[i] = this.trs.its_not_date;
+                                error = 1;
+                            }
                         }
                     }
 
@@ -4276,6 +4329,11 @@ export default {
                         if (!this.iss[i]) {
                             this.errors.iss[i] = this.trs.its_required;
                             error = 1;
+                        } else {
+                            if (!this.validateDateFormat(this.iss[i])) {
+                                this.errors.iss[i] = this.trs.its_not_date;
+                                error = 1;
+                            }
                         }
                     }
                 }
@@ -4310,8 +4368,23 @@ export default {
                 error = 1;
             }
 
-            if (this.phone.charAt(0) == "0") {
+            if (this.phone && this.phone.charAt(0) == "0") {
                 this.errors.phone = this.trs.its_not_zero;
+                error = 1;
+            }
+
+            if (this.phone && !this.isDigits(this.phone)) {
+                this.errors.phone = this.trs.its_not_number;
+                error = 1;
+            }
+
+            if (this.phone_optional && this.phone_optional.charAt(0) == "0") {
+                this.errors.phone_optional = this.trs.its_not_zero;
+                error = 1;
+            }
+
+            if (this.phone_optional && !this.isDigits(this.phone_optional)) {
+                this.errors.phone_optional = this.trs.its_not_number;
                 error = 1;
             }
 
@@ -4331,6 +4404,15 @@ export default {
             // Regular expression to match English letters and spaces
             const regex = /^[A-Za-z\s]+$/;
             return regex.test(input);
+        },
+        isDigits(input) {
+            // Regular expression to match digits
+            return /^\d+$/.test(input);
+        },
+        validateDateFormat(dateString) {
+            // Regular expression for dd.mm.yyyy
+            const datePattern = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
+            return datePattern.test(dateString);
         },
         getPassengerType(i) {
             // i starts from 0
@@ -4575,8 +4657,11 @@ export default {
                     'contact_first_name': vm.contact_first_name,
                     'contact_last_name': vm.contact_last_name,
                     'country_dial_code': vm.country_dial_code,
+                    'country_dial_code_optional': vm.country_dial_code_optional,
                     'phone': vm.phone,
+                    'phone_optional': vm.phone_optional,
                     'email': vm.email,
+                    'contact_email': vm.contact_email,
                 },
                 'method': method
             };
@@ -4641,8 +4726,11 @@ export default {
             'contact_first_name': null,
             'contact_last_name': null,
             'country_dial_code': "+49",
+            'country_dial_code_optional': "+49",
             'phone': null,
+            'phone_optional': null,
             'email': this.user ? this.user.email : '',
+            'contact_email': '',
             'errors': {},
             'is_error': 0,
             'confirm': 0,

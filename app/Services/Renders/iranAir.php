@@ -1397,37 +1397,40 @@ class iranAir implements render_interface
 
     public function airbook($payment_id)
     {
+        try {
+            $payment = Payment::find($payment_id);
 
-        $payment = Payment::find($payment_id);
-
-        $service_url = $this->base . '/booking/create';
+            $service_url = $this->base . '/booking/create';
 
 
-        $req = $this->irr->book($payment);
-        $ch = curl_init();
+            $req = $this->irr->book($payment);
+            $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, $service_url);
-        curl_setopt($ch, CURLOPT_VERBOSE, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Content-Type: application/xml",
-            "Accept: application/xml",
-            "Authorization: <$this->auth>",
-        ]);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+            curl_setopt($ch, CURLOPT_URL, $service_url);
+            curl_setopt($ch, CURLOPT_VERBOSE, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/xml",
+                "Accept: application/xml",
+                "Authorization: <$this->auth>",
+            ]);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
 
-        $result = curl_exec($ch);
-        curl_close($ch);
+            $result = curl_exec($ch);
+            curl_close($ch);
 
-        $xml = simplexml_load_string($result);
-        $json = json_encode($xml);
-        $response = json_decode($json, true);
+            $xml = simplexml_load_string($result);
+            $json = json_encode($xml);
+            $response = json_decode($json, true);
 
-        return ["response" => $response, "request" => $req];
+            return ["response" => $response, "request" => $req];
+        } catch (\Exception) {
+            return ["response" => [], "request" => ""];
+        }
     }
 
 

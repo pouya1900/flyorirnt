@@ -144,29 +144,32 @@ class paypal
 
     public function capture_payment($auth_id)
     {
+        try {
 
-        $ch = curl_init();
+            $ch = curl_init();
 
+            $req_uri = $this->base . "/v2/payments/authorizations/" . $auth_id . "/capture";
 
-        $req_uri = $this->base . "/v2/payments/authorizations/" . $auth_id . "/capture";
+            curl_setopt($ch, CURLOPT_URL, $req_uri);
+            curl_setopt($ch, CURLOPT_VERBOSE, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/json",
+                "Authorization: Bearer $this->token",
+            ]);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-        curl_setopt($ch, CURLOPT_URL, $req_uri);
-        curl_setopt($ch, CURLOPT_VERBOSE, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Content-Type: application/json",
-            "Authorization: Bearer $this->token",
-        ]);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $result = curl_exec($ch);
+            $result = json_decode($result, true);
+            curl_close($ch);
 
-        $result = curl_exec($ch);
-        $result = json_decode($result, true);
-        curl_close($ch);
-
-        return $result;
+            return $result;
+        } catch (\Exception) {
+            return [];
+        }
     }
 
     public function void_payment($auth_id)
