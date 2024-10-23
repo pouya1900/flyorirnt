@@ -314,7 +314,7 @@ class parto implements render_interface
 
                 $leg_insert_equal[] = $leg_insert_equal_text;
 
-                if ($item["ValidatingAirlineCode"] == "IR" && ($destination == "IKA" || $origin == "IKA") && ($setting->flight_render == Setting::iranAir || ($setting->flight_render_ajax && in_array(Setting::iranAir, json_decode($setting->flight_render_ajax, true))))) {
+                if ($item["ValidatingAirlineCode"] == "IR" && ($destination == "IKA" || $origin == "IKA") && ($setting->block_iran_air || ($setting->flight_render_ajax && in_array(Setting::iranAir, json_decode($setting->flight_render_ajax, true))))) {
                     continue;
                 }
                 if ($item["ValidatingAirlineCode"] == "W5") {

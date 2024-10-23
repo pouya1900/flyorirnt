@@ -289,6 +289,10 @@ class HomeController extends Controller
         $no_payment_admin = 0;
         if ($request->has("no_payment_admin")) $no_payment_admin = 1;
 
+        $block_iran_air = 0;
+        if ($request->has("block_iran_air")) $block_iran_air = 1;
+
+
         $setting->update([
             'payment'                 => $payment,
             'pure_price'              => $pure_price,
@@ -297,6 +301,7 @@ class HomeController extends Controller
             'offline_ticket'          => $offline_ticket,
             'offline_ticket_ia'       => $offline_ticket_ia,
             'no_payment_admin'        => $no_payment_admin,
+            'block_iran_air'          => $block_iran_air,
         ]);
 
         return redirect()->route('admin.general_setting')->with('message', 'Changes made successfully');

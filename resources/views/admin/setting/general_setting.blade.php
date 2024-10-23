@@ -381,6 +381,15 @@
                                     </label>
                                 </div>
 
+                                <div>
+                                    <label for="offline_ticket">Block Iran air
+                                        : </label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="block_iran_air"
+                                               name="block_iran_air" {{$setting->block_iran_air ? "checked" : ""}}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
 
                             </div>
 
