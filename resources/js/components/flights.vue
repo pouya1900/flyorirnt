@@ -3827,15 +3827,16 @@ export default {
 
     mounted() {
         if (this.search_data.none_stop) {
+            this.stops.push('0');
         }
         if (!this.filter.stops0) {
-            this.stops.push('0')
+            this.stops.push('0');
         }
         if (!this.filter.stops1) {
-            this.stops.push('1')
+            this.stops.push('1');
         }
         if (!this.filter.stops2) {
-            this.stops.push('2')
+            this.stops.push('2');
         }
         this.removeAll('stops');
         if (!this.filter.bar0) {
