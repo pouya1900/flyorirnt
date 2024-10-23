@@ -30,7 +30,7 @@
 
                                                 </div>
 
-                                                <div class="widget_item">
+                                                <div v-if="!search_data.none_stop" class="widget_item">
 
                                                     <div class="custom-control custom-checkbox font-weight-600 ">
 
