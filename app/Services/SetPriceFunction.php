@@ -116,13 +116,14 @@ class SetPriceFunction
 			{
 				$EndPrice = $vendorPrice + 125;
 				if ($airline == "TK") $EndPrice += ($type == 0) ? 30 : 30;
+				if ($airline == "FZ" ||  $airline == "EK") $EndPrice += ($type == 0) ? 74 : 30;
 			}
 			else
 			{
 				$EndPrice = $vendorPrice;
 				if ($airline == "LH") $EndPrice += ($type == 0) ? 50 : 45;
 				else if ($airline == "OS") $EndPrice += ($type == 0) ? 60 : 55;
-				else $EndPrice +=45;
+				else $EndPrice +=60;
 			}
 			$EndPrice = round($EndPrice);
         }

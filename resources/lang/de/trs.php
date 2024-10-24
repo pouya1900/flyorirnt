@@ -469,5 +469,9 @@ WhatsApp: <b>+49-176-618 75 479</b></span>",
     "no_flight"                                    => "Entschuldigung, es gibt keine Flüge, die Ihren Suchkriterien entsprechen.",
     "offline"                                      => "offline",
 	"its_not_english"                              => "Nur Buchstaben und Leerzeichen erlaubt",
-	"its_not_zero"                                 => "Darf nicht mit Null beginnen"
+	"its_not_zero"                                 => "Darf nicht mit Null beginnen",
+	"its_not_date"                                 => "Das Datum muss im Format dd.mm.yyyy sein",
+	"its_not_number"                               => "Es sind nur Ziffern erlaubt",
+	"optional_phone_number"                        => "Optionale Telefonnummer (falls Sie eine Telefonnummer in einem anderen Land haben)",
+	"email_optional"                               => "Optionale E-Mail",
 ];

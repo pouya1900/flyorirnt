@@ -473,6 +473,9 @@ WhatsApp: <b>+49-176-618 75 479</b></span>",
     "no_flight"                                    => "Sorry, there are no flights matching your search criteria.",
     "offline"                                      => "offline",
 	"its_not_english"                              => "Letters and space only",
-	"its_not_zero"                                 => "It cannot start with zero"
-
+	"its_not_zero"                                 => "It cannot start with zero",
+	"its_not_date"                                 => "Date must be in dd.mm.yyyy",
+	"its_not_number"                               => "Only digits are allowed",
+	"optional_phone_number"                        => "Optional phone(if you have phone number in another country)",
+	"email_optional"                               => "Optional email",
     ];
