@@ -180,6 +180,7 @@ class parto implements render_interface
         $setting = Setting::find(1);
 
         $destination_airport = Airport::where('code', $destination)->first();
+        $origin_airport = Airport::where('code', $origin)->first();
         $adl = intval($adl);
         $chl = intval($chl);
         $inf = intval($inf);
@@ -328,6 +329,10 @@ class parto implements render_interface
                 $help_var2 = sizeof($item["OriginDestinationOptions"][0]["FlightSegments"]) - 1;
 
                 if (!$destination_airport->is_city && $item["OriginDestinationOptions"][0]["FlightSegments"][$help_var2]["ArrivalAirportLocationCode"] != $destination) {
+                    continue;
+                }
+
+                if (!$origin_airport->is_city && $item["OriginDestinationOptions"][0]["FlightSegments"][0]["DepartureAirportLocationCode"] != $origin) {
                     continue;
                 }
 
