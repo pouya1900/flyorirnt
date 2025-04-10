@@ -292,16 +292,20 @@ class HomeController extends Controller
         $block_iran_air = 0;
         if ($request->has("block_iran_air")) $block_iran_air = 1;
 
+        $disable_payment_last_step = 0;
+        if ($request->has("disable_payment_last_step")) $disable_payment_last_step = 1;
+
 
         $setting->update([
-            'payment'                 => $payment,
-            'pure_price'              => $pure_price,
-            'test_one_euro'           => $test_one_euro,
-            'test_one_euro_with_book' => $test_one_euro_with_book,
-            'offline_ticket'          => $offline_ticket,
-            'offline_ticket_ia'       => $offline_ticket_ia,
-            'no_payment_admin'        => $no_payment_admin,
-            'block_iran_air'          => $block_iran_air,
+            'payment'                   => $payment,
+            'pure_price'                => $pure_price,
+            'test_one_euro'             => $test_one_euro,
+            'test_one_euro_with_book'   => $test_one_euro_with_book,
+            'offline_ticket'            => $offline_ticket,
+            'offline_ticket_ia'         => $offline_ticket_ia,
+            'no_payment_admin'          => $no_payment_admin,
+            'block_iran_air'            => $block_iran_air,
+            'disable_payment_last_step' => $disable_payment_last_step,
         ]);
 
         return redirect()->route('admin.general_setting')->with('message', 'Changes made successfully');

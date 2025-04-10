@@ -545,6 +545,14 @@ class TicketController extends Controller
         $contact = $request->input("contact");
         $method = $request->input("method");
 
+        $setting = Setting::find(1);
+
+
+        if ($setting->disable_payment_last_step) {
+            $return = ["status" => 1, "error" => "offline"];
+            return response()->json($return);
+        }
+
         if (!$user) {
             $user = User::where('email', '=', $contact["email"])->first();
             if (!$user) {
@@ -1169,6 +1177,13 @@ class TicketController extends Controller
 
         return view('front.payment_result.cancel', compact('lang', 'research_data'));
 
+    }
+
+    public function offline_payment(Request $request)
+    {
+        $lang = App::getLocale();
+
+        return view('front.payment_result.offline', compact('lang'));
     }
 
 

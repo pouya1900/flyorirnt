@@ -3853,7 +3853,7 @@ export default {
     components: {
         singleFlight
     },
-    props: ['user', 'agency', 'lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'multi_search_url', 'filter', 'air_rules_url', 'air_bag_url', 'revalidate_url', 'country', 'airlines_rule_url', 'process_payment_url', 'paypal_id', 'confirm_payment_url', 'successful_book_url', 'failed_book_url', 'cancel_payment_url', 'setting', 'offline_ticket_parto', 'offline_ticket_ia'],
+    props: ['user', 'agency', 'lang', 'trs', 'search_data', 'ajax_render', 'csrf', 'flight_search_url', 'multi_search_url', 'offline_payment_url', 'filter', 'air_rules_url', 'air_bag_url', 'revalidate_url', 'country', 'airlines_rule_url', 'process_payment_url', 'paypal_id', 'confirm_payment_url', 'successful_book_url', 'failed_book_url', 'cancel_payment_url', 'setting', 'offline_ticket_parto', 'offline_ticket_ia'],
     name: 'flights',
     watch: {
         step(newValue, oldValue) {
@@ -4503,6 +4503,10 @@ export default {
                             }).catch(() => {
                                 error = 3;
                             });
+
+                        if(error ==="offline") {
+                            window.location.replace(vm.offline_payment_url);
+                        }
 
                         if (!error && orderID) {
                             return orderID;

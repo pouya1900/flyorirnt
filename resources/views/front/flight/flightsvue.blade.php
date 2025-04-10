@@ -46,6 +46,7 @@
             :process_payment_url="{{json_encode(route('new_process_payment'). ($lang!="de"? "?lang=".$lang : ""))}}"
             :confirm_payment_url="{{json_encode(route('confirm_payment'))}}"
             :successful_book_url="{{json_encode(route('successful_book'))}}"
+            :offline_payment_url="{{json_encode(route('offline_payment'))}}"
             :failed_book_url="{{json_encode(route('failed_book'))}}"
             :cancel_payment_url="{{json_encode(route('cancel_payment'))}}"
             :paypal_id="{{json_encode($setting->payment ? env('PAYPAL_CLIENT_ID') : env('PAYPAL_TEST_CLIENT_ID'))}}"

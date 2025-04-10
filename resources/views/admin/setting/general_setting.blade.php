@@ -391,6 +391,17 @@
                                     </label>
                                 </div>
 
+                                <div>
+                                    <label for="offline_ticket">disable payment in the last step
+                                        : </label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="disable_payment_last_step"
+                                               name="disable_payment_last_step" {{$setting->disable_payment_last_step ? "checked" : ""}}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+
+
                             </div>
 
                         </div>

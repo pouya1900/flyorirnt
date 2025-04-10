@@ -47,6 +47,7 @@ Route::group(['namespace' => 'Frontend'], function () {
     Route::get('result/cancel', 'TicketController@cancel_payment')->name('cancel_payment');
     Route::get('result/failed', 'TicketController@failed_book')->name('failed_book');
     Route::get('/result/booked', 'TicketController@successful_book')->name('successful_book');
+    Route::get('/result/offline', 'TicketController@offline_payment')->name('offline_payment');
 
     Route::post('/NewPaymentProcess', 'TicketController@new_process_payment')->name('new_process_payment');
 
