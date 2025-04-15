@@ -30220,3 +30220,21 @@ rounded .country .capital {
     color: #c00;
     font-size: 14px;
 }
+
+.search_bar_count {
+	direction: ltr;
+}
+
+.reset_all_filter {
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    background: #1db8c1;
+    width: 100%;
+    color: #fff;
+    font-size: 14px;
+}
+
+.reset_all_filter_in_text {
+    width: fit-content;
+}

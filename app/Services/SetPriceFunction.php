@@ -114,16 +114,17 @@ class SetPriceFunction
 			if ($depart_airport == "IKA" || $depart_airport == "SYZ" || $depart_airport == "TBZ" || 
 				$depart_airport == "MHD" || $depart_airport == "IFN") 
 			{
-				$EndPrice = $vendorPrice + 125;
-				if ($airline == "TK") $EndPrice += ($type == 0) ? 30 : 30;
+				$EndPrice = $vendorPrice + 50;
+				if ($airline == "TK") $EndPrice += ($type == 0) ? 32 : 30;
 				if ($airline == "FZ" ||  $airline == "EK") $EndPrice += ($type == 0) ? 74 : 30;
+				//if ($airline == "PC") $EndPrice -=80;
 			}
 			else
 			{
 				$EndPrice = $vendorPrice;
-				if ($airline == "LH") $EndPrice += ($type == 0) ? 50 : 45;
-				else if ($airline == "OS") $EndPrice += ($type == 0) ? 60 : 55;
-				else $EndPrice +=60;
+				if ($airline == "LH") $EndPrice += ($type == 0) ? 40 : 30;
+				else if ($airline == "OS") $EndPrice += ($type == 0) ? 40 : 30;
+				else $EndPrice +=50;
 			}
 			$EndPrice = round($EndPrice);
         }
